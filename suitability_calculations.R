@@ -15,8 +15,9 @@ install.packages("usethis")
 usethis::edit_r_environ()
 
 #get taxon key 
-name_backbone("Hymenoxys_hoopesii")
-key1<-name_backbone(name='Mertensia_brevistyla',rank='species')$usageKey
+name_
+sp_backbone("Claytonia lanceolata")
+key1<-name_backbone(name='Claytonia_lanceolata',rank='species')$usageKey
 
 #download occurrence data from GBIF directly--------------------------------
 
@@ -25,14 +26,14 @@ occ_download(
   pred("hasCoordinate", TRUE),
   pred("occurrenceStatus","PRESENT"),
   pred_gte("year",1990),
-  pred("taxonKey",3150175),
+  pred("taxonKey",3092888),
   format = "SIMPLE_CSV",
   user="leah.veldhuisen", 
   pwd="Columbia2305", 
   email="leah.veldhuisen@gmail.com"
 )
 
-d <- occ_download_get('0014817-231120084113126') %>%
+d <- occ_download_get('0019007-231120084113126') %>%
   occ_download_import()
 library(dplyr)
 
