@@ -2,8 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-.csv
-.zip
-.pdf
-.JPEG
-.img
+*.csv
+*.zip
+*.pdf
+*.JPEG
+*.img
