@@ -14,6 +14,9 @@ library(ape)
 library(vegan)
 library(forcats)
 
+
+
+
 #group species by suitability-------------------------------------------------
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
 suitability_df <- read.csv("specieslist_gbifcites_suitability.csv")
