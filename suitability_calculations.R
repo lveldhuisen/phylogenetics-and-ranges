@@ -15,9 +15,8 @@ install.packages("usethis")
 usethis::edit_r_environ()
 
 #get taxon key 
-name_
-sp_backbone("Claytonia lanceolata")
-key1<-name_backbone(name='Claytonia_lanceolata',rank='species')$usageKey
+backbone("Agoseris_glauca")
+key1<-name_backbone(name='Vicia_americana',rank='species')$usageKey
 
 #download occurrence data from GBIF directly--------------------------------
 
@@ -26,14 +25,14 @@ occ_download(
   pred("hasCoordinate", TRUE),
   pred("occurrenceStatus","PRESENT"),
   pred_gte("year",1990),
-  pred("taxonKey",3092888),
+  pred("taxonKey",2975204),
   format = "SIMPLE_CSV",
   user="leah.veldhuisen", 
   pwd="Columbia2305", 
   email="leah.veldhuisen@gmail.com"
 )
 
-d <- occ_download_get('0019007-231120084113126') %>%
+d <- occ_download_get('0020092-231120084113126') %>%
   occ_download_import()
 library(dplyr)
 
@@ -90,7 +89,7 @@ brick(combo_env_vars)
 #north america shape file---------------------
 setwd("/Users/leahvedlhuisen/Downloads")
 
-load("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2/phd-chapter-2/phylogenetics&ranges/distribution_modeling/mask_of_ NA.rda")
+load("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2/distribution_modeling/mask_of_ NA.rda")
 bioclim_NA <- mask(bioclim_world, mask_of_NA[ mask_of_NA,]) 
 bioclim_NA <- mask(bioclim_world, mask_of_NA) #alternate option if top line doesnt work 
 bioclim_NA <- crop(bioclim_NA, mask_of_NA)
@@ -208,7 +207,7 @@ species_data <- BIOMOD_FormatingData(
   resp.var = rep(1, nrow(species_occ)), 
   expl.var = env_vars_NA_sub_test,
   resp.xy = species_occ[,c('decimalLongitude','decimalLatitude')],
-  resp.name = "Hymenoxys_hoopesii",
+  resp.name = "Vicia_americana",
   PA.nb.rep = 3,
   PA.nb.absences = 500, 
   PA.strategy = 'random',
@@ -243,7 +242,7 @@ species_models <- BIOMOD_Modeling(species_data,
                                  CV.perc =0.8,
                                  var.import = 3, 
                                  CV.do.full.models = F, 
-                                 modeling.id = "Hymenoxys_hoopesii", 
+                                 modeling.id = "Vicia_americana", 
                                  do.progress = T, 
                                  metric.eval=c('TSS','ROC'))
 
@@ -270,7 +269,7 @@ bm_PlotEvalMean(bm.out = species_ensemble_model)
 #make maps using ensemble modeling------------------------------
 species_models_proj_current <- BIOMOD_Projection(bm.mod = species_models, 
                                                 new.env = env_vars_NA_sub_test,
-                                                proj.name = 'Hymenoxys_hoopesii',
+                                                proj.name = 'Vicia_americana',
                                                 metric.binary = 'TSS',
                                                 output.format=".img",
                                                 do.stack = FALSE,
@@ -280,7 +279,7 @@ species_models_proj_current <- BIOMOD_Projection(bm.mod = species_models,
 
 species_ensemble_models_proj_current <- BIOMOD_EnsembleForecasting(bm.em = species_ensemble_model,
                                                                   bm.proj =species_models_proj_current,
-                                                                  proj.name = 'Hymenoxys_hoopesii',
+                                                                  proj.name = 'Vicia_americana',
                                                                   metric.binary = "TSS",
                                                                   output.format = ".img",
                                                                   do.stack = FALSE,
@@ -302,10 +301,6 @@ library(tcltk2)
 library(red)
 library(raster)
 
-#test ChatGPT code 
-mod_proj <- get_predictions(species_ensemble_models_proj_current)
-mod_proj
-test <- mod_proj %>% raster()
 
 #use BiodiversityR to calculate AOO and EOO 
 ensemble.red(test)
@@ -364,9 +359,9 @@ env_valuesroad <- env_values_function(point = spdf_road)
 ##use model to generate suitability value at this point 
 models.needed <- get_kept_models(species_ensemble_model)
 formal_pred <- BIOMOD_Projection(bm.mod = species_models,
-                                 new.env = env_valuesPBM,
+                                 new.env = env_valuesroad,
                                  proj.name = "current",
-                                 new.env.xy = xy_PBM,
+                                 new.env.xy = xy_road,
                                  models.chosen = 'all',
                                  compress = TRUE,
                                  build.clamping.mask = FALSE,
