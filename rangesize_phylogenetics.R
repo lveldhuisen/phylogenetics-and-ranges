@@ -85,7 +85,7 @@ PBM_fig <- ggplot(subset_PBM, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c(
                              "#4ea6c4"))  + ylim(-5,2) + ggtitle("PBM - high elevation")
 plot(PBM_fig)
 
-pfeiler_fig <- ggplot(subset_pfeiler, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","ligh")))) + 
+pfeiler_fig <- ggplot(subset_pfeiler, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
   theme_light() + 
@@ -115,3 +115,14 @@ all_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("s
                              "#4ea6c4"))  + ylim(-5,2) + ggtitle("All sites together")
 plot(all_fig)
 
+#fig without range size categories
+general_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Site, c("all")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Range size") + 
+  theme_light() + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_manual(values=c("#c385b3",
+                             "#cdd870",
+                             "#4ea6c4"))  + ylim(-3,3) 
+plot(general_fig)  
+ß
