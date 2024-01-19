@@ -52,3 +52,4 @@ df <- read.csv("range_size_results.csv")
 df2 <- df[,-c(4)]
 clean_data <- subset(df2, !is.na(AOO))
 
+
