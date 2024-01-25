@@ -137,3 +137,17 @@ df_MNTD = subset(MNTD_Road_range, select = -c(mntd.obs,mntd.rand.mean,mntd.rand.
 
 ggplot() + geom_point(data = df_MNTD, mapping = aes(x=ntaxa, y=mntd.obs.z)) + xlab("Number of species") + ylab("Standard effect size MNTD") +
   geom_hline(yintercept = 0, col = "darkgrey") + ylim(-2.5,1) +theme_classic() + geom_hline(yintercept = 1.3, col = "lightgrey") + geom_hline(yintercept = -1.32, col = "lightgrey") + xlim(0,32)
+
+
+#test differences in range size between site---------------------------
+setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
+results_all <- read.csv("results_all.csv")
+
+results_all <- results_all[-c(90,91), ]
+
+kruskal.test(Mean_abundance ~ Site, data = results_all)
+
+ggplot() + geom_boxplot(data = results_all, mapping = aes(x=Site, y=Mean_abundance))
+
+pairwise.wilcox.test(results_all$Mean_abundance, results_all$Site,
+                     p.adjust.method = "BH")
