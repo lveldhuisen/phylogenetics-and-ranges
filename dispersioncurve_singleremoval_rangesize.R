@@ -45,11 +45,11 @@ PD_PBM_rangesize_removal_fig <- ggplot(data= PD_PBM_range_removal) +
   geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
   xlab("Range size rank of removed species") +
   ylab("Standard effect size PD") +
-  ylim(-1,1) +
+  ylim(-0.5,2) +
   theme_classic(14) +
   geom_hline(yintercept = 0.36, col = "lightgrey") +
   xlim(0,32) 
-
+plot(PD_PBM_rangesize_removal_fig)
 
 
 ###MPD#####
@@ -231,3 +231,14 @@ plot(Pfeiler_fig)
 Road_fig <- (PD_Road_rangesize_removal_fig+MPD_Road_range_removal_fig+MNTD_Road_range_removal_fig) + plot_layout(axis_titles = "collect")
 
 PBM_fig/Pfeiler_fig/Road_fig
+
+PD_fig <- (PD_PBM_rangesize_removal_fig | PD_Pfeiler_rangesize_removal_fig|PD_Road_rangesize_removal_fig) + plot_layout(axis_titles = "collect")
+plot(PD_fig)
+
+MPD_fig <- (MPD_PBM_range_removal_fig|MPD_Pfeiler_range_removal_fig|MPD_Road_range_removal_fig) + plot_layout(axis_titles = "collect")
+plot(MPD_fig)
+
+MNTD_fig <- (MNTD_PBM_range_removal_fig|MNTD_Pfeiler_range_removal_fig|MNTD_Road_range_removal_fig) + plot_layout(axis_titles = "collect")
+plot(MNTD_fig)
+
+(PD_fig/MPD_fig/MNTD_fig) + plot_layout(axis_titles = "collect")
