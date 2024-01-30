@@ -37,17 +37,17 @@ PD_PBM_range_removal <- ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sa
                     runs = 5000, include.root=TRUE)
 
 PD_PBM_range_removal$Range_size_rank <- c(1:33)
-#all PBM PD is SES is 0.36
+#all PBM PD is SES is 0.91
 PD_PBM_range_removal <- PD_PBM_range_removal[-c(32,33),]
 
 PD_PBM_rangesize_removal_fig <- ggplot(data= PD_PBM_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.36, yend=pd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.90, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
   xlab("Range size rank of removed species") +
   ylab("Standard effect size PD") +
   ylim(-0.5,2) +
   theme_classic(14) +
-  geom_hline(yintercept = 0.36, col = "lightgrey") +
+  geom_hline(yintercept = 0.9, col = "lightgrey") +
   xlim(0,32) 
 plot(PD_PBM_rangesize_removal_fig)
 
