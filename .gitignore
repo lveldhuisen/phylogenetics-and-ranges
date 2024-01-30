@@ -8,5 +8,9 @@
 *.pdf
 *.JPEG
 *.img
+*.txt
+*.xlsx
+*.ai
+
 
 WorldClim_data
