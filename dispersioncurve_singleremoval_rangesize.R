@@ -1,4 +1,4 @@
-#code to generate curves of phylogenetic dispersion while removing 1 species at a time 
+#code to generate curves of phylogenetic dispersion while removing 1 species at a time, ranked by decreasing range size 
 #will result in an individual impact on PD/MPD/MNTD for each species 
 
 install.packages("patchwork")
