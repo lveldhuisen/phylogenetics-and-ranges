@@ -18,7 +18,6 @@ write.tree(SBtree)
 is.rooted(SBtree)
 
 #PBM----------
-##PD####
 ##make community data matrix#### 
 PBM_range_matrix <- read.table("comm_phylo_analyses/Removing1species_atatime/PBMrangesize_comm_matrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
@@ -28,6 +27,8 @@ write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
+co_matrix <- cophenetic(pruned.tree)
+
 ###PD#####
 PD_PBM_range_removal <- ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sample.pool"),
                     runs = 5000, include.root=TRUE)
@@ -36,7 +37,7 @@ PD_PBM_range_removal$Range_size_rank <- c(1:33)
 #all PBM PD is SES is 0.36
 PD_PBM_range_removal <- PD_PBM_range_removal[-c(32,33),]
 
-PD_PBM_rangesize_removal <- ggplot(data= PD_PBM_range_removal) + 
+PD_PBM_rangesize_removal_fig <- ggplot(data= PD_PBM_range_removal) + 
   geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.36, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
   xlab("Range size rank of removed species") +
@@ -48,12 +49,107 @@ PD_PBM_rangesize_removal <- ggplot(data= PD_PBM_range_removal) +
 
 
 
-##MPD###
-##MNTD####
+###MPD#####
+MPD_PBM_range_removal <- ses.mpd(PBM_range_matrix, co_matrix, null.model = c("sample.pool"), 
+        abundance.weighted = FALSE, runs = 5000, iterations = 5000)
+
+#all PBM MPD is SES is 1.25
+MPD_PBM_range_removal <- MPD_PBM_range_removal[-c(32,33),]
+MPD_PBM_range_removal$Range_size_rank <- c(1:31)
+
+MPD_PBM_range_removal_fig <- ggplot(data= MPD_PBM_range_removal) + 
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=1.25, yend=mpd.obs.z), color="grey")+
+  geom_point(mapping = aes(x=Range_size_rank, y=mpd.obs.z), size = 2) +
+  xlab("Range size rank of removed species") +
+  ylab("Standard effect size MPD") +
+  ylim(0,2) +
+  theme_classic(14) +
+  geom_hline(yintercept = 1.25, col = "lightgrey") +
+  xlim(0,32) 
+
+###MNTD####
+MNTD_PBM_range_removal <- ses.mntd(PBM_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
+                        abundance.weighted=FALSE, runs = 5000, iterations = 5000)
+#all PBM MNTD is SES is 0.3
+MNTD_PBM_range_removal <- MNTD_PBM_range_removal[-c(32,33),]
+MNTD_PBM_range_removal$Range_size_rank <- c(1:31)
+
+MNTD_PBM_range_removal_fig <- ggplot(data= MNTD_PBM_range_removal) + 
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.3, yend=mntd.obs.z), color="grey")+
+  geom_point(mapping = aes(x=Range_size_rank, y=mntd.obs.z), size = 2) +
+  xlab("Range size rank of removed species") +
+  ylab("Standard effect size MNTD") +
+  ylim(-1,1) +
+  theme_classic(14) +
+  geom_hline(yintercept = 0.3, col = "lightgrey") +
+  xlim(0,32) 
+plot(MNTD_PBM_range_removal_fig)
+
 #Pfeiler--------
-##PD####
-##MPD###
-##MNTD####
+Pfeiler_range_matrix <- read.table("comm_phylo_analyses/Removing1species_atatime/Pfeiler_ranges_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+
+##prune tree#####
+pruned.tree <- treedata(SBtree, unlist(Pfeiler_range_matrix[28,Pfeiler_range_matrix[28,]>0]), warnings = F)$phy
+write.tree(pruned.tree)
+plot(pruned.tree)
+is.rooted(pruned.tree)
+
+###PD#####
+PD_Pfeiler_range_removal <- ses.pd(Pfeiler_range_matrix, pruned.tree, null.model = c("sample.pool"),
+                               runs = 5000, include.root=TRUE)
+PD_Pfeiler_range_removal <- PD_Pfeiler_range_removal[-c(27),]
+PD_Pfeiler_range_removal$Range_size_rank <- c(1:27)
+#all Pfeiler  PD is SES is -0.6
+
+
+PD_Pfeiler_rangesize_removal_fig <- ggplot(data= PD_Pfeiler_range_removal) + 
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.6, yend=pd.obs.z), color="grey")+
+  geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
+  xlab("Range size rank of removed species") +
+  ylab("Standard effect size PD") +
+  ylim(-1,0.5) +
+  theme_classic(14) +
+  geom_hline(yintercept = -0.6, col = "lightgrey") +
+  xlim(0,28) 
+
+plot(PD_Pfeiler_rangesize_removal_fig)
+
+###MPD#####
+MPD_Pfeiler_range_removal <- ses.mpd(Pfeiler_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
+                                 abundance.weighted = FALSE, runs = 5000, iterations = 5000)
+
+#all Pfeiler MPD is SES is -0.1
+MPD_Pfeiler_range_removal <- MPD_Pfeiler_range_removal[-c(27),]
+MPD_Pfeiler_range_removal$Range_size_rank <- c(1:26)
+
+MPD_Pfeiler_range_removal_fig <- ggplot(data= MPD_Pfeiler_range_removal) + 
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.1, yend=mpd.obs.z), color="grey")+
+  geom_point(mapping = aes(x=Range_size_rank, y=mpd.obs.z), size = 2) +
+  xlab("Range size rank of removed species") +
+  ylab("Standard effect size MPD") +
+  ylim(-1,1) +
+  theme_classic(14) +
+  geom_hline(yintercept = -0.1, col = "lightgrey") +
+  xlim(0,28) 
+plot(MPD_Pfeiler_range_removal_fig)
+
+###MNTD####
+MNTD_Pfeiler_range_removal <- ses.mntd(Pfeiler_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
+                                   abundance.weighted=FALSE, runs = 5000, iterations = 5000)
+#all Pfeiler MNTD is SES is -1.06
+MNTD_Pfeiler_range_removal <- MNTD_Pfeiler_range_removal[-c(27:29),]
+MNTD_Pfeiler_range_removal$Range_size_rank <- c(1:26)
+
+MNTD_Pfeiler_range_removal_fig <- ggplot(data= MNTD_Pfeiler_range_removal) + 
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-1.06, yend=mntd.obs.z), color="grey")+
+  geom_point(mapping = aes(x=Range_size_rank, y=mntd.obs.z), size = 2) +
+  xlab("Range size rank of removed species") +
+  ylab("Standard effect size MNTD") +
+  ylim(-2,1) +
+  theme_classic(14) +
+  geom_hline(yintercept = -1.06, col = "lightgrey") +
+  xlim(0,28) 
+plot(MNTD_Pfeiler_range_removal_fig)
 #Road-------
 ##PD####
 ##MPD###
