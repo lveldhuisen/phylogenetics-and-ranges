@@ -20,8 +20,7 @@ is.rooted(SBtree)
 #PBM----------
 ##PD####
 ##make community data matrix#### 
-setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2/comm_phylo_analyses/Removing1species_atatime")
-PBM_range_matrix <- read.table("PBMrangesize_comm_matrix_removal.txt", sep = "\t", header = T, row.names = 1)
+PBM_range_matrix <- read.table("comm_phylo_analyses/Removing1species_atatime/PBMrangesize_comm_matrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, unlist(PBM_range_matrix[33,PBM_range_matrix[33,]>0]), warnings = F)$phy

@@ -11,6 +11,8 @@
 *.txt
 *.xlsx
 *.ai
+*.png
+*.pptx
 
 
 WorldClim_data
