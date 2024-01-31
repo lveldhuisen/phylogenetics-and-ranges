@@ -13,6 +13,7 @@ library(forcats)
 library(broom)
 library(janitor)
 library(patchwork)
+library(ggplot2)
 
 #import S&B phylogeny#
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
