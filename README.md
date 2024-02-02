@@ -25,7 +25,16 @@ Code scripts and workflow - code should be run in order listed here.
 SOFTWARE VERSIONS
 
 R: 4.2.3,
+
 biomod2: 4.2-4
+
+RBIF: 3.7.7
+
+red: 1.6.1
+
+picante: 1.8.2
+
+geiger: 2.0.11
 
 
 REFERENCES
