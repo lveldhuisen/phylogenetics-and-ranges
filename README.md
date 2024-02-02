@@ -2,7 +2,7 @@
 
 ACCESS INFORMATION
 1. MIT License
-2. Data derived from other sources: BIOCLIM variables and soil variables from NACP MsTMIP: Unified North American Soil Map3. Recommended citation for this data/code archive
+2. Data derived from other sources: BIOCLIM variables and soil variables from NACP MsTMIP: Unified North American Soil Map3, phylogeny from Smith & Brown 2018 "ALLMB.tre" file
 
 
 DATA & CODE FILE OVERVIEW
