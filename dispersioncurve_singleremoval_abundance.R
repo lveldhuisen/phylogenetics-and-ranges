@@ -1,3 +1,5 @@
+install.packages("car")
+
 library(tidyverse)
 library(dplyr)
 library(picante)
@@ -8,6 +10,7 @@ library(forcats)
 library(broom)
 library(janitor)
 library(patchwork)
+library(car)
 
 #code to generate curves of phylogenetic dispersion while removing 1 species at a time, ranked by decreasing abundance 
 
@@ -207,3 +210,7 @@ MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) +
   geom_hline(yintercept = 0.015, col = "lightgrey") +
   xlim(0,32) 
 plot(MNTD_Road_abundance_removal_fig)
+
+#Durbin-Watson test for autocorrelation----------
+model <- lm(mntd.obs.z ~ Abundance_rank, data = MNTD_Road_abundance_removal)
+durbinWatsonTest(model)

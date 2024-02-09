@@ -3,17 +3,6 @@
 
 install.packages("patchwork")
 
-library(tidyverse)
-library(dplyr)
-library(picante)
-library(geiger)
-library(ape)
-library(vegan)
-library(forcats)
-library(broom)
-library(janitor)
-library(patchwork)
-library(ggplot2)
 
 #import S&B phylogeny#
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -205,9 +194,8 @@ MPD_Road_range_removal_fig <- ggplot(data= MPD_Road_range_removal) +
 plot(MPD_Road_range_removal_fig)
 
 ###MNTD#####
-MNTD_Road_range_removal <- ses.mntd(Road_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
-                                       abundance.weighted=FALSE, runs = 5000, iterations = 5000)
-#all Road MNTD is SES is 0.15
+MNTD_Road_range_removal <- ses.mntd(Road_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),)
+                                    #all Road MNTD is SES is 0.15
 MNTD_Road_range_removal <- MNTD_Road_range_removal[-c(33,34),]
 MNTD_Road_range_removal$Range_size_rank <- c(1:32)
 
@@ -222,24 +210,7 @@ MNTD_Road_range_removal_fig <- ggplot(data= MNTD_Road_range_removal) +
   xlim(0,32) 
 plot(MNTD_Road_range_removal_fig)
 
-#make combined fig with all sites and metrics-----------------
-PBM_fig <- (PD_PBM_rangesize_removal_fig + MPD_PBM_range_removal_fig + MNTD_PBM_range_removal_fig)+ plot_layout(axis_titles = "collect")
-plot(PBM_fig)
 
-Pfeiler_fig <- (PD_Pfeiler_rangesize_removal_fig+MPD_Pfeiler_range_removal_fig+MNTD_Pfeiler_range_removal_fig)+ plot_layout(axis_titles = "collect")
-plot(Pfeiler_fig)
-
-Road_fig <- (PD_Road_rangesize_removal_fig+MPD_Road_range_removal_fig+MNTD_Road_range_removal_fig) + plot_layout(axis_titles = "collect")
-
-PBM_fig/Pfeiler_fig/Road_fig
-
-PD_fig <- (PD_PBM_rangesize_removal_fig | PD_Pfeiler_rangesize_removal_fig|PD_Road_rangesize_removal_fig) + plot_layout(axis_titles = "collect")
-plot(PD_fig)
-
-MPD_fig <- (MPD_PBM_range_removal_fig|MPD_Pfeiler_range_removal_fig|MPD_Road_range_removal_fig) + plot_layout(axis_titles = "collect")
-plot(MPD_fig)
-
-MNTD_fig <- (MNTD_PBM_range_removal_fig|MNTD_Pfeiler_range_removal_fig|MNTD_Road_range_removal_fig) + plot_layout(axis_titles = "collect")
-plot(MNTD_fig)
-
-(PD_fig/MPD_fig/MNTD_fig) + plot_layout(axis_titles = "collect")
+#Durbin-Watson test for autocorrelation----------
+model <- lm(mntd.obs.z ~ Range_size_rank, data = MNTD_Road_range_removal)
+durbinWatsonTest(model)
