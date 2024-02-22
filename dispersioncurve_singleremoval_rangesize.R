@@ -212,5 +212,5 @@ plot(MNTD_Road_range_removal_fig)
 
 
 #Durbin-Watson test for autocorrelation----------
-model <- lm(mntd.obs.z ~ Range_size_rank, data = MNTD_Road_range_removal)
-durbinWatsonTest(model)
+model <- lm(mntd.obs.z ~ Range_size_rank, data = MNTD_PBM_range_removal)
+durbinWatsonTest(model, max.lag = 3)

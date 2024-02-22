@@ -212,5 +212,5 @@ MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) +
 plot(MNTD_Road_abundance_removal_fig)
 
 #Durbin-Watson test for autocorrelation----------
-model <- lm(mntd.obs.z ~ Abundance_rank, data = MNTD_Road_abundance_removal)
-durbinWatsonTest(model)
+model <- lm(pd.obs.z ~ Abundance_rank, data = PD_Road_abundance_removal)
+durbinWatsonTest(model, max.lag = 4)
