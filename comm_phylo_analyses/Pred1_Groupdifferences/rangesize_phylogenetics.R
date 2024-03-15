@@ -13,13 +13,14 @@ library(geiger)
 library(ape)
 library(vegan)
 library(forcats)
+library(ggpubr)
 
 
 
 
 #group species by range size-------------------------------------------------
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
-all_df <- read.csv("results_all.csv")
+all_df <- read.csv("results/results_all.csv")
 
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -30,8 +31,7 @@ write.tree(SBtree)
 is.rooted(SBtree)
 
 ##make community data matrix 
-setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2/comm_phylo_analyses")
-matrix <- read.table("community_matrix_rangesize.txt", sep = "\t", header = T, row.names = 1)
+matrix <- read.table("comm_phylo_analyses/Pred2_addingspecies/comm_matrices/community_matrix_rangesize.txt", sep = "\t", header = T, row.names = 1)
 
 #Faith's PD-------------------------------------------------------------------
 pd(matrix, pruned.tree, include.root = T)
@@ -60,11 +60,11 @@ ses.mntd(matrix, dist.mat, null.model = c("sample.pool"),
 #figures###
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2/comm_phylo_analyses")
 phylo_df <- read.csv("phylo_metrics_rangesize.csv")
-
+phylo_df <- phylometrics_df
 ##subset data by site-----
 subset_road <- subset(phylo_df, 
                       Site %in% c("Road"))
-subset_road <- subset_road[-c(7,8,9), ]
+subset_road <- subset_road[-c(7,8,9), ] #dont run this
 
 subset_pfeiler <- subset(phylo_df, 
                          Site %in% c("Pfeiler"))
@@ -82,7 +82,7 @@ PBM_fig <- ggplot(subset_PBM, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c(
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-5,2) + ggtitle("PBM - high elevation")
+                             "#4ea6c4"))  + ylim(-5,2) + ggtitle("PBM - high elevation") + stat_compare_means(method = "wilcox.test")
 plot(PBM_fig)
 
 pfeiler_fig <- ggplot(subset_pfeiler, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
@@ -125,4 +125,43 @@ general_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Site, c("all
                              "#cdd870",
                              "#4ea6c4"))  + ylim(-3,3) 
 plot(general_fig)  
-ß
+
+#test difference in phylo diversity between range size groups---------
+phylometrics_df <- read.csv("results/phylo_metrics_rangesize.csv")
+
+##all sites together###
+kruskal.test(SES ~ Range_Size, data = phylometrics_df)
+anova(phylometrics_df)
+pairwise.wilcox.test(phylometrics_df$SES, phylometrics_df$Range_Size,
+                     p.adjust.method = "BH")
+
+ggboxplot(phylometrics_df, x = "Range_Size", y = "SES",
+          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+          order = c("small", "medium", "large"),
+          ylab = "SES", xlab = "Range size")
+
+##road###
+kruskal.test(SES ~ Range_Size, data = subset_road)
+pairwise.wilcox.test(subset_road$SES, subset_road$Range_Size, p.adjust.method = "none")
+
+ggboxplot(subset_road, x = "Range_Size", y = "SES",
+          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+          order = c("small", "medium", "large"),
+          ylab = "SES", xlab = "Range size") +stat_compare_means(method = "wilcox.test")
+##PBM###
+kruskal.test(SES ~ Range_Size, data = subset_PBM)
+pairwise.wilcox.test(subset_PBM$SES, subset_PBM$Range_Size)
+
+ggboxplot(subset_PBM, x = "Range_Size", y = "SES",
+          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+          order = c("small", "medium", "large"),
+          ylab = "SES", xlab = "Range size")
+
+##Pfeiler###
+kruskal.test(SES ~ Range_Size, data = subset_pfeiler)
+
+ggboxplot(subset_pfeiler, x = "Range_Size", y = "SES",
+          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
+          order = c("small", "medium", "large"),
+          ylab = "SES", xlab = "Range size")
+
