@@ -1,4 +1,4 @@
-# testing phylogenetic patterns for sub-communties based on suitability, range size and abundance 
+# testing phylogenetic patterns for sub-communties based on range size and abundance 
 
 ACCESS INFORMATION
 1. MIT License
