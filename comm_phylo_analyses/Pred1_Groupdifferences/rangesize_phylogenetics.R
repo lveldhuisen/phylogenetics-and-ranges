@@ -15,9 +15,6 @@ library(vegan)
 library(forcats)
 library(ggpubr)
 
-
-
-
 #group species by range size-------------------------------------------------
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
 all_df <- read.csv("results/results_all.csv")
@@ -47,6 +44,8 @@ plot(pruned.tree)
 library(picante)
 ses.pd(matrix, pruned.tree, null.model = c("sample.pool"),
        runs = 5000, include.root=TRUE)
+
+
 
 #make distance matrix for MPD and MNTD
 dist.mat <- cophenetic(pruned.tree)
