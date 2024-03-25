@@ -137,16 +137,29 @@ phylo_df_a = subset(phylo_df_a, select = -c(Value) )
 
 ##all sites together###
 kruskal.test(SES ~ Abundance_group, data = phylo_df_a)
-pairwise.wilcox.test(phylo_df_a$SES, phylo_df_a$Abundance_group,
-                     p.adjust.method = "BH")
+pwc <- phylo_df_a %>% 
+  dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
+pwc
 
-ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
+all_facet_site <- ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
           color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07", "grey"),
           order = c("low", "medium", "high", "ALL"),
           ylab = "SES", xlab = "Abundance group") +
   facet_wrap(~Site)+
   stat_compare_means(method = "kruskal")+
   geom_hline(yintercept = 0, linetype = "dotted")
+
+plot(all_facet_site)
+
+##all sites grouped by abundance, no facet wrap###
+All_together <- ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
+                            color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07", "grey"),
+                            order = c("low", "medium", "high", "ALL"),
+                            ylab = "SES", xlab = "Abundance group") +
+  geom_hline(yintercept = 0, linetype = "dotted")+
+  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 2.1, label = "p.adj")
+
+plot(All_together)
 
 ##road###
 kruskal.test(SES ~ Abundance_group, data = subset_road)
@@ -156,35 +169,42 @@ pwc <- subset_road %>%
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
 pwc
 
-pwc2 <- subset_road %>% 
-  wilcox_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
-pwc2
-
-ggboxplot(subset_road, x = "Abundance_group", y = "SES",
+Road_boxplot <- ggboxplot(subset_road, x = "Abundance_group", y = "SES",
           color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
           order = c("low", "medium", "high"),
           ylab = "SES", xlab = "Abundance_group") +
-  stat_pvalue_manual(pwc, hide.ns = TRUE)
+  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 0.55, label = "p.adj")+
+  geom_hline(yintercept = 0, linetype = "dotted")
+
+plot(Road_boxplot)
 
 ##PBM###
 kruskal.test(SES ~ Abundance_group, data = subset_PBM)
-pairwise.wilcox.test(subset_PBM$SES, subset_PBM$Abundance_group)
 pwc <- subset_PBM %>% 
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
 pwc
 
-ggboxplot(subset_PBM, x = "Abundance_group", y = "SES",
+PBM_boxplot <- ggboxplot(subset_PBM, x = "Abundance_group", y = "SES",
           color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
           order = c("low", "medium", "high"),
           ylab = "SES", xlab = "Abundance_group")+
-  stat_pvalue_manual(pwc, hide.ns = TRUE)
+  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 0.55, label = "p.adj")+
+  geom_hline(yintercept = 0, linetype = "dotted")
+
+plot(PBM_boxplot)
 
 ##Pfeiler###
 kruskal.test(SES ~ Abundance_group, data = subset_pfeiler)
+pwc <- subset_pfeiler %>% 
+  dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
+pwc
 
-ggboxplot(subset_pfeiler, x = "Abundance_group", y = "SES",
+Pfeiler_boxplot <- ggboxplot(subset_pfeiler, x = "Abundance_group", y = "SES",
           color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
           order = c("low", "medium", "high"),
-          ylab = "SES", xlab = "Abundance_group")
+          ylab = "SES", xlab = "Abundance_group")+
+  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 0.55, label = "p.adj")+
+  geom_hline(yintercept = 0, linetype = "dotted")
 
+plot(Pfeiler_boxplot)
 
