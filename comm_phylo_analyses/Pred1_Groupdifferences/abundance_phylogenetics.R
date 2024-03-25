@@ -57,18 +57,18 @@ mntd <- ses.mntd(abundance_matrix, dist.mat, null.model = c("sample.pool"),
 
 
 #figures###
-phylo_df <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/abundance_phylo_metrics.csv")
+phylo_df_a <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/abundance_phylo_metrics.csv")
 
 ##subset data by site-----
-subset_road <- subset(phylo_df, 
+subset_road <- subset(phylo_df_a, 
                       Site %in% c("Road"))
 subset_road <- subset_road[-c(10,11,12), ] 
 
-subset_pfeiler <- subset(phylo_df, 
+subset_pfeiler <- subset(phylo_df_a, 
                          Site %in% c("Pfeiler"))
 subset_pfeiler <- subset_pfeiler[-c(10,11,12), ]
 
-subset_PBM <- subset(phylo_df, 
+subset_PBM <- subset(phylo_df_a, 
                      Site %in% c("PBM"))
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
@@ -103,14 +103,17 @@ road_fig <- ggplot(subset_road, aes(fill=Type, y=SES, x=fct_relevel(Abundance_gr
                              "#4ea6c4"))  + ylim(-2,2) + ggtitle("Road - low elevation")
 plot(road_fig)
 
-all_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
+all_fig <- ggplot(phylo_df_a, aes(fill=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Abundance group") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-5,2) + ggtitle("All sites together")
+                             "#4ea6c4"))  + 
+  ylim(-5,2) + 
+  ggtitle("All sites together")+
+  facet_wrap(~Site)
 plot(all_fig)
 
 #fig without range size categories
@@ -125,17 +128,21 @@ general_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Site, c("all
 plot(general_fig)  
 
 #test difference in phylo diversity between range size groups---------
-phylo_df <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/abundance_phylo_metrics.csv")
+phylo_df_a <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/abundance_phylo_metrics.csv")
+phylo_df_a = subset(phylo_df_a, select = -c(Value) )
 
 ##all sites together###
-kruskal.test(SES ~ Abundance_group, data = phylo_df)
-pairwise.wilcox.test(phylo_df$SES, phylo_df$Abundance_group,
+kruskal.test(SES ~ Abundance_group, data = phylo_df_a)
+pairwise.wilcox.test(phylo_df_a$SES, phylo_df_a$Abundance_group,
                      p.adjust.method = "BH")
 
-ggboxplot(phylo_df, x = "Abundance_group", y = "SES",
-          color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("low", "medium", "high"),
-          ylab = "SES", xlab = "Abundance group")
+ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
+          color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07", "grey"),
+          order = c("low", "medium", "high", "ALL"),
+          ylab = "SES", xlab = "Abundance group") +
+  facet_wrap(~Site)+
+  stat_compare_means(method = "kruskal")+
+  geom_hline(yintercept = 0, linetype = "dotted")
 
 ##road###
 kruskal.test(SES ~ Abundance_group, data = subset_road)

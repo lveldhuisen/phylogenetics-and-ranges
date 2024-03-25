@@ -57,19 +57,18 @@ ses.mntd(matrix, dist.mat, null.model = c("sample.pool"),
          abundance.weighted=FALSE, runs = 5000, iterations = 5000)
 
 #figures###
-setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2/comm_phylo_analyses")
-phylo_df <- read.csv("phylo_metrics_rangesize.csv")
-phylo_df <- phylometrics_df
+phylo_df_rs <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/phylo_metrics_rangesize.csv")
+
 ##subset data by site-----
-subset_road <- subset(phylo_df, 
+subset_road <- subset(phylo_df_rs, 
                       Site %in% c("Road"))
 subset_road <- subset_road[-c(7,8,9), ] #dont run this
 
-subset_pfeiler <- subset(phylo_df, 
+subset_pfeiler <- subset(phylo_df_rs, 
                          Site %in% c("Pfeiler"))
 subset_pfeiler <- subset_pfeiler[-c(10,11,12), ]
 
-subset_PBM <- subset(phylo_df, 
+subset_PBM <- subset(phylo_df_rs, 
                      Site %in% c("PBM"))
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
@@ -129,15 +128,15 @@ plot(general_fig)
 phylometrics_df <- read.csv("results/phylo_metrics_rangesize.csv")
 
 ##all sites together###
-kruskal.test(SES ~ Range_Size, data = phylometrics_df)
+kruskal.test(SES ~ Range_Size, data = phylo_df_rs)
 anova(phylometrics_df)
-pairwise.wilcox.test(phylometrics_df$SES, phylometrics_df$Range_Size,
+pairwise.wilcox.test(phylo_df_rs$SES, phylo_df_rs$Range_Size,
                      p.adjust.method = "BH")
 
-ggboxplot(phylometrics_df, x = "Range_Size", y = "SES",
+ggboxplot(phylo_df_rs, x = "Range_Size", y = "SES",
           color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
           order = c("small", "medium", "large"),
-          ylab = "SES", xlab = "Range size")
+          ylab = "SES", xlab = "Range size") + facet_wrap(~Site)
 
 ##road###
 kruskal.test(SES ~ Range_Size, data = subset_road)
