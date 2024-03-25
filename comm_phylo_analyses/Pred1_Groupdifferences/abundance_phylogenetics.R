@@ -147,7 +147,6 @@ all_facet_site <- ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
           order = c("low", "medium", "high", "ALL"),
           ylab = "SES", xlab = "Abundance group") +
   facet_wrap(~Site)+
-  stat_compare_means(method = "kruskal")+
   geom_hline(yintercept = 0, linetype = "dotted")
 
 plot(all_facet_site)
