@@ -18,6 +18,11 @@ library(ggpubr)
 #group species by range size-------------------------------------------------
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
 all_df <- read.csv("results/results_all.csv")
+big_results <- read.csv("big_results_all.csv")
+
+#range size histograms
+ggplot(data = big_results, aes(x = AOO..km2.)) +
+  geom_histogram()
 
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")

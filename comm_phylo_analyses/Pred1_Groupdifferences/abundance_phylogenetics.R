@@ -19,6 +19,12 @@ library(rstatix)
 library(tidyverse)
 library(patchwork)
 
+#make histograms of abundance
+ggplot(data = big_results, aes(x = Mean_abundance)) +
+  geom_histogram()+ facet_wrap(~Site)
+
+
+
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
 
