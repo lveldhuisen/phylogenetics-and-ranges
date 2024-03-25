@@ -1,3 +1,5 @@
+install.packages("rstatix")
+
 library(fabricatr)
 library(ggplot2)
 library(gridExtra)
@@ -13,6 +15,8 @@ library(ape)
 library(vegan)
 library(forcats)
 library(ggpubr)
+library(rstatix)
+library(tidyverse)
 
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -148,18 +152,32 @@ ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
 kruskal.test(SES ~ Abundance_group, data = subset_road)
 pairwise.wilcox.test(subset_road$SES, subset_road$Abundance_group, p.adjust.method = "BH")
 
+pwc <- subset_road %>% 
+  dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
+pwc
+
+pwc2 <- subset_road %>% 
+  wilcox_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
+pwc2
+
 ggboxplot(subset_road, x = "Abundance_group", y = "SES",
           color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
           order = c("low", "medium", "high"),
-          ylab = "SES", xlab = "Abundance_group") +stat_compare_means(method = "wilcox.test")
+          ylab = "SES", xlab = "Abundance_group") +
+  stat_pvalue_manual(pwc, hide.ns = TRUE)
+
 ##PBM###
 kruskal.test(SES ~ Abundance_group, data = subset_PBM)
 pairwise.wilcox.test(subset_PBM$SES, subset_PBM$Abundance_group)
+pwc <- subset_PBM %>% 
+  dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
+pwc
 
 ggboxplot(subset_PBM, x = "Abundance_group", y = "SES",
           color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
           order = c("low", "medium", "high"),
-          ylab = "SES", xlab = "Abundance_group")
+          ylab = "SES", xlab = "Abundance_group")+
+  stat_pvalue_manual(pwc, hide.ns = TRUE)
 
 ##Pfeiler###
 kruskal.test(SES ~ Abundance_group, data = subset_pfeiler)
