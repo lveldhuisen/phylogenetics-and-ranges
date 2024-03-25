@@ -17,6 +17,7 @@ library(forcats)
 library(ggpubr)
 library(rstatix)
 library(tidyverse)
+library(patchwork)
 
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -208,3 +209,5 @@ Pfeiler_boxplot <- ggboxplot(subset_pfeiler, x = "Abundance_group", y = "SES",
 
 plot(Pfeiler_boxplot)
 
+combined <- Road_boxplot + Pfeiler_boxplot + PBM_boxplot + theme(legend.position = "none")
+plot(combined)
