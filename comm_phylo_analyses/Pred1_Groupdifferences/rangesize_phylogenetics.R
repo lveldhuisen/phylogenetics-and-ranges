@@ -79,8 +79,8 @@ subset_PBM <- subset(phylo_df_rs,
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
 ##figures#####
-PBM_fig <- ggplot(subset_PBM, aes(fill=Range_Size, y=SES,pattern = Type, x=fct_relevel(Range_Size, c("small","medium","large")))) +
-  geom_bar_pattern(position = "dodge",stat = "identity")+
+PBM_fig <- ggplot(subset_PBM, aes(fill=Range_Size, y=SES,alpha = Type, x=fct_relevel(Range_Size, c("small","medium","large")))) +
+  geom_bar(position = "dodge",stat = "identity", color = "black")+
   xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Range size group"))+
@@ -88,8 +88,7 @@ PBM_fig <- ggplot(subset_PBM, aes(fill=Range_Size, y=SES,pattern = Type, x=fct_r
                              "#cdd870",
                              "#4ea6c4"))  + 
   ylim(-2,2) + 
-  ggtitle("PBM - high elevation")+
-  scale_pattern_type_discrete(choices = c('bricks', 'fishscales', 'right45')) 
+  ggtitle("PBM - high elevation")
   
 plot(PBM_fig)
 
@@ -101,13 +100,14 @@ ggplot(subset_PBM, aes(x=fct_relevel(Range_Size, c("small","medium","large")),y=
     pattern_key_scale_factor = 0.7,
     fill          = "white",
     colour        = 'black', 
-    position = "dodge"
+    position = "dodge",
   ) +
-  theme_bw(15) +
-  theme(legend.key.size = unit(2, 'cm')) +
-  scale_pattern_type_discrete(choices = c('bricks', 'fishscales', 'right45')) +
+  theme_bw() +
+  theme(legend.key.size = unit(1, 'cm')) +
+  scale_pattern_type_discrete(choices = c('horizontal3', 'gray35', 'right45')) +
   coord_fixed(ratio = 1/2)+
-  xlab("Range size cateogory")
+  xlab("Range size cateogory")+
+  ylim(-2,2)
 
 
 
