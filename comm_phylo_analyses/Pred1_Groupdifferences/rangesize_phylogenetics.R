@@ -1,4 +1,5 @@
 install.packages("fabricatr")
+install.packages("ggpattern")
 library(fabricatr)
 library(ggplot2)
 library(gridExtra)
@@ -14,6 +15,7 @@ library(ape)
 library(vegan)
 library(forcats)
 library(ggpubr)
+library(ggpattern)
 
 #group species by range size-------------------------------------------------
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
@@ -67,7 +69,6 @@ phylo_df_rs <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/phylo_metric
 ##subset data by site-----
 subset_road <- subset(phylo_df_rs, 
                       Site %in% c("Road"))
-subset_road <- subset_road[-c(7,8,9), ] #dont run this
 
 subset_pfeiler <- subset(phylo_df_rs, 
                          Site %in% c("Pfeiler"))
@@ -78,15 +79,37 @@ subset_PBM <- subset(phylo_df_rs,
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
 ##figures#####
-PBM_fig <- ggplot(subset_PBM, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
-  geom_bar(position = "dodge",stat = "identity") +
+PBM_fig <- ggplot(subset_PBM, aes(fill=Range_Size, y=SES,pattern = Type, x=fct_relevel(Range_Size, c("small","medium","large")))) +
+  geom_bar_pattern(position = "dodge",stat = "identity")+
   xlab("Range size") + 
   theme_light() + 
-  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  guides(fill=guide_legend(title="Range size group"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-5,2) + ggtitle("PBM - high elevation") + stat_compare_means(method = "wilcox.test")
+                             "#4ea6c4"))  + 
+  ylim(-2,2) + 
+  ggtitle("PBM - high elevation")+
+  scale_pattern_type_discrete(choices = c('bricks', 'fishscales', 'right45')) 
+  
 plot(PBM_fig)
+
+ggplot(subset_PBM, aes(x=fct_relevel(Range_Size, c("small","medium","large")),y=SES)) +
+  geom_col_pattern(
+    aes(pattern_type = Type, 
+      pattern_fill = Type),
+    pattern       = 'magick',
+    pattern_key_scale_factor = 0.7,
+    fill          = "white",
+    colour        = 'black', 
+    position = "dodge"
+  ) +
+  theme_bw(15) +
+  theme(legend.key.size = unit(2, 'cm')) +
+  scale_pattern_type_discrete(choices = c('bricks', 'fishscales', 'right45')) +
+  coord_fixed(ratio = 1/2)+
+  xlab("Range size cateogory")
+
+
 
 pfeiler_fig <- ggplot(subset_pfeiler, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
