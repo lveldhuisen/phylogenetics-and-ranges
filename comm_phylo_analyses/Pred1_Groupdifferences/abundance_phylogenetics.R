@@ -21,7 +21,7 @@ library(patchwork)
 
 #make histograms of abundance
 ggplot(data = big_results, aes(x = Mean_abundance)) +
-  geom_histogram()+ facet_wrap(~Site)
+  geom_histogram()+ facet_wrap(~Site, scales = "free_x")
 
 
 
@@ -84,7 +84,7 @@ subset_PBM <- subset(phylo_df_a,
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
 ##figures#####
-PBM_fig <- ggplot(subset_PBM, aes(fill=Abundance_group, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")), alpha = Type)) + 
+PBM_fig <- ggplot(subset_PBM, aes(y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")), alpha = Type)) + 
   geom_bar(position = "dodge",stat = "identity", color = "black") +
   xlab("Abundance group") + 
   theme_light() + 
@@ -95,27 +95,27 @@ PBM_fig <- ggplot(subset_PBM, aes(fill=Abundance_group, y=SES, x=fct_relevel(Abu
   ggtitle("PBM - high elevation")
 plot(PBM_fig)
 
-pfeiler_fig <- ggplot(subset_pfeiler, aes(fill=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
+pfeiler_fig <- ggplot(subset_pfeiler, aes(alpha=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Abundance group") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-1,2) + ggtitle("Pfeiler - middle elevation")
+                             "#4ea6c4"))  + ylim(-1,1.5) + ggtitle("Pfeiler - middle elevation")
 plot(pfeiler_fig)
 
-road_fig <- ggplot(subset_road, aes(fill=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
+road_fig <- ggplot(subset_road, aes(alpha=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Abundance gorup") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-2,2) + ggtitle("Road - low elevation")
+                             "#4ea6c4"))  + ylim(-2,1) + ggtitle("Road - low elevation")
 plot(road_fig)
 
-all_fig <- ggplot(phylo_df_a, aes(fill=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
+all_fig <- ggplot(phylo_df_a, aes(alpha=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Abundance group") + 
   theme_light() + 
@@ -129,7 +129,7 @@ all_fig <- ggplot(phylo_df_a, aes(fill=Type, y=SES, x=fct_relevel(Abundance_grou
 plot(all_fig)
 
 #fig without range size categories
-general_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Site, c("all")))) + 
+general_fig <- ggplot(phylo_df, aes(alpha=Type, y=SES, x=fct_relevel(Site, c("all")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Abundance group") + 
   theme_light() + 
