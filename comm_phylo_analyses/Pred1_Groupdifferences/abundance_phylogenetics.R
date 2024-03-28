@@ -88,7 +88,7 @@ PBM_fig <- ggplot(subset_PBM, aes(fill=Abundance_group, y=SES, x=fct_relevel(Abu
   geom_bar(position = "dodge",stat = "identity", color = "black") +
   xlab("Abundance group") + 
   theme_light() + 
-  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  guides(fill=guide_legend(title="Abundance group"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
                              "#4ea6c4"))  + ylim(-1,2) +
