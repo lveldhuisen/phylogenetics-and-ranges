@@ -159,18 +159,34 @@ plot(general_fig)
 subset_allsites <- subset(phylometrics_df, 
                          Site %in% c("Pfeiler","PBM","Road"))
 
+#these are the figures to use######
 #test difference in phylo diversity between range size groups---------
 phylometrics_df <- read.csv("results/phylo_metrics_rangesize.csv")
 
-general_fig <- ggplot(subset_allsites, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+general_fig_withcombined <- ggplot(phylometrics_df, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  facet_wrap(~Site)
-plot(general_fig) 
+  facet_wrap(~Site) +
+  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")
+plot(general_fig_withcombined) 
+
+#plot all three sites but not with combined 
+fig_individualsites <- ggplot(subset_allsites, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Range size") + 
+  theme_light() + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-2.5,2) +
+  facet_wrap(~Site)+
+  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")
+plot(fig_individualsites) 
 
 ##all sites together###
 kruskal.test(SES ~ Range_Size, data = phylo_df_rs)
@@ -178,15 +194,24 @@ anova(phylometrics_df)
 pairwise.wilcox.test(phylo_df_rs$SES, phylo_df_rs$Range_Size,
                      p.adjust.method = "BH")
 
+phylometrics_df %>% 
+  dunn_test(SES ~ Range_Size, p.adjust.method = "bonferroni") 
+
 ##road###
 kruskal.test(SES ~ Range_Size, data = subset_road)
-pairwise.wilcox.test(subset_road$SES, subset_road$Range_Size, p.adjust.method = "none")
+subset_road %>% 
+  dunn_test(SES ~ Range_Size, p.adjust.method = "bonferroni") 
 
 ##PBM###
 kruskal.test(SES ~ Range_Size, data = subset_PBM)
-pairwise.wilcox.test(subset_PBM$SES, subset_PBM$Range_Size)
+subset_PBM %>% 
+  dunn_test(SES ~ Range_Size, p.adjust.method = "bonferroni") 
+
 
 ##Pfeiler###
 kruskal.test(SES ~ Range_Size, data = subset_pfeiler)
+subset_pfeiler %>% 
+  dunn_test(SES ~ Range_Size, p.adjust.method = "bonferroni") 
+
 
 

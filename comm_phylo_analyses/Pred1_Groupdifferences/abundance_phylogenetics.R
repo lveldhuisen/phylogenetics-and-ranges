@@ -83,7 +83,7 @@ subset_PBM <- subset(phylo_df_a,
                      Site %in% c("PBM"))
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
-##figures#####
+## individual site figures#####
 PBM_fig <- ggplot(subset_PBM, aes(y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")), alpha = Type)) + 
   geom_bar(position = "dodge",stat = "identity", color = "black") +
   xlab("Abundance group") + 
@@ -115,47 +115,44 @@ road_fig <- ggplot(subset_road, aes(alpha=Type, y=SES, x=fct_relevel(Abundance_g
                              "#4ea6c4"))  + ylim(-2,1) + ggtitle("Road - low elevation")
 plot(road_fig)
 
-all_fig <- ggplot(phylo_df_a, aes(alpha=Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
-  geom_bar(position = "dodge",stat = "identity") +
-  xlab("Abundance group") + 
-  theme_light() + 
-  guides(fill=guide_legend(title="Phylogenetic metric"))+
-  scale_fill_manual(values=c("#c385b3",
-                             "#cdd870",
-                             "#4ea6c4"))  + 
-  ylim(-5,2) + 
-  ggtitle("All sites together")+
-  facet_wrap(~Site)
-plot(all_fig)
 
-#fig without range size categories
-general_fig <- ggplot(phylo_df, aes(alpha=Type, y=SES, x=fct_relevel(Site, c("all")))) + 
-  geom_bar(position = "dodge",stat = "identity") +
-  xlab("Abundance group") + 
-  theme_light() + 
-  guides(fill=guide_legend(title="Phylogenetic metric"))+
-  scale_fill_manual(values=c("#c385b3",
-                             "#cdd870",
-                             "#4ea6c4"))  + ylim(-3,3) 
-plot(general_fig)  
-
-#plot all sites in one set of code without all combined
-subset_allsites_a <- subset(phylo_df_a, 
-                          Site %in% c("Pfeiler","PBM","Road"))
-
-subset_allsites_a <- subset(subset_allsites_a, 
+#code for all sites together in one fig, use these######
+#subset to get rid of metrics for sites as wholes
+phylo_df_a <- subset(phylo_df_a, 
                             Abundance_group %in% c("low","medium","high"))
 
 
-general_fig <- ggplot(subset_allsites_a, aes(fill = Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
+fig_abundance_withcombined <- ggplot(phylo_df_a, aes(fill = Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Abundance group") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
-  ylim(-1.3,2) +
-  facet_wrap(~Site)
-plot(general_fig) 
+  ylim(-2.5,2) +
+  facet_wrap(~Site) +
+  geom_hline(yintercept=1.5, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.5, linetype="dashed", color = "grey")
+
+plot(fig_abundance_withcombined) 
+
+
+#plot all sites in one set of code without all combined
+subset_allsites_a <- subset(phylo_df_a, 
+                          Site %in% c("Pfeiler","PBM","Road"))
+
+
+fig_abundance_indsites <- ggplot(subset_allsites_a, aes(fill = Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Abundance group") + 
+  theme_light() + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-1.7,2) +
+  facet_wrap(~Site) +
+  geom_hline(yintercept=1.2, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.4, linetype="dashed", color = "grey")
+
+plot(fig_abundance_indsites)
 
 #test difference in phylo diversity between abundance groups---------
 phylo_df_a <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/abundance_phylo_metrics.csv")
@@ -169,22 +166,19 @@ pwc
 
 ##road###
 kruskal.test(SES ~ Abundance_group, data = subset_road)
-pairwise.wilcox.test(subset_road$SES, subset_road$Abundance_group, p.adjust.method = "BH")
 
-pwc <- subset_road %>% 
-  dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
-pwc
+subset_road %>% 
+  dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni")
 
 ##PBM###
 kruskal.test(SES ~ Abundance_group, data = subset_PBM)
-pwc <- subset_PBM %>% 
+subset_PBM %>% 
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
-pwc
 
 ##Pfeiler###
 kruskal.test(SES ~ Abundance_group, data = subset_pfeiler)
-pwc <- subset_pfeiler %>% 
+subset_pfeiler %>% 
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
-pwc
+
 
 
