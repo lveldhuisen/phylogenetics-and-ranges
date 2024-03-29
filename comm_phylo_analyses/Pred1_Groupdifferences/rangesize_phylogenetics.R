@@ -16,6 +16,7 @@ library(vegan)
 library(forcats)
 library(ggpubr)
 library(ggpattern)
+library(patchwork)
 
 #group species by range size-------------------------------------------------
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
@@ -176,6 +177,7 @@ general_fig_withcombined <- ggplot(phylometrics_df, aes(fill = Type, y=SES, x=fc
                     labels = c("All", "Low (2815 m)", "Middle (3165 m)","High (3380 m)")) ~., ncol = 4) +
   geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
   geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")
+
 plot(general_fig_withcombined) 
 
 #plot all three sites but not with combined 
