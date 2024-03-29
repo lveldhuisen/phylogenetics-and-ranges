@@ -24,7 +24,7 @@ big_results <- read.csv("big_results_all.csv")
 
 #range size histograms
 ggplot(data = big_results, aes(x = AOO..km2.)) +
-  geom_histogram()
+  geom_histogram() + facet_wrap(~Site, scales = "free_x")
 
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -79,19 +79,20 @@ subset_PBM <- subset(phylo_df_rs,
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
 ##figures#####
-PBM_fig <- ggplot(subset_PBM, aes(fill=Range_Size, y=SES,alpha = Type, x=fct_relevel(Range_Size, c("small","medium","large")))) +
+PBM_fig <- ggplot(subset_PBM, aes(y=SES,alpha = Type, x=fct_relevel(Range_Size, c("small","medium","large")))) +
   geom_bar(position = "dodge",stat = "identity", color = "black")+
-  xlab("Range size") + 
+  xlab("Range size group") + 
   theme_light() + 
   guides(fill=guide_legend(title="Range size group"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
                              "#4ea6c4"))  + 
   ylim(-2,2) + 
-  ggtitle("PBM - high elevation")
+  ggtitle("High elevation (3380 m)")
   
 plot(PBM_fig)
 
+#colorful pattern fig, probbably wont use 
 ggplot(subset_PBM, aes(x=fct_relevel(Range_Size, c("small","medium","large")),y=SES)) +
   geom_col_pattern(
     aes(pattern_type = Type, 
@@ -111,24 +112,24 @@ ggplot(subset_PBM, aes(x=fct_relevel(Range_Size, c("small","medium","large")),y=
 
 
 
-pfeiler_fig <- ggplot(subset_pfeiler, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
-  geom_bar(position = "dodge",stat = "identity") +
-  xlab("Range size") + 
+pfeiler_fig <- ggplot(subset_pfeiler, aes(alpha = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity", color = "black") +
+  xlab("Range size group") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-5,2) + ggtitle("Pfeiler - middle elevation")
+                             "#4ea6c4"))  + ylim(-2,2) + ggtitle("Middle elevation (3165 m)")
 plot(pfeiler_fig)
 
-road_fig <- ggplot(subset_road, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
-  geom_bar(position = "dodge",stat = "identity") +
-  xlab("Range size") + 
+road_fig <- ggplot(subset_road, aes(alpha = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity", color = "black") +
+  xlab("Range size group") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-5,2) + ggtitle("Road - low elevation")
+                             "#4ea6c4"))  + ylim(-2.5,1) + ggtitle("Low elevation (2815 m)")
 plot(road_fig)
 
 all_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
@@ -138,7 +139,9 @@ all_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("s
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
-                             "#4ea6c4"))  + ylim(-5,2) + ggtitle("All sites together")
+                             "#4ea6c4"))  + ylim(-5,2) + 
+  ggtitle("All sites together")+
+  facet_wrap(~Site)
 plot(all_fig)
 
 #fig without range size categories
@@ -150,10 +153,24 @@ general_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Site, c("all
   scale_fill_manual(values=c("#c385b3",
                              "#cdd870",
                              "#4ea6c4"))  + ylim(-3,3) 
-plot(general_fig)  
+plot(general_fig) 
+
+#code all sites together but without all sites combined
+subset_allsites <- subset(phylometrics_df, 
+                         Site %in% c("Pfeiler","PBM","Road"))
 
 #test difference in phylo diversity between range size groups---------
 phylometrics_df <- read.csv("results/phylo_metrics_rangesize.csv")
+
+general_fig <- ggplot(subset_allsites, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Range size") + 
+  theme_light() + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-2.5,2) +
+  facet_wrap(~Site)
+plot(general_fig) 
 
 ##all sites together###
 kruskal.test(SES ~ Range_Size, data = phylo_df_rs)
@@ -161,33 +178,15 @@ anova(phylometrics_df)
 pairwise.wilcox.test(phylo_df_rs$SES, phylo_df_rs$Range_Size,
                      p.adjust.method = "BH")
 
-ggboxplot(phylo_df_rs, x = "Range_Size", y = "SES",
-          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("small", "medium", "large"),
-          ylab = "SES", xlab = "Range size") + facet_wrap(~Site)
-
 ##road###
 kruskal.test(SES ~ Range_Size, data = subset_road)
 pairwise.wilcox.test(subset_road$SES, subset_road$Range_Size, p.adjust.method = "none")
 
-ggboxplot(subset_road, x = "Range_Size", y = "SES",
-          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("small", "medium", "large"),
-          ylab = "SES", xlab = "Range size") +stat_compare_means(method = "wilcox.test")
 ##PBM###
 kruskal.test(SES ~ Range_Size, data = subset_PBM)
 pairwise.wilcox.test(subset_PBM$SES, subset_PBM$Range_Size)
 
-ggboxplot(subset_PBM, x = "Range_Size", y = "SES",
-          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("small", "medium", "large"),
-          ylab = "SES", xlab = "Range size")
-
 ##Pfeiler###
 kruskal.test(SES ~ Range_Size, data = subset_pfeiler)
 
-ggboxplot(subset_pfeiler, x = "Range_Size", y = "SES",
-          color = "Range_Size", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("small", "medium", "large"),
-          ylab = "SES", xlab = "Range size")
 

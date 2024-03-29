@@ -139,7 +139,25 @@ general_fig <- ggplot(phylo_df, aes(alpha=Type, y=SES, x=fct_relevel(Site, c("al
                              "#4ea6c4"))  + ylim(-3,3) 
 plot(general_fig)  
 
-#test difference in phylo diversity between range size groups---------
+#plot all sites in one set of code without all combined
+subset_allsites_a <- subset(phylo_df_a, 
+                          Site %in% c("Pfeiler","PBM","Road"))
+
+subset_allsites_a <- subset(subset_allsites_a, 
+                            Abundance_group %in% c("low","medium","high"))
+
+
+general_fig <- ggplot(subset_allsites_a, aes(fill = Type, y=SES, x=fct_relevel(Abundance_group, c("low","medium","high")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Abundance group") + 
+  theme_light() + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-1.3,2) +
+  facet_wrap(~Site)
+plot(general_fig) 
+
+#test difference in phylo diversity between abundance groups---------
 phylo_df_a <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/abundance_phylo_metrics.csv")
 phylo_df_a = subset(phylo_df_a, select = -c(Value) )
 
@@ -149,25 +167,6 @@ pwc <- phylo_df_a %>%
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
 pwc
 
-all_facet_site <- ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
-          color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07", "grey"),
-          order = c("low", "medium", "high", "ALL"),
-          ylab = "SES", xlab = "Abundance group") +
-  facet_wrap(~Site)+
-  geom_hline(yintercept = 0, linetype = "dotted")
-
-plot(all_facet_site)
-
-##all sites grouped by abundance, no facet wrap###
-All_together <- ggboxplot(phylo_df_a, x = "Abundance_group", y = "SES",
-                            color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07", "grey"),
-                            order = c("low", "medium", "high", "ALL"),
-                            ylab = "SES", xlab = "Abundance group") +
-  geom_hline(yintercept = 0, linetype = "dotted")+
-  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 2.1, label = "p.adj")
-
-plot(All_together)
-
 ##road###
 kruskal.test(SES ~ Abundance_group, data = subset_road)
 pairwise.wilcox.test(subset_road$SES, subset_road$Abundance_group, p.adjust.method = "BH")
@@ -176,29 +175,11 @@ pwc <- subset_road %>%
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
 pwc
 
-Road_boxplot <- ggboxplot(subset_road, x = "Abundance_group", y = "SES",
-          color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("low", "medium", "high"),
-          ylab = "SES", xlab = "Abundance_group") +
-  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 0.55, label = "p.adj")+
-  geom_hline(yintercept = 0, linetype = "dotted")
-
-plot(Road_boxplot)
-
 ##PBM###
 kruskal.test(SES ~ Abundance_group, data = subset_PBM)
 pwc <- subset_PBM %>% 
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
 pwc
-
-PBM_boxplot <- ggboxplot(subset_PBM, x = "Abundance_group", y = "SES",
-          color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("low", "medium", "high"),
-          ylab = "SES", xlab = "Abundance_group")+
-  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 0.55, label = "p.adj")+
-  geom_hline(yintercept = 0, linetype = "dotted")
-
-plot(PBM_boxplot)
 
 ##Pfeiler###
 kruskal.test(SES ~ Abundance_group, data = subset_pfeiler)
@@ -206,14 +187,4 @@ pwc <- subset_pfeiler %>%
   dunn_test(SES ~ Abundance_group, p.adjust.method = "bonferroni") 
 pwc
 
-Pfeiler_boxplot <- ggboxplot(subset_pfeiler, x = "Abundance_group", y = "SES",
-          color = "Abundance_group", palette = c("#00AFBB", "#E7B800", "#FC4E07"),
-          order = c("low", "medium", "high"),
-          ylab = "SES", xlab = "Abundance_group")+
-  stat_pvalue_manual(pwc, hide.ns = TRUE, y.position = 0.55, label = "p.adj")+
-  geom_hline(yintercept = 0, linetype = "dotted")
 
-plot(Pfeiler_boxplot)
-
-combined <- Road_boxplot + Pfeiler_boxplot + PBM_boxplot + theme(legend.position = "none")
-plot(combined)
