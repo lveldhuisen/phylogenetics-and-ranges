@@ -163,6 +163,8 @@ subset_allsites <- subset(phylometrics_df,
 #test difference in phylo diversity between range size groups---------
 phylometrics_df <- read.csv("results/phylo_metrics_rangesize.csv")
 
+phylometrics_df$Site <- factor(phylometrics_df$Site, levels = c("All", "Road", "Pfeiler","PBM"))
+
 general_fig_withcombined <- ggplot(phylometrics_df, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
@@ -170,7 +172,8 @@ general_fig_withcombined <- ggplot(phylometrics_df, aes(fill = Type, y=SES, x=fc
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  facet_wrap(~Site) +
+  facet_wrap(factor(Site, levels = c("All", "Road", "Pfeiler","PBM"), 
+                    labels = c("All", "Low (2815 m)", "Middle (3165 m)","High (3380 m)")) ~., ncol = 4) +
   geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
   geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")
 plot(general_fig_withcombined) 

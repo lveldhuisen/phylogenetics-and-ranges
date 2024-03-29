@@ -129,7 +129,8 @@ fig_abundance_withcombined <- ggplot(phylo_df_a, aes(fill = Type, y=SES, x=fct_r
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  facet_wrap(~Site) +
+  facet_wrap(factor(Site, levels = c("All", "Road", "Pfeiler","PBM"), 
+                    labels = c("All", "Low (2815 m)", "Middle (3165 m)","High (3380 m)")) ~., ncol = 4) +
   geom_hline(yintercept=1.5, linetype="dashed", color = "grey")+
   geom_hline(yintercept=-1.5, linetype="dashed", color = "grey")
 
