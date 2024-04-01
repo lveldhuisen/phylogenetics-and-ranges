@@ -1,5 +1,6 @@
 install.packages("broom")
 install.packages("janitor")
+install.packages("egg")
 
 library(tidyverse)
 library(dplyr)
@@ -10,6 +11,7 @@ library(vegan)
 library(forcats)
 library(broom)
 library(janitor)
+library(egg)
 
 ##import S&B phylogeny###
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -33,7 +35,7 @@ dist.mat <- cophenetic(pruned.tree)
 
 #phylogenetic analyses-----------
 
-##PD calculation###
+##PD calculation####
 PD_PBM_range <- ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sample.pool"),
        runs = 5000, include.root=TRUE)
 

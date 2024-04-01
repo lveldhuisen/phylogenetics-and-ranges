@@ -17,6 +17,7 @@ library(forcats)
 library(ggpubr)
 library(ggpattern)
 library(patchwork)
+library(egg)
 
 #group species by range size-------------------------------------------------
 setwd("/Users/leahvedlhuisen/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/Chapter 2")
@@ -67,6 +68,19 @@ ses.mntd(matrix, dist.mat, null.model = c("sample.pool"),
 #figures###
 phylo_df_rs <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/phylo_metrics_rangesize.csv")
 
+all_fig <- ggplot(phylo_df_rs, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Range size") + 
+  theme_light() + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-2.5,2) +
+  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
+  ggtitle("All sites combined")
+
+plot(all_fig)
+
 ##subset data by site-----
 subset_road <- subset(phylo_df_rs, 
                       Site %in% c("Road"))
@@ -80,81 +94,51 @@ subset_PBM <- subset(phylo_df_rs,
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
 ##figures#####
-PBM_fig <- ggplot(subset_PBM, aes(y=SES,alpha = Type, x=fct_relevel(Range_Size, c("small","medium","large")))) +
-  geom_bar(position = "dodge",stat = "identity", color = "black")+
-  xlab("Range size group") + 
+PBM_fig <- ggplot(subset_PBM, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Range size") + 
   theme_light() + 
-  guides(fill=guide_legend(title="Range size group"))+
-  scale_fill_manual(values=c("#c385b3",
-                             "#cdd870",
-                             "#4ea6c4"))  + 
-  ylim(-2,2) + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-2.5,2) +
+  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
   ggtitle("High elevation (3380 m)")
   
 plot(PBM_fig)
 
-#colorful pattern fig, probbably wont use 
-ggplot(subset_PBM, aes(x=fct_relevel(Range_Size, c("small","medium","large")),y=SES)) +
-  geom_col_pattern(
-    aes(pattern_type = Type, 
-      pattern_fill = Type),
-    pattern       = 'magick',
-    pattern_key_scale_factor = 0.7,
-    fill          = "white",
-    colour        = 'black', 
-    position = "dodge",
-  ) +
-  theme_bw() +
-  theme(legend.key.size = unit(1, 'cm')) +
-  scale_pattern_type_discrete(choices = c('horizontal3', 'gray35', 'right45')) +
-  coord_fixed(ratio = 1/2)+
-  xlab("Range size cateogory")+
-  ylim(-2,2)
 
-
-
-pfeiler_fig <- ggplot(subset_pfeiler, aes(alpha = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
-  geom_bar(position = "dodge",stat = "identity", color = "black") +
-  xlab("Range size group") + 
+pfeiler_fig <- ggplot(subset_pfeiler, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
-  scale_fill_manual(values=c("#c385b3",
-                             "#cdd870",
-                             "#4ea6c4"))  + ylim(-2,2) + ggtitle("Middle elevation (3165 m)")
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-2.5,2) +
+  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
+  ggtitle("Middle elevation (3165 m)")
 plot(pfeiler_fig)
 
-road_fig <- ggplot(subset_road, aes(alpha = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
-  geom_bar(position = "dodge",stat = "identity", color = "black") +
-  xlab("Range size group") + 
+road_fig <- ggplot(subset_road, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
-  scale_fill_manual(values=c("#c385b3",
-                             "#cdd870",
-                             "#4ea6c4"))  + ylim(-2.5,1) + ggtitle("Low elevation (2815 m)")
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-2.5,2) +
+  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
+  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
+  ggtitle("Low elevation (2815 m)")
 plot(road_fig)
 
-all_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
-  geom_bar(position = "dodge",stat = "identity") +
-  xlab("Range size") + 
-  theme_light() + 
-  guides(fill=guide_legend(title="Phylogenetic metric"))+
-  scale_fill_manual(values=c("#c385b3",
-                             "#cdd870",
-                             "#4ea6c4"))  + ylim(-5,2) + 
-  ggtitle("All sites together")+
-  facet_wrap(~Site)
-plot(all_fig)
+#use patchwork to combine all figures together
+combined_fig <- (all_fig | road_fig | pfeiler_fig | PBM_fig) + 
+  plot_annotation(tag_levels = 'A')+
+  plot_layout(guides = 'collect')+
+  plot_layout(axes = "collect")
 
-#fig without range size categories
-general_fig <- ggplot(phylo_df, aes(fill=Type, y=SES, x=fct_relevel(Site, c("all")))) + 
-  geom_bar(position = "dodge",stat = "identity") +
-  xlab("Range size") + 
-  theme_light() + 
-  guides(fill=guide_legend(title="Phylogenetic metric"))+
-  scale_fill_manual(values=c("#c385b3",
-                             "#cdd870",
-                             "#4ea6c4"))  + ylim(-3,3) 
-plot(general_fig) 
+plot(combined_fig)
 
 #code all sites together but without all sites combined
 subset_allsites <- subset(phylometrics_df, 
@@ -177,7 +161,6 @@ general_fig_withcombined <- ggplot(phylometrics_df, aes(fill = Type, y=SES, x=fc
                     labels = c("All", "Low (2815 m)", "Middle (3165 m)","High (3380 m)")) ~., ncol = 4) +
   geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
   geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")
-
 plot(general_fig_withcombined) 
 
 #plot all three sites but not with combined 
@@ -190,7 +173,9 @@ fig_individualsites <- ggplot(subset_allsites, aes(fill = Type, y=SES, x=fct_rel
   ylim(-2.5,2) +
   facet_wrap(~Site)+
   geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
-  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")
+  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
+  tag_facet()
+  
 plot(fig_individualsites) 
 
 ##all sites together###
