@@ -232,14 +232,17 @@ fig2_PBM <- (PD_PBM_rangesize_removal_fig | MPD_PBM_range_removal_fig | MNTD_PBM
 fig2_PBM
 
 fig2_pfeiler <- (PD_Pfeiler_rangesize_removal_fig | MPD_Pfeiler_range_removal_fig | MNTD_Pfeiler_range_removal_fig) +
-  plot_layout(axis_titles = 'collect')
+  plot_layout(axis_titles = 'collect')+
+  plot_annotation(title = "Middle elevation (3165 m)")
 fig2_pfeiler
 
 fig2_road <- (PD_Road_rangesize_removal_fig | MPD_Road_range_removal_fig | MNTD_Road_range_removal_fig) +
-  plot_layout(axis_titles = 'collect')
+  plot_layout(axis_titles = 'collect')+
+  plot_annotation(title = "Low elevation (2815 m)")
 fig2_road
 
 fig2_all <- fig2_PBM / fig2_PBM / fig2_road +
   plot_layout(axis_titles = "collect")+
-  plot_layout(axes = "collect")
+  plot_layout(axes = "collect") +
+  plot_annotation(tag_levels = 'A')
 fig2_all

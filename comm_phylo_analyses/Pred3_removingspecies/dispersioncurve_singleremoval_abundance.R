@@ -34,8 +34,8 @@ is.rooted(pruned.tree)
 PD_PBM_abundance_removal <- ses.pd(PBM_abundance_matrix, pruned.tree, null.model = c("sample.pool"),
                                runs = 5000, include.root=TRUE) #all PBM PD is SES is 0.57
 
-PD_PBM_abundance_removal$Abundance_rank <- c(1:31)
 PD_PBM_abundance_removal <- PD_PBM_abundance_removal[-c(32,33),]
+PD_PBM_abundance_removal$Abundance_rank <- c(1:31)
 
 PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.57, yend=pd.obs.z), color="grey")+
@@ -59,7 +59,7 @@ MPD_PBM_abundance_removal_fig <- ggplot(data= MPD_PBM_abundance_removal) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.9, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size MPD") +
+  ylab("SES MPD") +
   ylim(0,1.5) +
   theme_classic(14) +
   geom_hline(yintercept = 0.9, col = "lightgrey") +
@@ -77,7 +77,7 @@ MNTD_PBM_abundance_removal_fig <- ggplot(data= MNTD_PBM_abundance_removal) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.12, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size MNTD") +
+  ylab("SES MNTD") +
   ylim(-1,1) +
   theme_classic(14) +
   geom_hline(yintercept = 0.12, col = "lightgrey") +
@@ -86,7 +86,7 @@ plot(MNTD_PBM_abundance_removal_fig)
 
 #Pfeiler--------
 ##make community data matrix#### 
-Pfeiler_abundance_matrix <- read.table("comm_phylo_analyses/Removing1species_atatime/Pfeiler_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+Pfeiler_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/Pfeiler_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, unlist(Pfeiler_abundance_matrix[28,Pfeiler_abundance_matrix[28,]>0]), warnings = F)$phy
@@ -105,7 +105,7 @@ PD_Pfeiler_abundance_removal_fig <- ggplot(data= PD_Pfeiler_abundance_removal) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.6, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size PD") +
+  ylab("SES PD") +
   ylim(-1.5,0.5) +
   theme_classic(14) +
   geom_hline(yintercept = -0.6, col = "lightgrey") +
@@ -123,7 +123,7 @@ MPD_Pfeiler_abundance_removal_fig <- ggplot(data= MPD_Pfeiler_abundance_removal)
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.02, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size MPD") +
+  ylab("SES MPD") +
   ylim(-1,1) +
   theme_classic(14) +
   geom_hline(yintercept = 0.02, col = "lightgrey") +
@@ -141,7 +141,7 @@ MNTD_Pfeiler_abundance_removal_fig <- ggplot(data= MNTD_Pfeiler_abundance_remova
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1.05, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size MNTD") +
+  ylab("SES MNTD") +
   ylim(-2,0.5) +
   theme_classic(14) +
   geom_hline(yintercept = -1.05, col = "lightgrey") +
@@ -149,7 +149,7 @@ MNTD_Pfeiler_abundance_removal_fig <- ggplot(data= MNTD_Pfeiler_abundance_remova
 plot(MNTD_Pfeiler_abundance_removal_fig)
 
 #Road--------------
-Road_abundance_matrix <- read.table("comm_phylo_analyses/Removing1species_atatime/Road_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+Road_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/Road_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, unlist(Road_abundance_matrix[34,Road_abundance_matrix[34,]>0]), warnings = F)$phy
@@ -168,7 +168,7 @@ PD_Road_abundance_removal_fig <- ggplot(data= PD_Road_abundance_removal) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size PD") +
+  ylab("SES PD") +
   ylim(-1,0.5) +
   theme_classic(14) +
   geom_hline(yintercept = 0, col = "lightgrey") +
@@ -186,7 +186,7 @@ MPD_Road_abundance_removal_fig <- ggplot(data= MPD_Road_abundance_removal) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size MPD") +
+  ylab("SES MPD") +
   ylim(-1.8,0.5) +
   theme_classic(14) +
   geom_hline(yintercept = -1, col = "lightgrey") +
@@ -204,7 +204,7 @@ MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.015, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size MNTD") +
+  ylab("SES MNTD") +
   ylim(-1,0.5) +
   theme_classic(14) +
   geom_hline(yintercept = 0.015, col = "lightgrey") +
@@ -214,3 +214,23 @@ plot(MNTD_Road_abundance_removal_fig)
 #Durbin-Watson test for autocorrelation----------
 model <- lm(pd.obs.z ~ Abundance_rank, data = PD_Road_abundance_removal)
 durbinWatsonTest(model, max.lag = 4)
+
+#combine figures using patchwork
+fig3_pbm <- (PD_PBM_abundance_removal_fig | MPD_PBM_abundance_removal_fig | MNTD_PBM_abundance_removal_fig) +
+  plot_layout(axis_titles = "collect")+
+  plot_annotation(title = "High elevation (3380 m)")
+fig3_pbm
+
+fig3_pfeiler <- (PD_Pfeiler_abundance_removal_fig | MPD_Pfeiler_abundance_removal_fig | MNTD_Pfeiler_abundance_removal_fig)+
+  plot_layout(axis_titles = "collect")+
+  plot_annotation(title = "Middle elevation (3165 m)")
+fig3_pfeiler
+
+fig3_road <- (PD_Road_abundance_removal_fig | MPD_Road_abundance_removal_fig | MNTD_Pfeiler_abundance_removal_fig) +
+  plot_layout(axis_titles = "collect")+
+  plot_annotation(title = "Low elevation (2815 m)")
+
+fig3_all <- (fig3_pbm / fig3_pfeiler / fig3_road) +
+  plot_layout(axis_titles = "collect")+
+  plot_annotation(tag_levels = 'A')
+fig3_all
