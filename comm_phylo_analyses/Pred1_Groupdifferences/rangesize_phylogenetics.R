@@ -25,8 +25,15 @@ all_df <- read.csv("results/results_all.csv")
 big_results <- read.csv("big_results_all.csv")
 
 #range size histograms
-ggplot(data = big_results, aes(x = AOO..km2.)) +
-  geom_histogram() + facet_wrap(~Site, scales = "free_x")
+rangesize_hist <- ggplot(data = big_results, aes(x = log(AOO..km2., 10))) +
+  geom_histogram() + 
+  facet_wrap(~Site) +
+  theme_bw()+
+  xlab("log range size (square km)")+
+  geom_vline(xintercept = 3.3, linetype = "dashed") +
+  geom_vline(xintercept = 4, linetype = "dashed")
+
+rangesize_hist
 
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")

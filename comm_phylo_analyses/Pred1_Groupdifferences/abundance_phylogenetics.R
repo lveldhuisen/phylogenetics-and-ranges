@@ -20,10 +20,16 @@ library(tidyverse)
 library(patchwork)
 
 #make histograms of abundance
-ggplot(data = big_results, aes(x = Mean_abundance)) +
-  geom_histogram()+ facet_wrap(~Site, scales = "free_x")
+abundance_hist <- ggplot(data = big_results, aes(x = log(Mean_abundance, 10))) +
+  geom_histogram() + 
+  facet_wrap(~Site)+
+  theme_bw() +
+  xlab("log local abundance")+
+  geom_vline(xintercept = 1, linetype = "dashed") +
+  geom_vline(xintercept = 1.7, linetype = "dashed")+
+  geom_vline(xintercept = 0.8, linetype = "dashed", color = "turquoise")
 
-
+abundance_hist
 
 #import S&B phylogeny---------------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
