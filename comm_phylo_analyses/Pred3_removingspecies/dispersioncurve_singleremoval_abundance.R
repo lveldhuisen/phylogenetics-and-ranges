@@ -22,7 +22,7 @@ is.rooted(SBtree)
 
 #PBM------------
 ##make community data matrix#### 
-PBM_abundance_matrix <- read.table("comm_phylo_analyses/Removing1species_atatime/PBM_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+PBM_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/PBM_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,PBM_abundance_matrix[32,]>0]), warnings = F)$phy
@@ -39,9 +39,9 @@ PD_PBM_abundance_removal <- PD_PBM_abundance_removal[-c(32,33),]
 
 PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.57, yend=pd.obs.z), color="grey")+
-  geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
+  geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species") +
-  ylab("Standard effect size PD") +
+  ylab("SES PD") +
   ylim(-0.5,1) +
   theme_classic(14) +
   geom_hline(yintercept = 0.57, col = "lightgrey") +

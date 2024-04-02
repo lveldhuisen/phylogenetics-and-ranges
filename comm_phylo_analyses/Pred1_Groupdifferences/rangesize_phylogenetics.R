@@ -68,7 +68,10 @@ ses.mntd(matrix, dist.mat, null.model = c("sample.pool"),
 #figures###
 phylo_df_rs <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/phylo_metrics_rangesize.csv")
 
-all_fig_rs <- ggplot(phylo_df_rs, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+subset_ALL <- subset(phylo_df_rs, 
+                      Site %in% c("All"))
+
+all_fig_rs <- ggplot(subset_ALL, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
   theme_light() + 
@@ -100,8 +103,7 @@ PBM_fig_rs <- ggplot(subset_PBM, aes(fill = Type, y=SES, x=fct_relevel(Range_Siz
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  ggtitle("High elevation (3380 m)")+
-  stat_compare_means(method = "kruskal.test")
+  ggtitle("High elevation (3380 m)")
   
 plot(PBM_fig_rs)
 
@@ -127,7 +129,7 @@ road_fig_rs <- ggplot(subset_road, aes(fill = Type, y=SES, x=fct_relevel(Range_S
 plot(road_fig_rs)
 
 #use patchwork to combine all figures together
-combined_fig_rs <- (all_fig | road_fig | pfeiler_fig | PBM_fig) + 
+combined_fig_rs <- (all_fig_rs | road_fig_rs | pfeiler_fig_rs | PBM_fig_rs) + 
   plot_annotation(tag_levels = 'A')+
   plot_layout(guides = 'collect')+
   plot_layout(axes = "collect")
