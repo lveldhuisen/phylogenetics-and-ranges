@@ -123,10 +123,10 @@ road_fig_a <- ggplot(subset_road, aes(fill = Type, y=SES, x=fct_relevel(Abundanc
 plot(road_fig_a)
 
 #use patchwork to make combined fig
-combined_fig_a <- all_fig_a | road_fig_a | pfeiler_fig_a | PBM_fig_a +
+combined_fig_a <- all_sites_a + road_fig_a + pfeiler_fig_a + PBM_fig_a +
   plot_annotation(tag_levels = 'A')+
   plot_layout(guides = 'collect')+
-  plot_layout(axes = "collect")
+  plot_layout(axes = "collect", ncol = 4)
 
 plot(combined_fig_a)
 
@@ -139,13 +139,13 @@ combined_fig <- all_fig_rs + road_fig_rs + pfeiler_fig_rs + PBM_fig_rs | all_fig
 plot(combined_fig)
 
 ##combine into one big fig with patchwork-------
-fig1 <- combined_fig_a / combined_fig_rs +  plot_annotation(tag_levels = 'A')+
+fig1 <- combined_fig_rs / combined_fig_a +  plot_annotation(tag_levels = 'A')+
   plot_layout(guides = 'collect')+
   plot_layout(axes = "collect")
 
 plot(fig1)
 
-#code for all sites together in one fig, use these######
+
 #subset to get rid of metrics for sites as wholes
 phylo_df_a <- subset(phylo_df_a, 
                             Abundance_group %in% c("low","medium","high"))
