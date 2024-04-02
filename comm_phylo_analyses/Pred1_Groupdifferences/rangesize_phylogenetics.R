@@ -99,7 +99,8 @@ PBM_fig_rs <- ggplot(subset_PBM, aes(fill = Type, y=SES, x=fct_relevel(Range_Siz
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  ggtitle("High elevation (3380 m)")
+  ggtitle("High elevation (3380 m)")+
+  stat_compare_means(method = "kruskal.test")
   
 plot(PBM_fig_rs)
 

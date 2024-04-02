@@ -122,14 +122,6 @@ road_fig_a <- ggplot(subset_road, aes(fill = Type, y=SES, x=fct_relevel(Abundanc
   
 plot(road_fig_a)
 
-#use patchwork to make combined fig
-combined_fig_a <- all_sites_a + road_fig_a + pfeiler_fig_a + PBM_fig_a +
-  plot_annotation(tag_levels = 'A')+
-  plot_layout(guides = 'collect')+
-  plot_layout(axes = "collect", ncol = 4)
-
-plot(combined_fig_a)
-
 #abundance and range size together figure
 combined_fig <- all_fig_rs + road_fig_rs + pfeiler_fig_rs + PBM_fig_rs | all_fig_a + road_fig_a + pfeiler_fig_a + PBM_fig_a +
   plot_annotation(tag_levels = 'A')+
