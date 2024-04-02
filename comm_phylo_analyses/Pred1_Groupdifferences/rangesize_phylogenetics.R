@@ -76,6 +76,7 @@ all_fig_rs <- ggplot(phylo_df_rs, aes(fill = Type, y=SES, x=fct_relevel(Range_Si
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
   ggtitle("All sites combined")
+  
 
 plot(all_fig_rs)
 
@@ -177,9 +178,11 @@ kruskal.test(SES ~ Range_Size, data = phylo_df_rs)
 anova(phylometrics_df)
 pairwise.wilcox.test(phylo_df_rs$SES, phylo_df_rs$Range_Size,
                      p.adjust.method = "BH")
-
-phylometrics_df %>% 
+###make dataframe to add p values to figures###
+pairwise_tests_allsites <- phylo_df_rs %>% 
   dunn_test(SES ~ Range_Size, p.adjust.method = "bonferroni") 
+
+pairwise_tests_allsites$y.position <- c(2, 2, 2)
 
 ##road###
 kruskal.test(SES ~ Range_Size, data = subset_road)
