@@ -68,18 +68,16 @@ ses.mntd(matrix, dist.mat, null.model = c("sample.pool"),
 #figures###
 phylo_df_rs <- read.csv("comm_phylo_analyses/Pred1_Groupdifferences/phylo_metrics_rangesize.csv")
 
-all_fig <- ggplot(phylo_df_rs, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+all_fig_rs <- ggplot(phylo_df_rs, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
-  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
   ggtitle("All sites combined")
 
-plot(all_fig)
+plot(all_fig_rs)
 
 ##subset data by site-----
 subset_road <- subset(phylo_df_rs, 
@@ -94,57 +92,51 @@ subset_PBM <- subset(phylo_df_rs,
 subset_PBM <- subset_PBM[-c(10,11,12), ]
 
 ##figures#####
-PBM_fig <- ggplot(subset_PBM, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+PBM_fig_rs <- ggplot(subset_PBM, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
-  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
   ggtitle("High elevation (3380 m)")
   
-plot(PBM_fig)
+plot(PBM_fig_rs)
 
 
-pfeiler_fig <- ggplot(subset_pfeiler, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+pfeiler_fig_rs <- ggplot(subset_pfeiler, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
-  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
   ggtitle("Middle elevation (3165 m)")
-plot(pfeiler_fig)
+plot(pfeiler_fig_rs)
 
-road_fig <- ggplot(subset_road, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
+road_fig_rs <- ggplot(subset_road, aes(fill = Type, y=SES, x=fct_relevel(Range_Size, c("small","medium","large")))) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Range size") + 
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-2.5,2) +
-  geom_hline(yintercept=1.3, linetype="dashed", color = "grey")+
-  geom_hline(yintercept=-1.3, linetype="dashed", color = "grey")+
   ggtitle("Low elevation (2815 m)")
-plot(road_fig)
+plot(road_fig_rs)
 
 #use patchwork to combine all figures together
-combined_fig <- (all_fig | road_fig | pfeiler_fig | PBM_fig) + 
+combined_fig_rs <- (all_fig | road_fig | pfeiler_fig | PBM_fig) + 
   plot_annotation(tag_levels = 'A')+
   plot_layout(guides = 'collect')+
   plot_layout(axes = "collect")
 
-plot(combined_fig)
+plot(combined_fig_rs)
 
 #code all sites together but without all sites combined
 subset_allsites <- subset(phylometrics_df, 
                          Site %in% c("Pfeiler","PBM","Road"))
 
-#these are the figures to use######
+
 #test difference in phylo diversity between range size groups---------
 phylometrics_df <- read.csv("results/phylo_metrics_rangesize.csv")
 
@@ -178,6 +170,7 @@ fig_individualsites <- ggplot(subset_allsites, aes(fill = Type, y=SES, x=fct_rel
   
 plot(fig_individualsites) 
 
+##stats--------
 ##all sites together###
 kruskal.test(SES ~ Range_Size, data = phylo_df_rs)
 anova(phylometrics_df)
