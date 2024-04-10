@@ -41,13 +41,13 @@ PD_PBM_range_removal$Range_size_rank <- c(1:33)
 PD_PBM_range_removal <- PD_PBM_range_removal[-c(32,33),]
 
 PD_PBM_rangesize_removal_fig <- ggplot(data= PD_PBM_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.90, yend=pd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.90, yend=PD_PBM_range_removal$pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
   xlab("Range size rank of removed species") +
   ylab("SES PD") +
   ylim(-0.5,2) +
   theme_classic(14) +
-  geom_hline(yintercept = 0.9, col = "lightgrey") +
+  geom_hline(yintercept = 0.91, col = "lightgrey") +
   xlim(0,32) 
 plot(PD_PBM_rangesize_removal_fig)
 
@@ -241,7 +241,7 @@ fig2_road <- (PD_Road_rangesize_removal_fig | MPD_Road_range_removal_fig | MNTD_
   plot_annotation(title = "Low elevation (2815 m)")
 fig2_road
 
-fig2_all <- fig2_PBM / fig2_PBM / fig2_road +
+fig2_all <- fig2_PBM / fig2_pfeiler / fig2_road +
   plot_layout(axis_titles = "collect")+
   plot_layout(axes = "collect") +
   plot_annotation(tag_levels = 'A')
