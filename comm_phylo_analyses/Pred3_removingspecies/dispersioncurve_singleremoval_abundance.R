@@ -40,7 +40,7 @@ PD_PBM_abundance_removal$Abundance_rank <- c(1:31)
 PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.57, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
   ylim(-0.5,1) +
   theme_classic(14) +
@@ -58,7 +58,7 @@ MPD_PBM_abundance_removal$Abundance_rank <- c(1:31)
 MPD_PBM_abundance_removal_fig <- ggplot(data= MPD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.9, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MPD") +
   ylim(0,1.5) +
   theme_classic(14) +
@@ -76,7 +76,7 @@ MNTD_PBM_abundance_removal$Abundance_rank <- c(1:31)
 MNTD_PBM_abundance_removal_fig <- ggplot(data= MNTD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.12, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
   ylim(-1,1) +
   theme_classic(14) +
@@ -104,7 +104,7 @@ PD_Pfeiler_abundance_removal <- PD_Pfeiler_abundance_removal[-c(27,28),]
 PD_Pfeiler_abundance_removal_fig <- ggplot(data= PD_Pfeiler_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.6, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
   ylim(-1.5,0.5) +
   theme_classic(14) +
@@ -122,7 +122,7 @@ MPD_Pfeiler_abundance_removal$Abundance_rank <- c(1:26)
 MPD_Pfeiler_abundance_removal_fig <- ggplot(data= MPD_Pfeiler_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.02, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MPD") +
   ylim(-1,1) +
   theme_classic(14) +
@@ -140,7 +140,7 @@ MNTD_Pfeiler_abundance_removal$Abundance_rank <- c(1:26)
 MNTD_Pfeiler_abundance_removal_fig <- ggplot(data= MNTD_Pfeiler_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1.05, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
   ylim(-2,0.5) +
   theme_classic(14) +
@@ -167,7 +167,7 @@ PD_Road_abundance_removal <- PD_Road_abundance_removal[-c(33,34),]
 PD_Road_abundance_removal_fig <- ggplot(data= PD_Road_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
   ylim(-1,0.5) +
   theme_classic(14) +
@@ -185,7 +185,7 @@ MPD_Road_abundance_removal$Abundance_rank <- c(1:32)
 MPD_Road_abundance_removal_fig <- ggplot(data= MPD_Road_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MPD") +
   ylim(-1.8,0.5) +
   theme_classic(14) +
@@ -203,7 +203,7 @@ MNTD_Road_abundance_removal$Abundance_rank <- c(1:32)
 MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.015, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species") +
+  xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
   ylim(-1,0.5) +
   theme_classic(14) +
@@ -226,7 +226,7 @@ fig3_pfeiler <- (PD_Pfeiler_abundance_removal_fig | MPD_Pfeiler_abundance_remova
   plot_annotation(title = "Middle elevation (3165 m)")
 fig3_pfeiler
 
-fig3_road <- (PD_Road_abundance_removal_fig | MPD_Road_abundance_removal_fig | MNTD_Pfeiler_abundance_removal_fig) +
+fig3_road <- (PD_Road_abundance_removal_fig | MPD_Road_abundance_removal_fig | MNTD_Road_abundance_removal_fig) +
   plot_layout(axis_titles = "collect")+
   plot_annotation(title = "Low elevation (2815 m)")
 
