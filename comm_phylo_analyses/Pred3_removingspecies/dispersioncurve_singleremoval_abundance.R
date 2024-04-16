@@ -341,13 +341,18 @@ dummy <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 
 
 dummy <- dummy[-c(10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), ] 
 
-ggplot(data= all_sites_abundance_df) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.57, yend=SES), color="grey")+
+test <- left_join(all_sites_abundance_df, dummy, by = c("Site","Type"))
+test$Site <- factor(test$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
+))
+
+ggplot(data= test) + 
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, yend=SES, y=Z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=SES), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES") +
   scale_y_continuous(name="SES", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
-  geom_hline(aes(yintercept = c(0.12, 015, 0, 0, 0, 0, 0, 0 ,0)), color = "grey") +
+  geom_abline(data = dummy, aes(intercept = Z, slope = 0)) +
   xlim(0,32) +
-  facet_wrap(Type ~ Site)
+  facet_wrap(Type~Site)
+
