@@ -337,7 +337,9 @@ road <- rbind(PD_Road_abundance_removal, MPD_Road_abundance_removal, MNTD_Road_a
 all_sites_abundance_df <- rbind(pbm, pfeiler, road)
 
 ##make one figure with facet wrapping####
-dummy <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","MPD","MNTD"), Z = c(1, 2, 3, 4, 5, 6, 7, 8, 9))
+dummy <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.57, -0.6, -0.01, 0.9, 0.02, -0.99, 0.12, -1.04, 0.015, 0.57, -0.6, -0.01, 0.9, 0.02, -0.99, 0.12, -1.04, 0.015, 0.57, -0.6, -0.01, 0.9, 0.02, -0.99, 0.12, -1.04, 0.015))
+
+dummy <- dummy[-c(10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), ] 
 
 ggplot(data= all_sites_abundance_df) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.57, yend=SES), color="grey")+
