@@ -233,3 +233,7 @@ fig3_all <- (fig3_pbm / fig3_pfeiler / fig3_road) +
   plot_layout(axis_titles = "collect")+
   plot_annotation(tag_levels = 'A')
 fig3_all
+
+
+#all figures together in ggplot-------------
+##clean up data sets to have matching column names and columns for site and metric type#####

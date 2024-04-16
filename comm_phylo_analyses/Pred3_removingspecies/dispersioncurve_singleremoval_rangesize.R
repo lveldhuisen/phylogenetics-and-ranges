@@ -105,7 +105,7 @@ is.rooted(pruned.tree)
 PD_Pfeiler_range_removal <- ses.pd(Pfeiler_range_matrix, pruned.tree, null.model = c("sample.pool"),
                                runs = 5000, include.root=TRUE)
 PD_Pfeiler_range_removal <- PD_Pfeiler_range_removal[-c(27),]
-PD_Pfeiler_range_removal$Range_size_rank <- c(1:27)
+PD_Pfeiler_range_removal$Range_size_rank <- c(1:26)
 #all Pfeiler  PD is SES is -0.6
 
 
@@ -126,7 +126,7 @@ MPD_Pfeiler_range_removal <- ses.mpd(Pfeiler_range_matrix, cophenetic(pruned.tre
 
 #all Pfeiler MPD is SES is -0.1
 MPD_Pfeiler_range_removal <- MPD_Pfeiler_range_removal[-c(27),]
-MPD_Pfeiler_range_removal$Range_size_rank <- c(1:26)
+MPD_Pfeiler_range_removal$Range_size_rank <- c(1:27)
 
 MPD_Pfeiler_range_removal_fig <- ggplot(data= MPD_Pfeiler_range_removal) + 
   geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.1, yend=mpd.obs.z), color="grey")+
