@@ -42,7 +42,7 @@ PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) +
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
-  ylim(-0.5,1) +
+  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = 0.57, col = "lightgrey") +
   xlim(0,32) 
@@ -60,7 +60,7 @@ MPD_PBM_abundance_removal_fig <- ggplot(data= MPD_PBM_abundance_removal) +
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MPD") +
-  ylim(0,1.5) +
+  scale_y_continuous(name="SES MPD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5)) +
   theme_classic(14) +
   geom_hline(yintercept = 0.9, col = "lightgrey") +
   xlim(0,32) 
@@ -78,7 +78,7 @@ MNTD_PBM_abundance_removal_fig <- ggplot(data= MNTD_PBM_abundance_removal) +
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
-  ylim(-1,1) +
+  scale_y_continuous(name="SES MNTD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = 0.12, col = "lightgrey") +
   xlim(0,32) 
@@ -106,7 +106,7 @@ PD_Pfeiler_abundance_removal_fig <- ggplot(data= PD_Pfeiler_abundance_removal) +
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
-  ylim(-1.5,0.5) +
+  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = -0.6, col = "lightgrey") +
   xlim(0,28) 
@@ -123,8 +123,7 @@ MPD_Pfeiler_abundance_removal_fig <- ggplot(data= MPD_Pfeiler_abundance_removal)
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.02, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES MPD") +
-  ylim(-1,1) +
+  scale_y_continuous(name="SES MPD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = 0.02, col = "lightgrey") +
   xlim(0,28) 
@@ -142,7 +141,7 @@ MNTD_Pfeiler_abundance_removal_fig <- ggplot(data= MNTD_Pfeiler_abundance_remova
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
-  ylim(-2,0.5) +
+  scale_y_continuous(name="SES MNTD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = -1.05, col = "lightgrey") +
   xlim(0,28) 
@@ -169,7 +168,7 @@ PD_Road_abundance_removal_fig <- ggplot(data= PD_Road_abundance_removal) +
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
-  ylim(-1,0.5) +
+  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = 0, col = "lightgrey") +
   xlim(0,32) 
@@ -187,7 +186,7 @@ MPD_Road_abundance_removal_fig <- ggplot(data= MPD_Road_abundance_removal) +
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MPD") +
-  ylim(-1.8,0.5) +
+  scale_y_continuous(name="SES MPD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = -1, col = "lightgrey") +
   xlim(0,32) 
@@ -205,7 +204,7 @@ MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) +
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
-  ylim(-1,0.5) +
+  scale_y_continuous(name="SES MNTD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = 0.015, col = "lightgrey") +
   xlim(0,32) 
