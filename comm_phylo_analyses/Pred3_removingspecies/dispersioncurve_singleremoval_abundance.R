@@ -270,16 +270,37 @@ MNTD_PBM_abundance_removal$Type <- c("MNTD") #add column for metric type
 MNTD_PBM_abundance_removal$Site <- c("High elevation (3380 m)") #add column for site name 
 
 ###Pfeiler###
+###PD####
 PD_Pfeiler_abundance_removal = subset(PD_Pfeiler_abundance_removal, select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs) ) #remove unnecessary columns
 PD_Pfeiler_abundance_removal <- PD_Pfeiler_abundance_removal %>% 
   rename(SES = pd.obs.z,
          P_value = pd.obs.p) #rename columns to match other datasets 
 
-
 PD_Pfeiler_abundance_removal$Type <- c("PD") #add column for metric type 
 PD_Pfeiler_abundance_removal$Site <- c("Middle elevation (3165 m)") #add column for site name
 
+###MPD####
+MPD_Pfeiler_abundance_removal = subset(MPD_Pfeiler_abundance_removal, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
+
+MPD_Pfeiler_abundance_removal <- MPD_Pfeiler_abundance_removal %>% 
+  rename(SES = mpd.obs.z,
+         P_value = mpd.obs.p) #rename columns to match other datasets 
+
+MPD_Pfeiler_abundance_removal$Type <- c("MPD") #add column for metric type 
+MPD_Pfeiler_abundance_removal$Site <- c("Middle elevation (3165 m)") #add column for site name
+
+###MNTD#####
+MNTD_Pfeiler_abundance_removal = subset(MNTD_Pfeiler_abundance_removal, select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+
+MNTD_Pfeiler_abundance_removal <- MNTD_Pfeiler_abundance_removal %>% 
+  rename(SES = mntd.obs.z,
+         P_value = mntd.obs.p) #rename columns to match other datasets 
+
+MNTD_Pfeiler_abundance_removal$Type <- c("MNTD") #add column for metric type 
+MNTD_Pfeiler_abundance_removal$Site <- c("Middle elevation (3165 m)") #add column for site name
+
 ###Road####
+###PD####
 PD_Road_abundance_removal = subset(PD_Road_abundance_removal, select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs) ) #remove unnecessary columns
 PD_Road_abundance_removal <- PD_Road_abundance_removal %>% 
   rename(SES = pd.obs.z,
@@ -287,3 +308,25 @@ PD_Road_abundance_removal <- PD_Road_abundance_removal %>%
 
 PD_Road_abundance_removal$Type <- c("PD") #add column for metric type 
 PD_Road_abundance_removal$Site <- c("Low elevation (2815 m)") #add column for site name 
+
+###MPD###
+MPD_Road_abundance_removal = subset(MPD_Road_abundance_removal, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
+MPD_Road_abundance_removal <- MPD_Road_abundance_removal %>% 
+  rename(SES = mpd.obs.z,
+         P_value = mpd.obs.p) #rename columns to match other datasets 
+
+MPD_Road_abundance_removal$Type <- c("MPD") #add column for metric type 
+MPD_Road_abundance_removal$Site <- c("Low elevation (2815 m)") #add column for site name 
+
+###MNTD#####
+MNTD_Road_abundance_removal = subset(MNTD_Road_abundance_removal, select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+MNTD_Road_abundance_removal <- MNTD_Road_abundance_removal %>% 
+  rename(SES = mntd.obs.z,
+         P_value = mntd.obs.p) #rename columns to match other datasets 
+
+MNTD_Road_abundance_removal$Type <- c("MNTD") #add column for metric type 
+MNTD_Road_abundance_removal$Site <- c("Low elevation (2815 m)") #add column for site name 
+
+##combine into one big dataset
+#merge all data frames in list
+merge(PD_PBM_abundance_removal,MPD_PBM_abundance_removal,by=c("SES","P_value","Abundance_rank","Type","Site"))
