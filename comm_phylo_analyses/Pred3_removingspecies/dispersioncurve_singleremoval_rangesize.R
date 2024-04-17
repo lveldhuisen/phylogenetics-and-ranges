@@ -39,7 +39,7 @@ ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sample.pool"),
 PD_PBM_range_removal <- ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sample.pool"),
                     runs = 5000, include.root=TRUE)
 
-PD_PBM_range_removal$Range_size_rank <- c(1:33)
+PD_PBM_range_removal$Range_size_rank <- c(1:31)
 #all PBM PD is SES is 0.91
 PD_PBM_range_removal <- PD_PBM_range_removal[-c(32,33),]
 
@@ -249,3 +249,127 @@ fig2_all <- fig2_PBM / fig2_pfeiler / fig2_road +
   plot_layout(axes = "collect") +
   plot_annotation(tag_levels = 'A')
 fig2_all
+
+#all figures together in ggplot-------------
+##clean up data sets to have matching column names and columns for site and metric type#####
+
+##PBM#####
+###PD####
+PD_PBM_range_removal = subset(PD_PBM_range_removal, select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs) ) #remove unnecessary columns
+
+PD_PBM_range_removal <- PD_PBM_range_removal %>% 
+  rename(SES = pd.obs.z,
+         P_value = pd.obs.p) #rename columns to match other datasets 
+
+PD_PBM_range_removal$Type <- c("PD") #add column for metric type 
+PD_PBM_range_removal$Site <- c("High elevation (3380 m)") #add column for site name 
+
+###MPD####
+MPD_PBM_range_removal = subset(MPD_PBM_range_removal, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
+
+MPD_PBM_range_removal <- MPD_PBM_range_removal %>% 
+  rename(SES = mpd.obs.z,
+         P_value = mpd.obs.p) #rename columns to match other datasets 
+
+MPD_PBM_range_removal$Type <- c("MPD") #add column for metric type 
+MPD_PBM_range_removal$Site <- c("High elevation (3380 m)") #add column for site name 
+
+###MNTD####
+MNTD_PBM_range_removal = subset(MNTD_PBM_range_removal, select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+
+MNTD_PBM_range_removal <- MNTD_PBM_range_removal %>% 
+  rename(SES = mntd.obs.z,
+         P_value = mntd.obs.p) #rename columns to match other datasets 
+
+MNTD_PBM_range_removal$Type <- c("MNTD") #add column for metric type 
+MNTD_PBM_range_removal$Site <- c("High elevation (3380 m)") #add column for site name 
+
+##Pfeiler#####
+###PD####
+PD_Pfeiler_range_removal = subset(PD_Pfeiler_range_removal, select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs) ) #remove unnecessary columns
+PD_Pfeiler_range_removal <- PD_Pfeiler_range_removal %>% 
+  rename(SES = pd.obs.z,
+         P_value = pd.obs.p) #rename columns to match other datasets 
+
+PD_Pfeiler_range_removal$Type <- c("PD") #add column for metric type 
+PD_Pfeiler_range_removal$Site <- c("Middle elevation (3165 m)") #add column for site name
+
+###MPD####
+MPD_Pfeiler_range_removal = subset(MPD_Pfeiler_range_removal, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
+
+MPD_Pfeiler_range_removal <- MPD_Pfeiler_range_removal %>% 
+  rename(SES = mpd.obs.z,
+         P_value = mpd.obs.p) #rename columns to match other datasets 
+
+MPD_Pfeiler_range_removal$Type <- c("MPD") #add column for metric type 
+MPD_Pfeiler_range_removal$Site <- c("Middle elevation (3165 m)") #add column for site name
+
+###MNTD#####
+MNTD_Pfeiler_range_removal = subset(MNTD_Pfeiler_range_removal, select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+
+MNTD_Pfeiler_range_removal <- MNTD_Pfeiler_range_removal %>% 
+  rename(SES = mntd.obs.z,
+         P_value = mntd.obs.p) #rename columns to match other datasets 
+
+MNTD_Pfeiler_range_removal$Type <- c("MNTD") #add column for metric type 
+MNTD_Pfeiler_range_removal$Site <- c("Middle elevation (3165 m)") #add column for site name
+
+##Road####
+###PD####
+PD_Road_range_removal = subset(PD_Road_range_removal, select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs) ) #remove unnecessary columns
+PD_Road_range_removal <- PD_Road_range_removal %>% 
+  rename(SES = pd.obs.z,
+         P_value = pd.obs.p) #rename columns to match other datasets 
+
+PD_Road_range_removal$Type <- c("PD") #add column for metric type 
+PD_Road_range_removal$Site <- c("Low elevation (2815 m)") #add column for site name 
+
+###MPD###
+MPD_Road_range_removal = subset(MPD_Road_range_removal, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
+MPD_Road_range_removal <- MPD_Road_range_removal %>% 
+  rename(SES = mpd.obs.z,
+         P_value = mpd.obs.p) #rename columns to match other datasets 
+
+MPD_Road_range_removal$Type <- c("MPD") #add column for metric type 
+MPD_Road_range_removal$Site <- c("Low elevation (2815 m)") #add column for site name 
+
+###MNTD#####
+MNTD_Road_range_removal = subset(MNTD_Road_range_removal, select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+MNTD_Road_range_removal <- MNTD_Road_range_removal %>% 
+  rename(SES = mntd.obs.z,
+         P_value = mntd.obs.p) #rename columns to match other datasets 
+
+MNTD_Road_range_removal$Type <- c("MNTD") #add column for metric type 
+MNTD_Road_range_removal$Site <- c("Low elevation (2815 m)") #add column for site name 
+
+##combine into one big dataset####
+pbm_range <- rbind(PD_PBM_range_removal, MPD_PBM_range_removal, MNTD_PBM_range_removal)
+
+pfeiler_range <- rbind(PD_Pfeiler_range_removal, MPD_Pfeiler_range_removal, MNTD_Pfeiler_range_removal)
+
+road_range <- rbind(PD_Road_range_removal, MPD_Road_range_removal, MNTD_Road_range_removal)
+
+all_sites_range_df <- rbind(pbm_range, pfeiler_range, road_range)
+
+##make one figure with facet wrapping####
+dummy_range <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.91, -0.6, 0, 1.25, -0.1, -0.89, 0.3, -1.06, 0.015,0.91, -0.6, 0, 1.25, -0.1, -0.89, 0.3, -1.06, 0.015, 0.91, -0.6, 0, 1.25, -0.1, -0.89, 0.3, -1.06, 0.015))
+
+dummy_range <- dummy_range[-c(10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), ] 
+
+test_range <- left_join(all_sites_range_df, dummy_range, by = c("Site","Type"))
+test_range$Site = factor(test_range$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
+))
+
+test_range$Site_f = factor(test_range$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
+))
+
+ggplot(data= test_range) + 
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, yend=SES, y=Z), color="grey")+
+  geom_point(mapping = aes(x=Range_size_rank, y=SES), size = 2) +
+  xlab("Range size rank of removed species (biggest to smallest)") +
+  ylab("Standard effect size") +
+  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.6))+
+  theme_bw(14) +
+  xlim(0,32) +
+  geom_abline(data = test_range, aes(intercept = Z, slope = 0)) +
+  facet_grid(Type~Site_f)

@@ -352,8 +352,8 @@ ggplot(data= test) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, yend=SES, y=Z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=SES), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES") +
-  scale_y_continuous(name="SES", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
+  ylab("Standard effect size") +
+  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_bw(14) +
   xlim(0,32) +
   geom_abline(data = test, aes(intercept = Z, slope = 0)) +
