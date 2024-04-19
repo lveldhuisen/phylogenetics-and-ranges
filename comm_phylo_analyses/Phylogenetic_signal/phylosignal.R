@@ -19,3 +19,9 @@ pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,PBM_abundance_mat
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
+
+##Blomberg's K#####
+###abundance#####
+phylosignal(x, pruned.tree, reps = 5000, checkdata = TRUE)
+
+###range size######
