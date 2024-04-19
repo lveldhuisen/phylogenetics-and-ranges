@@ -52,6 +52,10 @@ plot(PD_PBM_abundance_removal_fig)
 MPD_PBM_abundance_removal <- ses.mpd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
                                  abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all PBM MPD is SES is 0.9
 
+MPD_PBM_abundance_removal_weighted <- ses.mpd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
+        abundance.weighted = TRUE, runs = 5000, iterations = 5000)
+
+
 MPD_PBM_abundance_removal <- MPD_PBM_abundance_removal[-c(32,33),]
 MPD_PBM_abundance_removal$Abundance_rank <- c(1:31)
 
