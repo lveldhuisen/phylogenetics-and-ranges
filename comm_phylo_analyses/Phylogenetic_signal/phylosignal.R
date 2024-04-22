@@ -20,6 +20,8 @@ write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
+specieslist <- pruned.tree$tip.label
+
 ##Blomberg's K#####
 ###abundance#####
 phylosignal(x, pruned.tree, reps = 5000, checkdata = TRUE)
