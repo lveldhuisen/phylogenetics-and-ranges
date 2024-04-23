@@ -16,14 +16,14 @@ allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/species_ma
                                    sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,
-                                                            PBM_abundance_matrix[32,]>0]),
+pruned.tree <- treedata(SBtree, unlist(allsitesmatrix[2,allsitesmatrix[2,]>0]),
                         warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
 specieslist <- pruned.tree$tip.label
+specieslist <- as.data.frame(specieslist)
 
 ##Blomberg's K#####
 ###abundance#####
@@ -38,7 +38,42 @@ abundance_df <- abundance_df %>%
 
 abundance_df <- abundance_df[ order(match(abundance_df$Species, specieslist$specieslist)), ]
 
+abundance_df <- abundance_df %>% remove_rownames %>% column_to_rownames(var="Species")
+abundance_df <- df2vec(abundance_df, colID=1)
+
 ###calculate signal#####
 phylosignal(abundance_df, pruned.tree, reps = 5000, checkdata = TRUE)
 
 ###range size######
+##make community data matrix#### 
+allsitesmatrix_range <- read.table("comm_phylo_analyses/Phylogenetic_signal/rangesize_comm_matrix.txt", 
+                             sep = "\t", header = T, row.names = 1)
+
+##prune tree#####
+pruned.tree <- treedata(SBtree, unlist(allsitesmatrix_range[1,allsitesmatrix_range[1,]>0]),
+                        warnings = F)$phy
+write.tree(pruned.tree)
+plot(pruned.tree)
+is.rooted(pruned.tree)
+
+specieslist <- pruned.tree$tip.label
+specieslist <- as.data.frame(specieslist)
+
+#get range size data
+rangesize_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/range_size_results.csv")
+
+rangesize_df = subset(rangesize_df, select = -c(EOO) )
+
+rangesize_df <- rangesize_df[-c(67:89), ]
+
+rangesize_df <- rangesize_df %>%
+  group_by(Species) %>%
+  summarise(across(c(AOO), sum))
+
+rangesize_df <- rangesize_df[ order(match(rangesize_df$Species, specieslist$specieslist)), ]
+
+rangesize_df <- rangesize_df %>% remove_rownames %>% column_to_rownames(var="Species")
+rangesize_df <- df2vec(rangesize_df, colID=1)
+
+###calculate signal#####
+phylosignal(rangesize_df, pruned.tree, reps = 5000, checkdata = TRUE)
