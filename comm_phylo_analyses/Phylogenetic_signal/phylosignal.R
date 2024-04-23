@@ -43,6 +43,8 @@ abundance_df <- abundance_df[ order(match(abundance_df$Species,
 abundance_df <- abundance_df %>% remove_rownames %>% column_to_rownames(var="Species")
 abundance_df <- df2vec(abundance_df, colID=1)
 
+write.csv(abundance_df, file = "comm_phylo_analyses/Phylogenetic_signal/abundance_trait_data_new.csv")
+
 ###calculate signal#####
 phylosignal(abundance_df, pruned.tree, reps = 5000, checkdata = TRUE) #with picante
 phylosig(pruned.tree, abundance_df, method="K", test=TRUE, nsim=5000,
