@@ -22,10 +22,13 @@ is.rooted(SBtree)
 
 #PBM----------
 ##make community data matrix#### 
-PBM_range_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/PBMrangesize_comm_matrix_removal.txt", sep = "\t", header = T, row.names = 1)
+PBM_range_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/
+                               comm_matrices/PBMrangesize_comm_matrix_removal.txt", 
+                               sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(PBM_range_matrix[33,PBM_range_matrix[33,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(PBM_range_matrix[33,PBM_range_matrix[33,]>0]), 
+                        warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -36,7 +39,8 @@ co_matrix <- cophenetic(pruned.tree)
 ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sample.pool"),
        runs = 5000, include.root=TRUE)
 
-PD_PBM_range_removal <- ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sample.pool"),
+PD_PBM_range_removal <- ses.pd(PBM_range_matrix, pruned.tree, 
+                               null.model = c("sample.pool"),
                     runs = 5000, include.root=TRUE)
 
 PD_PBM_range_removal$Range_size_rank <- c(1:31)
