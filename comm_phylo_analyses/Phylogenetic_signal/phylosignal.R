@@ -4,6 +4,7 @@ library(dplyr)
 library(picante)
 library(geiger)
 library(ape)
+library(phytools)
 
 #import S&B phylogeny--------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -36,13 +37,16 @@ abundance_df <- abundance_df %>%
   group_by(Species) %>%
   summarise(across(c(Mean_abundance), sum))
 
-abundance_df <- abundance_df[ order(match(abundance_df$Species, specieslist$specieslist)), ]
+abundance_df <- abundance_df[ order(match(abundance_df$Species, 
+                                          specieslist$specieslist)), ]
 
 abundance_df <- abundance_df %>% remove_rownames %>% column_to_rownames(var="Species")
 abundance_df <- df2vec(abundance_df, colID=1)
 
 ###calculate signal#####
-phylosignal(abundance_df, pruned.tree, reps = 5000, checkdata = TRUE)
+phylosignal(abundance_df, pruned.tree, reps = 5000, checkdata = TRUE) #with picante
+phylosig(pruned.tree, abundance_df, method="lambda", test=TRUE, nsim=5000,
+         se=NULL, start=NULL, control=list(), niter=10) #with phytools, gives same answer
 
 ###range size######
 ##make community data matrix#### 
@@ -77,3 +81,15 @@ rangesize_df <- df2vec(rangesize_df, colID=1)
 
 ###calculate signal#####
 phylosignal(rangesize_df, pruned.tree, reps = 5000, checkdata = TRUE)
+
+##pagels lambda####
+###abundance######
+fitContinuous(pruned.tree, abundance_df, SE = 0, model = c("lambda"), bounds= list(), 
+              control = list(method = c("subplex","L-BFGS-B"), 
+                             niter = 5000, 
+                             FAIL = 1e+200, 
+                             hessian = FALSE, 
+                             CI = 0.95), 
+              ncores=NULL)
+
+###range size#####
