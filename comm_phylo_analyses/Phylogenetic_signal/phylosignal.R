@@ -12,10 +12,13 @@ write.tree(SBtree)
 is.rooted(SBtree)
 
 ##make community data matrix#### 
-PBM_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/PBM_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/species_matrix_fortree.txt", 
+                                   sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,PBM_abundance_matrix[32,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,
+                                                            PBM_abundance_matrix[32,]>0]),
+                        warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -24,6 +27,18 @@ specieslist <- pruned.tree$tip.label
 
 ##Blomberg's K#####
 ###abundance#####
-phylosignal(x, pruned.tree, reps = 5000, checkdata = TRUE)
+###make trait dataframe####
+abundance_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/abundance_trait_data.csv")
+
+abundance_df = subset(abundance_df, select = -c(X, X.1, X.2) )
+
+abundance_df <- abundance_df %>%
+  group_by(Species) %>%
+  summarise(across(c(Mean_abundance), sum))
+
+abundance_df <- abundance_df[ order(match(abundance_df$Species, specieslist$specieslist)), ]
+
+###calculate signal#####
+phylosignal(abundance_df, pruned.tree, reps = 5000, checkdata = TRUE)
 
 ###range size######
