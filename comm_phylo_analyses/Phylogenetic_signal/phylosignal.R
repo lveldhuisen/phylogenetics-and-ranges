@@ -45,7 +45,7 @@ abundance_df <- df2vec(abundance_df, colID=1)
 
 ###calculate signal#####
 phylosignal(abundance_df, pruned.tree, reps = 5000, checkdata = TRUE) #with picante
-phylosig(pruned.tree, abundance_df, method="lambda", test=TRUE, nsim=5000,
+phylosig(pruned.tree, abundance_df, method="K", test=TRUE, nsim=5000,
          se=NULL, start=NULL, control=list(), niter=10) #with phytools, gives same answer
 
 ###range size######
@@ -54,7 +54,7 @@ allsitesmatrix_range <- read.table("comm_phylo_analyses/Phylogenetic_signal/rang
                              sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(allsitesmatrix_range[1,allsitesmatrix_range[1,]>0]),
+pruned.tree.range <- treedata(SBtree, unlist(allsitesmatrix_range[1,allsitesmatrix_range[1,]>0]),
                         warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
@@ -80,16 +80,15 @@ rangesize_df <- rangesize_df %>% remove_rownames %>% column_to_rownames(var="Spe
 rangesize_df <- df2vec(rangesize_df, colID=1)
 
 ###calculate signal#####
-phylosignal(rangesize_df, pruned.tree, reps = 5000, checkdata = TRUE)
+phylosignal(rangesize_df, pruned.tree.range, reps = 5000, checkdata = TRUE)
 
 ##pagels lambda####
 ###abundance######
-fitContinuous(pruned.tree, abundance_df, SE = 0, model = c("lambda"), bounds= list(), 
-              control = list(method = c("subplex","L-BFGS-B"), 
-                             niter = 5000, 
-                             FAIL = 1e+200, 
-                             hessian = FALSE, 
-                             CI = 0.95), 
-              ncores=NULL)
+phylosig(pruned.tree, abundance_df, method="lambda", test=TRUE, nsim=5000,
+         se=NULL, start=NULL, control=list(), niter=10)
 
 ###range size#####
+phylosig(pruned.tree.range, rangesize_df, method="lambda", test=TRUE, nsim=5000,
+         se=NULL, start=NULL, control=list(), niter=10)
+
+fitContinuous(pruned.tree.range, rangesize_df, SE = 0, model = c("lambda"), bounds= list(), control = list(method = c("subplex","L-BFGS-B"), niter = 500000, FAIL = 1e+200, hessian = FALSE, CI = 0.95), ncores=NULL)
