@@ -89,8 +89,14 @@ phylosignal(rangesize_df, pruned.tree.range, reps = 5000, checkdata = TRUE)
 phylosig(pruned.tree, abundance_df, method="lambda", test=TRUE, nsim=5000,
          se=NULL, start=NULL, control=list(), niter=10)
 
+fitContinuous(pruned.tree, abundance_df, SE = 0, model = c("lambda"), bounds= list(), 
+              control = list(method = c("subplex","L-BFGS-B"), niter = 5000, 
+                             FAIL = 1e+200, hessian = FALSE, CI = 0.95), ncores=NULL)
+
 ###range size#####
 phylosig(pruned.tree.range, rangesize_df, method="lambda", test=TRUE, nsim=5000,
          se=NULL, start=NULL, control=list(), niter=10)
 
-fitContinuous(pruned.tree.range, rangesize_df, SE = 0, model = c("lambda"), bounds= list(), control = list(method = c("subplex","L-BFGS-B"), niter = 500000, FAIL = 1e+200, hessian = FALSE, CI = 0.95), ncores=NULL)
+fitContinuous(pruned.tree.range, rangesize_df, SE = 0, model = c("lambda"), 
+              bounds= list(), control = list(method = c("subplex","L-BFGS-B"), 
+                                             niter = 500000, FAIL = 1e+200, hessian = FALSE, CI = 0.95), ncores=NULL)
