@@ -25,7 +25,8 @@ test <- ggplot(data= MPD_PBM_abundance_removal_weighted) +
   scale_y_continuous(name="SES MPD", breaks = c(1, 1.5,2),limits=c(1, 2)) +
   theme_classic(14) +
   geom_hline(yintercept = 1.58, col = "lightgrey") +
-  xlim(0,32) 
+  xlim(0,32)+
+  ggtitle("High elevation site")
 plot(test)
 
 ##Pfeiler####
@@ -51,10 +52,11 @@ test <- ggplot(data= MPD_PBM_range_removal_weighted) +
   geom_point(mapping = aes(x=Range_rank, y=mpd.obs.z), size = 2) +
   xlab("Range size rank of removed species (most to least)") +
   ylab("SES MPD") +
-  scale_y_continuous(name="SES MPD", breaks = c(0,0.5,1, 1.5,2),limits=c(0, 2)) +
+  scale_y_continuous(name="SES MPD", breaks = c(0.5,1, 1.5),limits=c(0.5, 1.5)) +
   theme_classic(14) +
   geom_hline(yintercept = 0.98, col = "lightgrey") +
-  xlim(0,32) 
+  xlim(0,32)+
+  ggtitle("High elevation site")
 plot(test)
 ##Pfeiler####
 ##Road####
