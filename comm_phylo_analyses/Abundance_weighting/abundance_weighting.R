@@ -4,14 +4,45 @@ library(ape)
 library(geiger)
 library(tidyverse)
 
+#calculate MPD and MNTD weighted and unweighted--------
+#import S&B phylogeny
+setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
+
+##import S&B18 tree and check data## 
+SBtree <- read.tree(file = "ALLMB.tre")
+write.tree(SBtree)
+is.rooted(SBtree)
+
+##make community data matrices 
+#unweighted comparison
+community_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_unweighted.txt", 
+                                        sep = "\t", header = T, row.names = 1)
+
+#weighted by abundance
+abundance_matrix_weighted <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_weighted_abundance.txt", 
+                                        sep = "\t", header = T, row.names = 1)
+
+#weighted by range size
+
+
+##abundance####
+
+
+##range size####
+
+
+
+
+
+#abundance weighting for pred 2 removing species, not used--------------------
 #abundance data----------
 ##PBM####
 ##make community data matrix#### 
 PBM_abundance_matrix_weighted <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/PBM_abundance_commmatrix_removal_weighted.txt", sep = "\t", header = T, row.names = 1)
 
-MPD_PBM_abundance_removal_weighted <- ses.mpd(PBM_abundance_matrix_weighted, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted = TRUE, runs = 5000, iterations = 5000)
-
-
+MPD_PBM_abundance_removal_weighted <- ses.mpd(PBM_abundance_matrix_weighted, 
+                                              cophenetic(pruned.tree), null.model = c("sample.pool"), 
+                                              abundance.weighted = TRUE, runs = 5000, iterations = 5000)
 
 
 MPD_PBM_abundance_removal_weighted <- MPD_PBM_abundance_removal_weighted[-c(32,33),]
@@ -34,14 +65,19 @@ plot(test)
 
 #range size data----------
 ##PBM####
-pruned.tree.rs <- treedata(SBtree, unlist(PBM_rangesize_matrix_weighted[32,PBM_rangesize_matrix_weighted[32,]>0]), warnings = F)$phy
+pruned.tree.rs <- treedata(SBtree, unlist(PBM_rangesize_matrix_weighted[32,PBM_rangesize_matrix_weighted[32,]>0]), 
+                           warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
 PBM_rangesize_matrix_weighted <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/PBM_rangesize_removal_weighted.txt", sep = "\t", header = T, row.names = 1)
 
-MPD_PBM_range_removal_weighted <- ses.mpd(PBM_rangesize_matrix_weighted, cophenetic(pruned.tree.rs), null.model = c("sample.pool"), abundance.weighted = TRUE, runs = 5000, iterations = 5000)
+MPD_PBM_range_removal_weighted <- ses.mpd(PBM_rangesize_matrix_weighted, 
+                                          cophenetic(pruned.tree.rs), 
+                                          null.model = c("sample.pool"),
+                                          abundance.weighted = TRUE, 
+                                          runs = 5000, iterations = 5000)
 
 
 MPD_PBM_range_removal_weighted <- MPD_PBM_range_removal_weighted[-c(32,33),]
