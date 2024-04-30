@@ -23,11 +23,10 @@ community_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/communit
                                         sep = "\t", header = T, row.names = 1)
 
 #weighted by abundance
-abundance_matrix_weighted <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_weighted_abundance.txt", 
-                                        sep = "\t", header = T, row.names = 1)
+abundance_matrix_weighted <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_weighted_abundance.txt", sep = "\t", header = T, row.names = 1)
 
 #weighted by range size
-
+rangesize_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_weighted_rangesize.txt", sep = "\t", header = T, row.names = 1)
 
 ##unweighted####
 ###mpd####
@@ -109,11 +108,61 @@ all_df <- rbind(all_unweighted,all_weighted_a)
 
 ##range size####
 
+###mpd####
+mpd_weighted_rs <- ses.mpd(rangesize_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
+                          abundance.weighted = TRUE, runs = 5000, iterations = 5000)
+###format dataframe#####
+mpd_weighted_rs = subset(mpd_weighted_rs, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
+mpd_weighted_rs <- mpd_weighted_rs[-c(4),]
+mpd_weighted_rs <- mpd_weighted_rs %>% 
+  rename(SES = mpd.obs.z,
+         P_value = mpd.obs.p) #rename columns to match other datasets 
+
+mpd_weighted_rs$Type <- c("MPD") #add column for metric type 
+mpd_weighted_rs$Site <- c("Low elevation (2815 m)","Middle elevation (3165 m)",
+                         "High elevation (3380 m)") #add column for site name 
+mpd_weighted_rs$Weighting <- c("Weighted - Range size") #add column for weighting
+
+###mntd####
+mntd_weighted_rs <- ses.mntd(rangesize_matrix, cophenetic(pruned.tree), 
+                            null.model = c("sample.pool"),
+                            abundance.weighted=TRUE, runs = 5000, iterations = 5000)
+
+###format dataframe#####
+mntd_weighted_rs = subset(mntd_weighted_rs, 
+                         select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+mntd_weighted_rs <- mntd_weighted_rs[-c(4),]
+mntd_weighted_rs <- mntd_weighted_rs %>% 
+  rename(SES = mntd.obs.z,
+         P_value = mntd.obs.p) #rename columns to match other datasets 
+
+mntd_weighted_rs$Type <- c("MNTD") #add column for metric type 
+mntd_weighted_rs$Site <- c("Low elevation (2815 m)","Middle elevation (3165 m)",
+                          "High elevation (3380 m)") #add column for site name 
+mntd_weighted_rs$Weighting <- c("Weighted - Range size") #add column for weighting
+
+#combine range size and unweighted datasets
+all_weighted_rs <- rbind(mpd_weighted_rs,mntd_weighted_rs)
+combo_rs <- rbind(all_unweighted,all_weighted_rs)
 
 #make figure to compare diversity with weighting----------
+###abundance fig#####
 all_df$Site <- factor(all_df$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
 
 ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Phylogenetic metric") + 
+  ylab("Standard effect size")+
+  theme_light() + 
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-1,2) +
+  facet_wrap(Site ~ .)
+
+###range size fig####
+
+combo_rs$Site <- factor(combo_rs$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
+
+ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
