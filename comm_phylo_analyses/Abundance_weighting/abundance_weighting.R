@@ -110,7 +110,15 @@ all_df <- rbind(all_unweighted,all_weighted_a)
 ##range size####
 
 
-
+#make figure to compare diversity with weighting----------
+ggplot(all_df, aes(fill = Type, y=SES, x=Site)) + 
+  geom_bar(position = "dodge",stat = "identity") +
+  xlab("Site") + 
+  theme_light() + 
+  guides(fill=guide_legend(title="Phylogenetic metric"))+
+  scale_fill_viridis_d(begin = 0.1) + 
+  ylim(-2.5,2) +
+  facet_wrap(Site~Weighting)
 
 
 #abundance weighting for pred 2 removing species, not used--------------------
