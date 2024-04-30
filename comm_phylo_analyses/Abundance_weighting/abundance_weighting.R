@@ -113,15 +113,14 @@ all_df <- rbind(all_unweighted,all_weighted_a)
 #make figure to compare diversity with weighting----------
 all_df$Site <- factor(all_df$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
 
-ggplot(all_df, aes(fill = Type, y=SES, x=Type)) + 
+ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
   theme_light() + 
-  guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
   ylim(-1,2) +
-  facet_wrap(Site ~ Weighting, ncol = 2)
+  facet_wrap(Site ~ .)
 
 
 #abundance weighting for pred 2 removing species, not used--------------------
