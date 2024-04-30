@@ -115,7 +115,8 @@ all_df$Site <- factor(all_df$Site, levels = c("Low elevation (2815 m)","Middle e
 
 ggplot(all_df, aes(fill = Type, y=SES, x=Type)) + 
   geom_bar(position = "dodge",stat = "identity") +
-  xlab("Site") + 
+  xlab("Phylogenetic metric") + 
+  ylab("Standard effect size")+
   theme_light() + 
   guides(fill=guide_legend(title="Phylogenetic metric"))+
   scale_fill_viridis_d(begin = 0.1) + 
