@@ -154,7 +154,7 @@ ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
   theme_light() + 
-  scale_fill_viridis_d(begin = 0.1) + 
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) + 
   ylim(-1,2) +
   facet_wrap(Site ~ .)
 
@@ -167,7 +167,7 @@ ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
   theme_light() + 
-  scale_fill_viridis_d(begin = 0.1) + 
+  scale_fill_viridis_d(begin = 0.2, end = 0.8) + 
   ylim(-1,2) +
   facet_wrap(Site ~ .)
 
