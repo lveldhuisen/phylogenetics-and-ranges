@@ -126,3 +126,10 @@ abundance <- df2vec(abundance, colID=1)
 contMap <- contMap(pruned.tree.forfig, abundance, res=100, plot=FALSE)
 contMap <- setMap(contMap, viridisLite::viridis(n=8))
 plot(contMap)
+
+##test log value of abundance###
+abundance_log <- log(abundance)
+
+contMap_log <- contMap(pruned.tree.forfig, abundance_log, res=100, plot=FALSE)
+contMap_log <- setMap(contMap_log, viridisLite::viridis(n=8))
+plot(contMap_log)
