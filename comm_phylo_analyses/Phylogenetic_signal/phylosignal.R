@@ -5,6 +5,8 @@ library(picante)
 library(geiger)
 library(ape)
 library(phytools)
+library(viridis)
+library(viridisLite)
 
 #import S&B phylogeny--------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -100,3 +102,27 @@ phylosig(pruned.tree.range, rangesize_df, method="lambda", test=TRUE, nsim=5000,
 fitContinuous(pruned.tree.range, rangesize_df, SE = 0, model = c("lambda"), 
               bounds= list(), control = list(method = c("subplex","L-BFGS-B"), 
                                              niter = 500000, FAIL = 1e+200, hessian = FALSE, CI = 0.95), ncores=NULL)
+
+#make phylogeny with abundance mapped on----------
+##make community data matrix#### 
+allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/comm_matrix_forfig.txt", 
+                             sep = "\t", header = T, row.names = 1)
+
+##prune tree#####
+pruned.tree.forfig <- treedata(SBtree, unlist(allsitesmatrix[1,allsitesmatrix[1,]>0]),
+                        warnings = F)$phy
+plot(pruned.tree.forfig)
+is.rooted(pruned.tree)
+
+#trait data
+abundance <- read.csv("comm_phylo_analyses/Phylogenetic_signal/abundance_trait_data_new.csv")
+abundance <- abundance %>% 
+  rename(species = X,
+         trait_value = x) 
+abundance <- abundance %>% remove_rownames %>% column_to_rownames(var="species")
+abundance <- df2vec(abundance, colID=1)
+
+#make tree
+contMap <- contMap(pruned.tree.forfig, abundance, res=100, plot=FALSE)
+contMap <- setMap(contMap, viridisLite::viridis(n=8))
+plot(contMap)
