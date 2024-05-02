@@ -79,7 +79,7 @@ mpd_weighted_a <- mpd_weighted_a %>%
 mpd_weighted_a$Type <- c("MPD") #add column for metric type 
 mpd_weighted_a$Site <- c("Low elevation (2815 m)","Middle elevation (3165 m)",
                          "High elevation (3380 m)") #add column for site name 
-mpd_weighted_a$Weighting <- c("Weighted - abundance") #add column for weighting
+mpd_weighted_a$Weighting <- c("Weighted") #add column for weighting
 
 mntd_unweighted <- ses.mntd(community_matrix, cophenetic(pruned.tree), 
                             null.model = c("sample.pool"),
@@ -100,7 +100,7 @@ mntd_weighted_a <- mntd_weighted_a %>%
 mntd_weighted_a$Type <- c("MNTD") #add column for metric type 
 mntd_weighted_a$Site <- c("Low elevation (2815 m)","Middle elevation (3165 m)",
                           "High elevation (3380 m)") #add column for site name 
-mntd_weighted_a$Weighting <- c("Weighted - abundance") #add column for weighting
+mntd_weighted_a$Weighting <- c("Weighted") #add column for weighting
 
 ###combine abundance weighted dataframes####
 all_weighted_a <- rbind(mntd_weighted_a,mpd_weighted_a)
@@ -121,7 +121,7 @@ mpd_weighted_rs <- mpd_weighted_rs %>%
 mpd_weighted_rs$Type <- c("MPD") #add column for metric type 
 mpd_weighted_rs$Site <- c("Low elevation (2815 m)","Middle elevation (3165 m)",
                          "High elevation (3380 m)") #add column for site name 
-mpd_weighted_rs$Weighting <- c("Weighted - Range size") #add column for weighting
+mpd_weighted_rs$Weighting <- c("Weighted") #add column for weighting
 
 ###mntd####
 mntd_weighted_rs <- ses.mntd(rangesize_matrix, cophenetic(pruned.tree), 
@@ -139,7 +139,7 @@ mntd_weighted_rs <- mntd_weighted_rs %>%
 mntd_weighted_rs$Type <- c("MNTD") #add column for metric type 
 mntd_weighted_rs$Site <- c("Low elevation (2815 m)","Middle elevation (3165 m)",
                           "High elevation (3380 m)") #add column for site name 
-mntd_weighted_rs$Weighting <- c("Weighted - Range size") #add column for weighting
+mntd_weighted_rs$Weighting <- c("Weighted") #add column for weighting
 
 #combine range size and unweighted datasets
 all_weighted_rs <- rbind(mpd_weighted_rs,mntd_weighted_rs)
@@ -149,7 +149,7 @@ combo_rs <- rbind(all_unweighted,all_weighted_rs)
 ###abundance fig#####
 all_df$Site <- factor(all_df$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
 
-ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) + 
+fig_weighting_a <- ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
@@ -162,7 +162,7 @@ ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) +
 
 combo_rs$Site <- factor(combo_rs$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
 
-ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) + 
+fig_weighting_rs <- ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) + 
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
@@ -171,3 +171,8 @@ ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) +
   ylim(-1,2) +
   facet_wrap(Site ~ .)
 
+#combine 
+weighting_fig <- fig_weighting_a / fig_weighting_rs + 
+  plot_annotation(tag_levels = c('A'), tag_suffix = ')')+
+  plot_layout(guides = 'collect')
+plot(weighting_fig)
