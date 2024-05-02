@@ -1,4 +1,6 @@
-#calculate phylogenetic diversity of abundance and range size
+#calculate phylogenetic signal of abundance and range size, also 
+#contains code for figure 2 A-B
+
 library(tidyverse)
 library(dplyr)
 library(picante)
@@ -7,6 +9,7 @@ library(ape)
 library(phytools)
 library(viridis)
 library(viridisLite)
+library(patchwork)
 
 #import S&B phylogeny--------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
@@ -104,7 +107,7 @@ fitContinuous(pruned.tree.range, rangesize_df, SE = 0, model = c("lambda"),
                                              niter = 500000, FAIL = 1e+200, hessian = FALSE, CI = 0.95), ncores=NULL)
 
 #make phylogeny with traits mapped on----------
-##abundance####
+#abundance-----
 ##make community data matrix#### 
 allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/comm_matrix_forfig.txt", 
                              sep = "\t", header = T, row.names = 1)
@@ -134,3 +137,33 @@ abundance_log <- log(abundance, base = 10)
 contMap_log <- contMap(pruned.tree.forfig, abundance_log, res=100, plot=FALSE)
 contMap_log <- setMap(contMap_log, viridisLite::viridis(n=8))
 plot(contMap_log)
+
+#range size phylogeny-------------
+##make community data matrix#### 
+allsitesmatrix_rs <- read.table("comm_phylo_analyses/Phylogenetic_signal/rangesize_comm_matrix.txt", 
+                             sep = "\t", header = T, row.names = 1)
+
+##prune tree#####
+pruned.tree.forfig.rs <- treedata(SBtree, unlist(allsitesmatrix_rs[1,allsitesmatrix_rs[1,]>0]),warnings = F)$phy
+plot(pruned.tree.forfig.rs)
+is.rooted(pruned.tree.rs)
+
+#trait data
+rangesize_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/range_size_results.csv")
+rangesize_df = subset(rangesize_df, select = -c(EOO) )
+rangesize_df <- rangesize_df[-c(44),]
+rangesize_df <- rangesize_df %>% 
+  rename(trait_value = AOO)
+rangesize_df <- rangesize_df %>% remove_rownames %>% column_to_rownames(var="Species")
+rangesize_df <- df2vec(rangesize_df, colID=1)
+
+
+##test log value of abundance###
+rangesize_log <- log(rangesize_df, base = 10)
+
+contMap_log_rs <- contMap(pruned.tree.forfig.rs, rangesize_log, res=100, plot=FALSE)
+contMap_log_rs <- setMap(contMap_log_rs, viridisLite::viridis(n=8))
+plot(contMap_log_rs)
+
+#combine phylogenies
+patchwork <- contMap_log_rs + contMap_log
