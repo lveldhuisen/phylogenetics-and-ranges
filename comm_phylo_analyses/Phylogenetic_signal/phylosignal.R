@@ -103,7 +103,8 @@ fitContinuous(pruned.tree.range, rangesize_df, SE = 0, model = c("lambda"),
               bounds= list(), control = list(method = c("subplex","L-BFGS-B"), 
                                              niter = 500000, FAIL = 1e+200, hessian = FALSE, CI = 0.95), ncores=NULL)
 
-#make phylogeny with abundance mapped on----------
+#make phylogeny with traits mapped on----------
+##abundance####
 ##make community data matrix#### 
 allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/comm_matrix_forfig.txt", 
                              sep = "\t", header = T, row.names = 1)
@@ -128,7 +129,7 @@ contMap <- setMap(contMap, viridisLite::viridis(n=8))
 plot(contMap)
 
 ##test log value of abundance###
-abundance_log <- log(abundance)
+abundance_log <- log(abundance, base = 10)
 
 contMap_log <- contMap(pruned.tree.forfig, abundance_log, res=100, plot=FALSE)
 contMap_log <- setMap(contMap_log, viridisLite::viridis(n=8))
