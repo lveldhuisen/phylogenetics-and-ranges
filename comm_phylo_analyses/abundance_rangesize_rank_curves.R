@@ -34,5 +34,5 @@ plot(fig_rs)
 
 #combine
 curve <- fig_ab / fig_rs +  
-  plot_annotation(tag_levels = c('A'))
+  plot_annotation(tag_levels = c('A'), tag_suffix = ')')
 plot(curve)
