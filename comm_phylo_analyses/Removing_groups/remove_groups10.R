@@ -20,20 +20,20 @@ is.rooted(SBtree)
 
 #PBM------------
 ##make community data matrix#### 
-PBM_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/PBM_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+PBM_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matrices/PBM_removing10_abundance.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,PBM_abundance_matrix[32,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(PBM_groups_matrix[24,PBM_groups_matrix[24,]>0]), warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
 ###PD#####
-PD_PBM_abundance_removal <- ses.pd(PBM_abundance_matrix, pruned.tree, null.model = c("sample.pool"),
+PD_PBM_group_removal <- ses.pd(PBM_groups_matrix, pruned.tree, null.model = c("sample.pool"),
                                    runs = 5000, include.root=TRUE) #all PBM PD is SES is 0.57
 
-PD_PBM_abundance_removal <- PD_PBM_abundance_removal[-c(32,33),]
-PD_PBM_abundance_removal$Abundance_rank <- c(1:31)
+PD_PBM_group_removal <- PD_PBM_group_removal[-c(22,23),]
+PD_PBM_group_removal$Group_removed <- c(1:20)
 
 PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.57, yend=pd.obs.z), color="grey")+
