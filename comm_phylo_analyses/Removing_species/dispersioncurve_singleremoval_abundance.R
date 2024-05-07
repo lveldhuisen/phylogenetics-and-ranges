@@ -22,7 +22,7 @@ is.rooted(SBtree)
 
 #PBM------------
 ##make community data matrix#### 
-PBM_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/PBM_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+PBM_abundance_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_matrices/PBM_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,PBM_abundance_matrix[32,]>0]), warnings = F)$phy
