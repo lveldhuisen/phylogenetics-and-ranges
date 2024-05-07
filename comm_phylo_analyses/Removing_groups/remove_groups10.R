@@ -144,6 +144,8 @@ plot(PD_Road_group_removal_fig)
 
 #combine into one dataset---------
 PD_groups_allsites <- rbind(PD_PBM_group_removal,PD_Pfeiler_group_removal,PD_Road_group_removal)
+PD_groups_allsites$Site = factor(PD_groups_allsites$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
+))
 
 #make faceted figure
 allsites_PD_groups <- ggplot(data= PD_groups_allsites) + 
