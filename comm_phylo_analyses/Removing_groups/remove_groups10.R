@@ -40,11 +40,13 @@ PD_PBM_group_removal <- ses.pd(PBM_groups_matrix, pruned.tree,
 PD_PBM_group_removal <- PD_PBM_group_removal[-c(23,24),]#remove all and all pbm rows
 PD_PBM_group_removal$Group_removed <- c(1:22) #add column for groups
 PD_PBM_group_removal$Site <- c("High elevation (3380 m)") #add column for site 
+PD_PBM_group_removal$Baseline_PD <- c(0.89) #add column for baseline PD for grey line in fig
 PD_PBM_group_removal = subset(PD_PBM_group_removal, 
                               select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
 PD_PBM_group_removal <- PD_PBM_group_removal %>% 
   rename(SES = pd.obs.z,
          P_value = pd.obs.p) #rename columns to match other datasets 
+
 
 #make individual figure 
 PD_PBM_group_removal_fig <- ggplot(data= PD_PBM_group_removal) + 
@@ -81,6 +83,7 @@ PD_Pfeiler_group_removal <- ses.pd(Pfeiler_groups_matrix, pruned.tree,
 PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal[-c(18,19),]
 PD_Pfeiler_group_removal$Group_removed <- c(1:17)
 PD_Pfeiler_group_removal$Site <- c("Middle elevation (3165 m)") #add column for site 
+PD_Pfeiler_group_removal$Baseline_PD <- c(-0.36) #add column for baseline PD for grey line in fig
 PD_Pfeiler_group_removal = subset(PD_Pfeiler_group_removal, 
                               select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
 PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal %>% 
@@ -119,6 +122,7 @@ PD_Road_group_removal <- ses.pd(Road_groups_matrix, pruned.tree,
 
 PD_Road_group_removal <- PD_Road_group_removal[-c(24,25),]
 PD_Road_group_removal$Group_removed <- c(1:23)
+PD_Road_group_removal$Baseline_PD <- c(-0.17) #add column for baseline PD for grey line in fig
 PD_Road_group_removal$Site <- c("Low elevation (2815 m)") #add column for site 
 PD_Road_group_removal = subset(PD_Road_group_removal, 
                                   select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
@@ -140,3 +144,16 @@ plot(PD_Road_group_removal_fig)
 
 #combine into one dataset---------
 PD_groups_allsites <- rbind(PD_PBM_group_removal,PD_Pfeiler_group_removal,PD_Road_group_removal)
+
+#make faceted figure
+allsites_PD_groups <- ggplot(data= PD_groups_allsites) + 
+  geom_segment( aes(x=Group_removed, xend=Group_removed, yend=SES, y=Baseline_PD), color="grey")+
+  geom_point(mapping = aes(x=Group_removed, y=SES), size = 2) +
+  xlab("Abundance rank of group of removed species (most to least)") +
+  ylab("Standard effect size") +
+  scale_y_continuous(name="Standard effect size", breaks = c(-2,-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5,2),limits=c(-2, 2))+
+  theme_bw(14) +
+  xlim(0,23) +
+  geom_abline(data = PD_groups_allsites, aes(intercept = Baseline_PD, slope = 0)) +
+  facet_grid(.~Site)
+plot(allsites_PD_groups)
