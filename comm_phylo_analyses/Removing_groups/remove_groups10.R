@@ -100,4 +100,43 @@ PD_Pfeiler_group_removal_fig <- ggplot(data= PD_Pfeiler_group_removal) +
 plot(PD_Pfeiler_group_removal_fig)
 
 #Road-------------
+##make community data matrix#### 
+Road_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matrices/Road_groups10_matrix_abundance.txt", sep = "\t", header = T, row.names = 1)
 
+##prune tree#####
+pruned.tree <- treedata(SBtree, 
+                        unlist(Road_groups_matrix[25,Road_groups_matrix[25,]>0]), 
+                        warnings = F)$phy
+write.tree(pruned.tree)
+plot(pruned.tree)
+is.rooted(pruned.tree)
+
+###PD#######
+PD_Road_group_removal <- ses.pd(Road_groups_matrix, pruned.tree, 
+                                   null.model = c("sample.pool"),
+                                   runs = 5000, include.root=TRUE) #all Road PD SES is -0.17
+
+
+PD_Road_group_removal <- PD_Road_group_removal[-c(24,25),]
+PD_Road_group_removal$Group_removed <- c(1:23)
+PD_Road_group_removal$Site <- c("Low elevation (2815 m)") #add column for site 
+PD_Road_group_removal = subset(PD_Road_group_removal, 
+                                  select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
+PD_Road_group_removal <- PD_Road_group_removal %>% 
+  rename(SES = pd.obs.z,
+         P_value = pd.obs.p) #rename columns to match other datasets 
+
+#make individual figure
+PD_Road_group_removal_fig <- ggplot(data= PD_Road_group_removal) + 
+  geom_segment( aes(x=Group_removed, xend=Group_removed, y=-0.17, yend=SES), color="grey")+
+  geom_point(mapping = aes(x=Group_removed, y=SES), size = 2) +
+  xlab("Group of species removed") +
+  ylab("SES PD") +
+  scale_y_continuous(name="SES PD", breaks = c(-2,-1.5,-1,-0.5,0, 1, 0.5, 1,1.5),limits=c(-2, 1.5))+
+  theme_classic(14) +
+  geom_hline(yintercept = -0.17, col = "lightgrey") +
+  xlim(0,23) 
+plot(PD_Road_group_removal_fig)
+
+#combine into one dataset---------
+PD_groups_allsites <- rbind(PD_PBM_group_removal,PD_Pfeiler_group_removal,PD_Road_group_removal)
