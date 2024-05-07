@@ -37,9 +37,16 @@ PD_PBM_group_removal <- ses.pd(PBM_groups_matrix, pruned.tree,
                                    runs = 5000, include.root=TRUE) #all PBM PD SES is 0.89
 
 
-PD_PBM_group_removal <- PD_PBM_group_removal[-c(23,24),]
-PD_PBM_group_removal$Group_removed <- c(1:22)
+PD_PBM_group_removal <- PD_PBM_group_removal[-c(23,24),]#remove all and all pbm rows
+PD_PBM_group_removal$Group_removed <- c(1:22) #add column for groups
+PD_PBM_group_removal$Site <- c("High elevation (3380 m)") #add column for site 
+PD_PBM_group_removal = subset(PD_PBM_group_removal, 
+                              select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
+PD_PBM_group_removal <- PD_PBM_group_removal %>% 
+  rename(SES = pd.obs.z,
+         P_value = pd.obs.p) #rename columns to match other datasets 
 
+#make individual figure 
 PD_PBM_group_removal_fig <- ggplot(data= PD_PBM_group_removal) + 
   geom_segment( aes(x=Group_removed, xend=Group_removed, y=0.89, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Group_removed, y=pd.obs.z), size = 2) +
@@ -73,7 +80,14 @@ PD_Pfeiler_group_removal <- ses.pd(Pfeiler_groups_matrix, pruned.tree,
 
 PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal[-c(18,19),]
 PD_Pfeiler_group_removal$Group_removed <- c(1:17)
+PD_Pfeiler_group_removal$Site <- c("Middle elevation (3165 m)") #add column for site 
+PD_Pfeiler_group_removal = subset(PD_Pfeiler_group_removal, 
+                              select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
+PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal %>% 
+  rename(SES = pd.obs.z,
+         P_value = pd.obs.p) #rename columns to match other datasets 
 
+#make individual figure
 PD_Pfeiler_group_removal_fig <- ggplot(data= PD_Pfeiler_group_removal) + 
   geom_segment( aes(x=Group_removed, xend=Group_removed, y=-0.36, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Group_removed, y=pd.obs.z), size = 2) +
@@ -84,3 +98,6 @@ PD_Pfeiler_group_removal_fig <- ggplot(data= PD_Pfeiler_group_removal) +
   geom_hline(yintercept = -0.36, col = "lightgrey") +
   xlim(0,18) 
 plot(PD_Pfeiler_group_removal_fig)
+
+#Road-------------
+
