@@ -154,7 +154,7 @@ allsites_PD_groups <- ggplot(data= PD_groups_allsites) +
   xlab("Abundance rank of group of removed species (most to least)") +
   ylab("Standard effect size") +
   scale_y_continuous(name="Standard effect size", breaks = c(-2,-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5,2),limits=c(-2, 2))+
-  theme_bw(14) +
+  theme_bw(base_size = 20) +
   xlim(0,23) +
   geom_abline(data = PD_groups_allsites, aes(intercept = Baseline_PD, slope = 0)) +
   facet_grid(.~Site)
