@@ -1,4 +1,4 @@
-# testing phylogenetic patterns for sub-communties based on range size and abundance 
+# testing how rare species contribute to phylogenetic diversity in a subalpine plant community 
 
 ACCESS INFORMATION
 1. MIT License
