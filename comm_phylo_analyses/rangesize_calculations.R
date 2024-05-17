@@ -1,7 +1,4 @@
 #calculate range size for all species in the community using previously built distribution models 
-install.packages("red")
-install.packages("rgbif")
-
 library(rgbif)
 library(dplyr)
 library(red)
@@ -44,6 +41,7 @@ species_occ <- df1
 points_species <- data.frame(species_occ[,c("decimalLongitude", "decimalLatitude")])
 
 #calculate AOO and EOO with red package----------------------------
+library(red)
 
 aoo(points_species)
 eoo(points_species)
