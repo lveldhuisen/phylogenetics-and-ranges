@@ -1,4 +1,5 @@
 #generate curves for rank abundance and rank range size 
+#code for Figure 1
 
 library(tidyverse)
 library(patchwork)
@@ -11,7 +12,6 @@ all_df$Site[all_df$Site=="PBM"]<-"High elevation (3380 m)"
 all_df$Site <- factor(all_df$Site,levels=c("Low elevation (2815 m)",
                                 "Middle elevation (3165 m)",
                                 "High elevation (3380 m)")) 
-
 
 #abundance---------
 fig_ab <- ggplot(all_df, aes(x=Mean_abundance)) + 
