@@ -16,15 +16,13 @@ Data files and variables (listed in the order they appear in the repository, not
     
     2. "abundance_rangesize_rank_curves.R" has the code for Figure 1. 
 
-    3. "Extra_analyses_not_in_manuscript" folder contains code for additional analyses that we did not incorporate in the manuscript at all (adding single species at a time in order of range size and abundance and binning species by range size and abundance to test for differences between groups; 6 R scripts total). 
+    3. "Removing_groups" folder contains the file "remove_groups10.R," which has the code for removing sets of 10 species and Fig. 5
 
-    4. "Removing_groups" folder contains the file "remove_groups10.R," which has the code for removing sets of 10 species and Fig. 5
+    4. "Abundance_weighting" folder contains the file "abundance_weighting.R," which has the code for testing abundance and range size weighted phylogenetic diversity metrics. This file also has the code for Fig. 3. 
 
-    5. "Abundance_weighting" folder contains the file "abundance_weighting.R," which has the code for testing abundance and range size weighted phylogenetic diversity metrics. This file also has the code for Fig. 3. 
+    5. "Phylogenetic_signal" folder contains the file "phylosignal.R," which has the code for testing for phylogenetic signal in abundance and range size. Also has code for Fig. 2. 
 
-    6. "Phylogenetic_signal" folder contains the file "phylosignal.R," which has the code for testing for phylogenetic signal in abundance and range size. Also has code for Fig. 2. 
-
-    7. "rangesize_calculations.R" has the code to calculate range size for a species. I did not functionalize this, so you have to input each individual species name to get the GBIF data and corresponding range size. 
+    6. "rangesize_calculations.R" has the code to calculate range size for a species. I did not functionalize this, so you have to input each individual species name to get the GBIF data and corresponding range size. 
 
 
 
