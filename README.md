@@ -30,17 +30,17 @@ Data files and variables (listed in the order they appear in the repository, not
 
 Code scripts and workflow - code should be run in order listed here. 
 
-    1. First, calculate the range size of each species in file #7, "rangesize_calculations.R." 
+    1. First, calculate the range size of each species in file #6, "rangesize_calculations.R." 
 
     2. Then, visualize the distributions of abundance and range size (Fig. 1) in file #2, "abundance_rangesize_rank_curves.R." 
 
-    3. Calculate phylogenetic signal for abundance and range size using file #6, "phylosignal.R." 
+    3. Calculate phylogenetic signal for abundance and range size using file #5, "phylosignal.R." 
 
-    4. Calculate weighted (by abundance and range) and unweighted phylogenetic diversity metrics using file #5, "abundance_weighting.R." 
+    4. Calculate weighted (by abundance and range) and unweighted phylogenetic diversity metrics using file #4, "abundance_weighting.R." 
 
     5. Test the impact of removing individual species by abundance with file #1, "dispersioncurve_singleremoval_abundance.R." 
 
-    6. Test the impact of removing sets of 10 species grouped by abundance with file #4, "remove_groups10.R." 
+    6. Test the impact of removing sets of 10 species grouped by abundance with file #3, "remove_groups10.R." 
 
 
 SOFTWARE VERSIONS
