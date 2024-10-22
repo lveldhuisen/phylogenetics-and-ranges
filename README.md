@@ -7,7 +7,9 @@ ACCESS INFORMATION
 
 DATA & CODE FILE OVERVIEW
 
-This data repository consists of 5 folders containing 7 code scripts (not including the 6 unused analysis scripts) within the file titled "comm_phylo_analyses," and this README document.
+Code for all analyses is in the folder titled "comm_phylo_analyses."
+
+This data repository consists of 5 folders containing 7 code scripts (not including the 6 unused analysis scripts) within the folder titled "comm_phylo_analyses," and this README document.
 
 
 Data files and variables (listed in the order they appear in the repository, not in the order they appear in the manuscript)
