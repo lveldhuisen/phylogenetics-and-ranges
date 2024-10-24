@@ -18,6 +18,9 @@ fig_ab <- ggplot(all_df, aes(x=Mean_abundance)) +
   geom_density()+
   facet_grid(~Site)+
   theme_bw()+
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 20))+
   xlab("Mean abundance 2021-2022")
 plot(fig_ab)
 
@@ -27,8 +30,12 @@ fig_rs <- ggplot(all_df, aes(x=AOO..km2.))+
   facet_grid(~Site)+
   scale_x_continuous(name = 'Area of occupancy (km2)', 
                      limits = c(0,500000),
-                   breaks = c(10,500,1000,100000,500000))+
-  theme_bw()
+                   breaks = c(1000,100000,500000),
+                   labels=scales::label_scientific())+
+  theme_bw()+
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 20),
+        strip.text = element_text(size = 20))
   
 plot(fig_rs)
 
