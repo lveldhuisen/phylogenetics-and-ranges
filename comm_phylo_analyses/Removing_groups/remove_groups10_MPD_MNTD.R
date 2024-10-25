@@ -34,7 +34,7 @@ is.rooted(pruned.tree)
 ###PD#####
 PD_PBM_group_removal <- ses.pd(PBM_groups_matrix, pruned.tree, 
                                null.model = c("sample.pool"),
-                                   runs = 5000, include.root=TRUE) #all PBM PD SES is 0.89
+                               runs = 5000, include.root=TRUE) #all PBM PD SES is 0.89
 
 
 PD_PBM_group_removal <- PD_PBM_group_removal[-c(23,24),]#remove all and all pbm rows
@@ -76,8 +76,8 @@ is.rooted(pruned.tree)
 
 ###PD#####
 PD_Pfeiler_group_removal <- ses.pd(Pfeiler_groups_matrix, pruned.tree, 
-                               null.model = c("sample.pool"),
-                               runs = 5000, include.root=TRUE) #all Pfeiler PD SES is -0.36
+                                   null.model = c("sample.pool"),
+                                   runs = 5000, include.root=TRUE) #all Pfeiler PD SES is -0.36
 
 
 PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal[-c(18,19),]
@@ -85,7 +85,7 @@ PD_Pfeiler_group_removal$Group_removed <- c(1:17)
 PD_Pfeiler_group_removal$Site <- c("Middle elevation (3165 m)") #add column for site 
 PD_Pfeiler_group_removal$Baseline_PD <- c(-0.36) #add column for baseline PD for grey line in fig
 PD_Pfeiler_group_removal = subset(PD_Pfeiler_group_removal, 
-                              select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
+                                  select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
 PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal %>% 
   rename(SES = pd.obs.z,
          P_value = pd.obs.p) #rename columns to match other datasets 
@@ -116,8 +116,8 @@ is.rooted(pruned.tree)
 
 ###PD#######
 PD_Road_group_removal <- ses.pd(Road_groups_matrix, pruned.tree, 
-                                   null.model = c("sample.pool"),
-                                   runs = 5000, include.root=TRUE) #all Road PD SES is -0.17
+                                null.model = c("sample.pool"),
+                                runs = 5000, include.root=TRUE) #all Road PD SES is -0.17
 
 
 PD_Road_group_removal <- PD_Road_group_removal[-c(24,25),]
@@ -125,7 +125,7 @@ PD_Road_group_removal$Group_removed <- c(1:23)
 PD_Road_group_removal$Baseline_PD <- c(-0.17) #add column for baseline PD for grey line in fig
 PD_Road_group_removal$Site <- c("Low elevation (2815 m)") #add column for site 
 PD_Road_group_removal = subset(PD_Road_group_removal, 
-                                  select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
+                               select = -c(ntaxa,pd.obs,pd.rand.mean,pd.rand.sd,pd.obs.rank,runs)) #remove extra columns
 PD_Road_group_removal <- PD_Road_group_removal %>% 
   rename(SES = pd.obs.z,
          P_value = pd.obs.p) #rename columns to match other datasets 
