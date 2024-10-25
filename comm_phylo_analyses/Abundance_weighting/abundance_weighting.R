@@ -19,8 +19,7 @@ plot(pruned.tree)
 
 ##make community data matrices 
 #unweighted comparison
-community_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_unweighted.txt", 
-                                        sep = "\t", header = T, row.names = 1)
+community_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_unweighted.txt", sep = "\t", header = T, row.names = 1)
 
 #weighted by abundance
 abundance_matrix_weighted <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_weighted_abundance.txt", sep = "\t", header = T, row.names = 1)
@@ -153,10 +152,13 @@ fig_weighting_a <- ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) +
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
-  theme_light() + 
+  theme_light(base_size = 20) + 
   scale_fill_viridis_d(begin = 0.2, end = 0.8) + 
   ylim(-1,2) +
-  facet_wrap(Site ~ .)
+  facet_wrap(Site ~ .)+
+  theme(strip.text = element_text(color = "black"))
+
+plot(fig_weighting_a)
 
 ###range size fig####
 
@@ -166,10 +168,11 @@ fig_weighting_rs <- ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) +
   geom_bar(position = "dodge",stat = "identity") +
   xlab("Phylogenetic metric") + 
   ylab("Standard effect size")+
-  theme_light() + 
+  theme_light(base_size = 20) + 
   scale_fill_viridis_d(begin = 0.2, end = 0.8) + 
   ylim(-1,2) +
-  facet_wrap(Site ~ .)
+  facet_wrap(Site ~ .)+
+  theme(strip.text = element_text(color = "black"))
 
 #combine 
 weighting_fig <- fig_weighting_a / fig_weighting_rs + 

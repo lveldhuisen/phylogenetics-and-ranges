@@ -18,8 +18,7 @@ write.tree(SBtree)
 is.rooted(SBtree)
 
 ##make community data matrix#### 
-allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/species_matrix_fortree.txt", 
-                                   sep = "\t", header = T, row.names = 1)
+allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/species_matrix_fortree.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, unlist(allsitesmatrix[2,allsitesmatrix[2,]>0]),
@@ -34,7 +33,7 @@ specieslist <- as.data.frame(specieslist)
 ##Blomberg's K#####
 ###abundance#####
 ###make trait dataframe####
-abundance_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/abundance_trait_data.csv")
+abundance_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/abundance_trait_data_new.csv")
 
 abundance_df = subset(abundance_df, select = -c(X, X.1, X.2) )
 
