@@ -25,130 +25,125 @@ is.rooted(SBtree)
 PBM_abundance_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_matrices/PBM_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[32,PBM_abundance_matrix[32,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[37,PBM_abundance_matrix[37,]>0]), warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
-###PD#####
-PD_PBM_abundance_removal <- ses.pd(PBM_abundance_matrix, pruned.tree, null.model = c("sample.pool"),
-                               runs = 5000, include.root=TRUE) #all PBM PD is SES is 0.57
+specieslist <- pruned.tree$tip.label
+specieslist <- as.data.frame(specieslist)
 
-PD_PBM_abundance_removal <- PD_PBM_abundance_removal[-c(32,33),]
-PD_PBM_abundance_removal$Abundance_rank <- c(1:31)
+
+###PD#####
+PD_PBM_abundance_removal <- ses.pd(PBM_abundance_matrix, pruned.tree, null.model = c("sample.pool"),runs = 5000, include.root=TRUE) #all PBM PD is SES is 0.612
+
+PD_PBM_abundance_removal <- PD_PBM_abundance_removal[-c(37,38),]
+PD_PBM_abundance_removal$Abundance_rank <- c(1:36)
 
 PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.57, yend=pd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.61, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
   scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = 0.57, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = 0.61, col = "lightgrey") +
+  xlim(0,36) 
 plot(PD_PBM_abundance_removal_fig)
 
 ###MPD########
-MPD_PBM_abundance_removal <- ses.mpd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
-                                 abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all PBM MPD is SES is 0.9
+MPD_PBM_abundance_removal <- ses.mpd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all PBM MPD is SES is 0.84
 
-MPD_PBM_abundance_removal <- ses.mpd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
-        abundance.weighted = FALSE, runs = 5000, iterations = 5000)
-
-
-MPD_PBM_abundance_removal <- MPD_PBM_abundance_removal[-c(32,33),]
-MPD_PBM_abundance_removal$Abundance_rank <- c(1:31)
+MPD_PBM_abundance_removal <- MPD_PBM_abundance_removal[-c(37,38),]
+MPD_PBM_abundance_removal$Abundance_rank <- c(1:36)
 
 MPD_PBM_abundance_removal_fig <- ggplot(data= MPD_PBM_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.9, yend=mpd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.84, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MPD") +
   scale_y_continuous(name="SES MPD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5)) +
   theme_classic(14) +
-  geom_hline(yintercept = 0.9, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = 0.84, col = "lightgrey") +
+  xlim(0,36) 
 plot(MPD_PBM_abundance_removal_fig)
 
 ###MNTD######
-MNTD_PBM_abundance_removal <- ses.mntd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
-                                   abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all PBM MNTD is SES is 0.12
+MNTD_PBM_abundance_removal <- ses.mntd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all PBM MNTD is SES is 0.04
 
-MNTD_PBM_abundance_removal <- MNTD_PBM_abundance_removal[-c(32,33),]
-MNTD_PBM_abundance_removal$Abundance_rank <- c(1:31)
+MNTD_PBM_abundance_removal <- MNTD_PBM_abundance_removal[-c(37,38),]
+MNTD_PBM_abundance_removal$Abundance_rank <- c(1:36)
 
 MNTD_PBM_abundance_removal_fig <- ggplot(data= MNTD_PBM_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.12, yend=mntd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.04, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
   scale_y_continuous(name="SES MNTD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = 0.12, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = 0.04, col = "lightgrey") +
+  xlim(0,36) 
 plot(MNTD_PBM_abundance_removal_fig)
 
 #Pfeiler--------
 ##make community data matrix#### 
-Pfeiler_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/Pfeiler_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+Pfeiler_abundance_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_matrices/Pfeiler_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(Pfeiler_abundance_matrix[28,Pfeiler_abundance_matrix[28,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(Pfeiler_abundance_matrix[31,Pfeiler_abundance_matrix[31,]>0]), warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
 ###PD#####
-PD_Pfeiler_abundance_removal <- ses.pd(Pfeiler_abundance_matrix, pruned.tree, null.model = c("sample.pool"),
-                                   runs = 5000, include.root=TRUE) #all Pfeiler PD is SES is -0.6
+PD_Pfeiler_abundance_removal <- ses.pd(Pfeiler_abundance_matrix, pruned.tree, null.model = c("sample.pool"),runs = 5000, include.root=TRUE) #all Pfeiler PD is SES is -1.3
 
-PD_Pfeiler_abundance_removal$Abundance_rank <- c(1:28)
-PD_Pfeiler_abundance_removal <- PD_Pfeiler_abundance_removal[-c(27,28),]
+PD_Pfeiler_abundance_removal <- PD_Pfeiler_abundance_removal[-c(30,31),]
+PD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29)
+
 
 PD_Pfeiler_abundance_removal_fig <- ggplot(data= PD_Pfeiler_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.6, yend=pd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1.3, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
+  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.8, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = -0.6, col = "lightgrey") +
-  xlim(0,28) 
+  geom_hline(yintercept = -1.3, col = "lightgrey") +
+  xlim(0,29) 
 plot(PD_Pfeiler_abundance_removal_fig)
 
 ###MPD########
-MPD_Pfeiler_abundance_removal <- ses.mpd(Pfeiler_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
-                                     abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Pfeiler MPD is SES is 0.02
+MPD_Pfeiler_abundance_removal <- ses.mpd(Pfeiler_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Pfeiler MPD is SES is -0.5
 
-MPD_Pfeiler_abundance_removal <- MPD_Pfeiler_abundance_removal[-c(27,28),]
-MPD_Pfeiler_abundance_removal$Abundance_rank <- c(1:26)
+MPD_Pfeiler_abundance_removal <- MPD_Pfeiler_abundance_removal[-c(30,31),]
+MPD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29)
 
 MPD_Pfeiler_abundance_removal_fig <- ggplot(data= MPD_Pfeiler_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.02, yend=mpd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.5, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   scale_y_continuous(name="SES MPD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = 0.02, col = "lightgrey") +
-  xlim(0,28) 
+  geom_hline(yintercept = -0.5, col = "lightgrey") +
+  xlim(0,29) 
 plot(MPD_Pfeiler_abundance_removal_fig)
 
 ###MNTD######
-MNTD_Pfeiler_abundance_removal <- ses.mntd(Pfeiler_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
-                                       abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all Pfeiler MNTD is SES is -1.04
+MNTD_Pfeiler_abundance_removal <- ses.mntd(Pfeiler_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all Pfeiler MNTD is SES is -1.3
 
-MNTD_Pfeiler_abundance_removal <- MNTD_Pfeiler_abundance_removal[-c(27,28),]
-MNTD_Pfeiler_abundance_removal$Abundance_rank <- c(1:26)
+MNTD_Pfeiler_abundance_removal <- MNTD_Pfeiler_abundance_removal[-c(30,31),]
+MNTD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29)
 
 MNTD_Pfeiler_abundance_removal_fig <- ggplot(data= MNTD_Pfeiler_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1.05, yend=mntd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1.3, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
-  scale_y_continuous(name="SES MNTD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
+  scale_y_continuous(name="SES MNTD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.9, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = -1.05, col = "lightgrey") +
-  xlim(0,28) 
+  geom_hline(yintercept = -1.3, col = "lightgrey") +
+  xlim(0,29) 
 plot(MNTD_Pfeiler_abundance_removal_fig)
 
 #Road--------------
