@@ -147,66 +147,64 @@ MNTD_Pfeiler_abundance_removal_fig <- ggplot(data= MNTD_Pfeiler_abundance_remova
 plot(MNTD_Pfeiler_abundance_removal_fig)
 
 #Road--------------
-Road_abundance_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/Road_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+Road_abundance_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_matrices/Road_abundance_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(Road_abundance_matrix[34,Road_abundance_matrix[34,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(Road_abundance_matrix[41,Road_abundance_matrix[41,]>0]), warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
 ###PD#####
-PD_Road_abundance_removal <- ses.pd(Road_abundance_matrix, pruned.tree, null.model = c("sample.pool"),
-                                       runs = 5000, include.root=TRUE) #all Road PD is SES is -0.01
+PD_Road_abundance_removal <- ses.pd(Road_abundance_matrix, pruned.tree, null.model = c("sample.pool"),runs = 5000, include.root=TRUE) #all Road PD is SES is -0.05
 
-PD_Road_abundance_removal$Abundance_rank <- c(1:34)
-PD_Road_abundance_removal <- PD_Road_abundance_removal[-c(33,34),]
+PD_Road_abundance_removal <- PD_Road_abundance_removal[-c(40,41),]
+PD_Road_abundance_removal$Abundance_rank <- c(1:39)
+
 
 PD_Road_abundance_removal_fig <- ggplot(data= PD_Road_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0, yend=pd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.05, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES PD") +
   scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = 0, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = -0.05, col = "lightgrey") +
+  xlim(0,39) 
 plot(PD_Road_abundance_removal_fig)
 
 ###MPD########
-MPD_Road_abundance_removal <- ses.mpd(Road_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
-                                         abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Road MPD is SES is -0.99
+MPD_Road_abundance_removal <- ses.mpd(Road_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Road MPD is SES is -0.86
 
-MPD_Road_abundance_removal <- MPD_Road_abundance_removal[-c(33,34),]
-MPD_Road_abundance_removal$Abundance_rank <- c(1:32)
+MPD_Road_abundance_removal <- MPD_Road_abundance_removal[-c(40,41),]
+MPD_Road_abundance_removal$Abundance_rank <- c(1:39)
 
 MPD_Road_abundance_removal_fig <- ggplot(data= MPD_Road_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1, yend=mpd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.86, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MPD") +
   scale_y_continuous(name="SES MPD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = -1, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = -0.86, col = "lightgrey") +
+  xlim(0,39) 
 plot(MPD_Road_abundance_removal_fig)
 
 ###MNTD######
-MNTD_Road_abundance_removal <- ses.mntd(Road_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
-                                           abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all Road MNTD is SES is 0.015
+MNTD_Road_abundance_removal <- ses.mntd(Road_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all Road MNTD is SES is 0.33
 
-MNTD_Road_abundance_removal <- MNTD_Road_abundance_removal[-c(33,34),]
-MNTD_Road_abundance_removal$Abundance_rank <- c(1:32)
+MNTD_Road_abundance_removal <- MNTD_Road_abundance_removal[-c(40,41),]
+MNTD_Road_abundance_removal$Abundance_rank <- c(1:39)
 
 MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) + 
-  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.015, yend=mntd.obs.z), color="grey")+
+  geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.33, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("SES MNTD") +
   scale_y_continuous(name="SES MNTD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
-  geom_hline(yintercept = 0.015, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = 0.33, col = "lightgrey") +
+  xlim(0,39) 
 plot(MNTD_Road_abundance_removal_fig)
 
 #Durbin-Watson test for autocorrelation----------
@@ -336,7 +334,7 @@ road <- rbind(PD_Road_abundance_removal, MPD_Road_abundance_removal, MNTD_Road_a
 all_sites_abundance_df <- rbind(pbm, pfeiler, road)
 
 ##make one figure with facet wrapping####
-dummy <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.57, -0.6, -0.01, 0.9, 0.02, -0.99, 0.12, -1.04, 0.015, 0.57, -0.6, -0.01, 0.9, 0.02, -0.99, 0.12, -1.04, 0.015, 0.57, -0.6, -0.01, 0.9, 0.02, -0.99, 0.12, -1.04, 0.015))
+dummy <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.61, -1.3, -0.05, 0.84, -0.5, -0.86, 0.04, -1.3, 0.33, 0.61, -1.3, -0.05, 0.84, -0.5, -0.86, 0.04, -1.3, 0.33, 0.61, -1.3, -0.05, 0.84, -0.5, -0.86, 0.04, -1.3, 0.33))
 
 dummy <- dummy[-c(10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), ] 
 
@@ -352,8 +350,8 @@ ggplot(data= test) +
   geom_point(mapping = aes(x=Abundance_rank, y=SES), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("Standard effect size") +
-  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
+  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.9, 1.5))+
   theme_bw(14) +
-  xlim(0,32) +
+  xlim(0,39) +
   geom_abline(data = test, aes(intercept = Z, slope = 0)) +
   facet_grid(Type~Site_f)
