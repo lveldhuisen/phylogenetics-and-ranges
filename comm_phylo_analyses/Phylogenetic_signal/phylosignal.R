@@ -56,11 +56,10 @@ phylosig(pruned.tree, abundance_df, method="K", test=TRUE, nsim=5000,
 
 ###range size######
 ##make community data matrix#### 
-allsitesmatrix_range <- read.table("comm_phylo_analyses/Phylogenetic_signal/rangesize_comm_matrix.txt", 
-                             sep = "\t", header = T, row.names = 1)
+allsitesmatrix_range <- read.table("comm_phylo_analyses/Phylogenetic_signal/rangesize_matrix.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree.range <- treedata(SBtree, unlist(allsitesmatrix_range[1,allsitesmatrix_range[1,]>0]),
+pruned.tree <- treedata(SBtree, unlist(allsitesmatrix_range[1,allsitesmatrix_range[1,]>0]),
                         warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
@@ -71,11 +70,7 @@ specieslist <- as.data.frame(specieslist)
 
 #get range size data
 rangesize_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/range_size_results.csv")
-
-rangesize_df = subset(rangesize_df, select = -c(EOO) )
-
-rangesize_df <- rangesize_df[-c(67:89), ]
-
+colnames(rangesize_df)[colnames(rangesize_df) == 'AOO..km2.'] <- 'AOO'
 rangesize_df <- rangesize_df %>%
   group_by(Species) %>%
   summarise(across(c(AOO), sum))
@@ -86,7 +81,7 @@ rangesize_df <- rangesize_df %>% remove_rownames %>% column_to_rownames(var="Spe
 rangesize_df <- df2vec(rangesize_df, colID=1)
 
 ###calculate signal#####
-phylosignal(rangesize_df, pruned.tree.range, reps = 5000, checkdata = TRUE)
+phylosignal(rangesize_df, pruned.tree, reps = 5000, checkdata = TRUE)
 
 ##pagels lambda####
 ###abundance######
@@ -112,7 +107,7 @@ allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/comm_matri
                              sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree.forfig <- treedata(SBtree, unlist(allsitesmatrix[1,allsitesmatrix[1,]>0]),
+pruned.tree.forfig <- treedata(SBtree, unlist(allsitesmatrix[2,allsitesmatrix[2,]>0]),
                         warnings = F)$phy
 plot(pruned.tree.forfig)
 is.rooted(pruned.tree)

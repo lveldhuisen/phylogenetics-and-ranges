@@ -6,7 +6,7 @@ library(red)
 #download data from GBIF--------------------------
 
 #get taxon key 
-name_backbone("Achillea_millefolium")
+name_backbone("Rumex_densiflorus")
 
 #download occurrence data from GBIF directly
 
@@ -15,14 +15,14 @@ occ_download(
   pred("hasCoordinate", TRUE),
   pred("occurrenceStatus","PRESENT"),
   pred_gte("year",1990),
-  pred("taxonKey",3120060),
+  pred("taxonKey",2888957),
   format = "SIMPLE_CSV",
   user="leah.veldhuisen", 
   pwd="Columbia2305", 
   email="leah.veldhuisen@gmail.com"
 )
 
-d <- occ_download_get('0016277-231120084113126') %>%
+d <- occ_download_get('0009396-241024112534372') %>%
   occ_download_import()
 
 ##clean up data list to only have species name, lat and long##############
