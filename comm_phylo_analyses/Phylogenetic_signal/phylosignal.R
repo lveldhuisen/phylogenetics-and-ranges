@@ -35,7 +35,8 @@ specieslist <- as.data.frame(specieslist)
 ###make trait dataframe####
 abundance_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/abundance_trait_data_new.csv")
 
-abundance_df = subset(abundance_df, select = -c(X, X.1, X.2) )
+colnames(abundance_df)[colnames(abundance_df) == 'X'] <- 'Species'
+colnames(abundance_df)[colnames(abundance_df) == 'x'] <- 'Mean_abundance'
 
 abundance_df <- abundance_df %>%
   group_by(Species) %>%

@@ -17,6 +17,9 @@ is.rooted(SBtree)
 pruned.tree <- treedata(SBtree, unlist(community_matrix[4,community_matrix[4,]>0]), warnings = F)$phy
 plot(pruned.tree)
 
+specieslist <- SBtree$tip.label
+specieslist <- as.data.frame(specieslist)
+
 ##make community data matrices 
 #unweighted comparison
 community_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_unweighted.txt", sep = "\t", header = T, row.names = 1)
