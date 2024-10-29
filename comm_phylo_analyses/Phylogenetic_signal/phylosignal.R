@@ -112,6 +112,9 @@ pruned.tree.forfig <- treedata(SBtree, unlist(allsitesmatrix[2,allsitesmatrix[2,
 plot(pruned.tree.forfig)
 is.rooted(pruned.tree)
 
+specieslist <- pruned.tree$tip.label
+specieslist <- as.data.frame(specieslist)
+
 #trait data
 abundance <- read.csv("comm_phylo_analyses/Phylogenetic_signal/abundance_trait_data_new.csv")
 abundance <- abundance %>% 
