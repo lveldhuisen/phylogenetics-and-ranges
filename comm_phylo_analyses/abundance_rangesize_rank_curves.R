@@ -5,7 +5,7 @@ library(tidyverse)
 library(patchwork)
 
 #bring in data
-all_df <- read.csv("big_results_all.csv")
+all_df <- read.csv("comm_phylo_analyses/results_all.csv")
 all_df$Site[all_df$Site=="Road"]<-"Low elevation (2815 m)"
 all_df$Site[all_df$Site=="Pfeiler"]<-"Middle elevation (3165 m)"
 all_df$Site[all_df$Site=="PBM"]<-"High elevation (3380 m)"

@@ -107,7 +107,7 @@ allsitesmatrix <- read.table("comm_phylo_analyses/Phylogenetic_signal/comm_matri
                              sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree.forfig <- treedata(SBtree, unlist(allsitesmatrix[2,allsitesmatrix[2,]>0]),
+pruned.tree.forfig <- treedata(SBtree, unlist(allsitesmatrix[1,allsitesmatrix[1,]>0]),
                         warnings = F)$phy
 plot(pruned.tree.forfig)
 is.rooted(pruned.tree)
@@ -147,8 +147,7 @@ is.rooted(pruned.tree.rs)
 
 #trait data
 rangesize_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/range_size_results.csv")
-rangesize_df = subset(rangesize_df, select = -c(EOO) )
-rangesize_df <- rangesize_df[-c(44),]
+colnames(rangesize_df)[colnames(rangesize_df) == 'AOO..km2.'] <- 'AOO'
 rangesize_df <- rangesize_df %>% 
   rename(trait_value = AOO)
 rangesize_df <- rangesize_df %>% remove_rownames %>% column_to_rownames(var="Species")
