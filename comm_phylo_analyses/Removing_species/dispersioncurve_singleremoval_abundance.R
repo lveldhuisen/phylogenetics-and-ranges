@@ -208,11 +208,11 @@ MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) +
 plot(MNTD_Road_abundance_removal_fig)
 
 #Durbin-Watson test for autocorrelation----------
-model <- lm(pd.obs.z ~ Abundance_rank, data = PD_Road_abundance_removal)
-durbinWatsonTest(model, max.lag = 4)
+model <- lm(pd.obs.z ~ Abundance_rank, data = PD_Pfeiler_abundance_removal)
+durbinWatsonTest(model, max.lag = 3)
 
 #combine figures using patchwork
-fig3_pbm <- (PD_PBM_abundance_removal_fig | MPD_PBM_abundance_removal_fig | MNTD_PBM_abundance_removal_fig) +
+fig3_pbm <- (PD_PBM_abundance_removal_fig | PD_PBM_abundance_removal_fig | MNTD_PBM_abundance_removal_fig) +
   plot_layout(axis_titles = "collect")+
   plot_annotation(title = "High elevation (3380 m)")
 fig3_pbm

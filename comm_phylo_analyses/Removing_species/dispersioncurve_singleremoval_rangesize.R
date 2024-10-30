@@ -1,7 +1,6 @@
 #code to generate curves of phylogenetic dispersion while removing 1 species at a time, ranked by decreasing range size 
 #will result in an individual impact on PD/MPD/MNTD for each species 
 
-install.packages("patchwork")
 library(tidyverse)
 library(dplyr)
 library(picante)
@@ -22,12 +21,11 @@ is.rooted(SBtree)
 
 #PBM----------
 ##make community data matrix#### 
-PBM_range_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/
-                               comm_matrices/PBMrangesize_comm_matrix_removal.txt", 
+PBM_range_matrix <- read.table("Removing_species/comm_matrices/PBMrangesize_comm_matrix_removal.txt", 
                                sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(PBM_range_matrix[33,PBM_range_matrix[33,]>0]), 
+pruned.tree <- treedata(SBtree, unlist(PBM_range_matrix[38,PBM_range_matrix[38,]>0]), 
                         warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
@@ -36,136 +34,133 @@ is.rooted(pruned.tree)
 co_matrix <- cophenetic(pruned.tree)
 
 ###PD#####
-ses.pd(PBM_range_matrix, pruned.tree, null.model = c("sample.pool"),
-       runs = 5000, include.root=TRUE)
-
 PD_PBM_range_removal <- ses.pd(PBM_range_matrix, pruned.tree, 
                                null.model = c("sample.pool"),
-                    runs = 5000, include.root=TRUE)
+                    runs = 5000, include.root=TRUE) #all PBM PD is SES is 0.61
 
-PD_PBM_range_removal$Range_size_rank <- c(1:31)
-#all PBM PD is SES is 0.91
-PD_PBM_range_removal <- PD_PBM_range_removal[-c(32,33),]
+PD_PBM_range_removal <- PD_PBM_range_removal[-c(37,38),]
+PD_PBM_range_removal$Range_size_rank <- c(1:36)
 
 PD_PBM_rangesize_removal_fig <- ggplot(data= PD_PBM_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.90, yend=PD_PBM_range_removal$pd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.61, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES PD") +
   ylim(-0.5,2) +
   theme_classic(14) +
-  geom_hline(yintercept = 0.91, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = 0.61, col = "lightgrey") +
+  xlim(0,36) 
 plot(PD_PBM_rangesize_removal_fig)
 
 
 ###MPD#####
 MPD_PBM_range_removal <- ses.mpd(PBM_range_matrix, co_matrix, null.model = c("sample.pool"), 
         abundance.weighted = FALSE, runs = 5000, iterations = 5000)
+#all PBM MPD is SES is 0.93
 
-#all PBM MPD is SES is 1.25
-MPD_PBM_range_removal <- MPD_PBM_range_removal[-c(32,33),]
-MPD_PBM_range_removal$Range_size_rank <- c(1:31)
+MPD_PBM_range_removal <- MPD_PBM_range_removal[-c(37,38),]
+MPD_PBM_range_removal$Range_size_rank <- c(1:36)
 
 MPD_PBM_range_removal_fig <- ggplot(data= MPD_PBM_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=1.25, yend=mpd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.93,yend= mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=mpd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES MPD") +
   ylim(0,2) +
   theme_classic(14) +
-  geom_hline(yintercept = 1.25, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = 0.93, col = "lightgrey") +
+  xlim(0,36)
 plot(MPD_PBM_range_removal_fig)
 
 ###MNTD####
 MNTD_PBM_range_removal <- ses.mntd(PBM_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
                         abundance.weighted=FALSE, runs = 5000, iterations = 5000)
-#all PBM MNTD is SES is 0.3
-MNTD_PBM_range_removal <- MNTD_PBM_range_removal[-c(32,33),]
-MNTD_PBM_range_removal$Range_size_rank <- c(1:31)
+#all PBM MNTD is SES is -0.03
+MNTD_PBM_range_removal <- MNTD_PBM_range_removal[-c(37,38),]
+MNTD_PBM_range_removal$Range_size_rank <- c(1:36)
 
 MNTD_PBM_range_removal_fig <- ggplot(data= MNTD_PBM_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.3, yend=mntd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.03, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=mntd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES MNTD") +
   ylim(-1,1) +
   theme_classic(14) +
-  geom_hline(yintercept = 0.3, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = -0.03, col = "lightgrey") +
+  xlim(0,36) 
 plot(MNTD_PBM_range_removal_fig)
 
 #Pfeiler--------
-Pfeiler_range_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/Pfeiler_ranges_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+Pfeiler_range_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_matrices/Pfeiler_ranges_comm_matrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(Pfeiler_range_matrix[28,Pfeiler_range_matrix[28,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(Pfeiler_range_matrix[31,Pfeiler_range_matrix[31,]>0]), warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
 ###PD#####
-PD_Pfeiler_range_removal <- ses.pd(Pfeiler_range_matrix, pruned.tree, null.model = c("sample.pool"),
-                               runs = 5000, include.root=TRUE)
-PD_Pfeiler_range_removal <- PD_Pfeiler_range_removal[-c(27),]
-PD_Pfeiler_range_removal$Range_size_rank <- c(1:26)
-#all Pfeiler  PD is SES is -0.6
+PD_Pfeiler_range_removal <- ses.pd(Pfeiler_range_matrix, pruned.tree, null.model = c("sample.pool"), runs = 5000, include.root=TRUE) #all Pfeiler  PD is SES is -1.3
+
+PD_Pfeiler_range_removal <- PD_Pfeiler_range_removal[-c(30,31),]
+PD_Pfeiler_range_removal$Range_size_rank <- c(1:29)
 
 
 PD_Pfeiler_rangesize_removal_fig <- ggplot(data= PD_Pfeiler_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.6, yend=pd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-1.3, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=pd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES PD") +
-  ylim(-1,0.5) +
+  ylim(-2,0.5) +
   theme_classic(14) +
-  geom_hline(yintercept = -0.6, col = "lightgrey") +
-  xlim(0,28) 
+  geom_hline(yintercept = -1.3, col = "lightgrey") +
+  xlim(0,29) 
 
 plot(PD_Pfeiler_rangesize_removal_fig)
 
 ###MPD#####
 MPD_Pfeiler_range_removal <- ses.mpd(Pfeiler_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted = FALSE, runs = 5000, iterations = 5000)
 
-#all Pfeiler MPD is SES is -0.1
-MPD_Pfeiler_range_removal <- MPD_Pfeiler_range_removal[-c(27),]
-MPD_Pfeiler_range_removal$Range_size_rank <- c(1:27)
+#all Pfeiler MPD is SES is -0.6
+
+MPD_Pfeiler_range_removal <- MPD_Pfeiler_range_removal[-c(30,31),]
+MPD_Pfeiler_range_removal$Range_size_rank <- c(1:29)
 
 MPD_Pfeiler_range_removal_fig <- ggplot(data= MPD_Pfeiler_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.1, yend=mpd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.6, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=mpd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES MPD") +
-  ylim(-1,1) +
+  ylim(-1.2,1) +
   theme_classic(14) +
-  geom_hline(yintercept = -0.1, col = "lightgrey") +
-  xlim(0,28) 
+  geom_hline(yintercept = -0.6, col = "lightgrey") +
+  xlim(0,29) 
 plot(MPD_Pfeiler_range_removal_fig)
 
 ###MNTD####
 MNTD_Pfeiler_range_removal <- ses.mntd(Pfeiler_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted=FALSE, runs = 5000, iterations = 5000)
 
-#all Pfeiler MNTD is SES is -1.06
-MNTD_Pfeiler_range_removal <- MNTD_Pfeiler_range_removal[-c(27:29),]
-MNTD_Pfeiler_range_removal$Range_size_rank <- c(1:26)
+#all Pfeiler MNTD is SES is -1.41
+
+MNTD_Pfeiler_range_removal <- MNTD_Pfeiler_range_removal[-c(30,31),]
+MNTD_Pfeiler_range_removal$Range_size_rank <- c(1:29)
 
 MNTD_Pfeiler_range_removal_fig <- ggplot(data= MNTD_Pfeiler_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-1.06, yend=mntd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-1.41, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=mntd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES MNTD") +
   ylim(-2,1) +
   theme_classic(14) +
-  geom_hline(yintercept = -1.06, col = "lightgrey") +
-  xlim(0,28) 
+  geom_hline(yintercept = -1.41, col = "lightgrey") +
+  xlim(0,29) 
 plot(MNTD_Pfeiler_range_removal_fig)
 
 #Road-------
-Road_range_matrix <- read.table("comm_phylo_analyses/Pred3_removingspecies/comm_matrices/Road_range_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
+Road_range_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_matrices/Road_range_commmatrix_removal.txt", sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
-pruned.tree <- treedata(SBtree, unlist(Road_range_matrix[34,Road_range_matrix[34,]>0]), warnings = F)$phy
+pruned.tree <- treedata(SBtree, unlist(Road_range_matrix[41,Road_range_matrix[41,]>0]), warnings = F)$phy
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -173,10 +168,11 @@ is.rooted(pruned.tree)
 ###PD#####
 PD_Road_range_removal <- ses.pd(Road_range_matrix, pruned.tree, null.model = c("sample.pool"),
                                    runs = 5000, include.root=TRUE)
-
-PD_Road_range_removal <- PD_Road_range_removal[-c(33,34),]
-PD_Road_range_removal$Range_size_rank <- c(1:32)
 #all Road  PD is SES is 0
+
+PD_Road_range_removal <- PD_Road_range_removal[-c(40,41),]
+PD_Road_range_removal$Range_size_rank <- c(1:39)
+
 
 PD_Road_rangesize_removal_fig <- ggplot(data= PD_Road_range_removal) + 
   geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0, yend=pd.obs.z), color="grey")+
@@ -186,44 +182,44 @@ PD_Road_rangesize_removal_fig <- ggplot(data= PD_Road_range_removal) +
   ylim(-1,0.5) +
   theme_classic(14) +
   geom_hline(yintercept = 0, col = "lightgrey") +
-  xlim(0,33) 
+  xlim(0,39) 
 
 plot(PD_Road_rangesize_removal_fig)
 
 ###MPD####
-MPD_Road_range_removal <- ses.mpd(Road_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), 
-                                     abundance.weighted = FALSE, runs = 5000, iterations = 5000)
+MPD_Road_range_removal <- ses.mpd(Road_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted = FALSE, runs = 5000, iterations = 5000)
+#all Road MPD is SES is -0.76
 
-#all Road MPD is SES is -0.89
-MPD_Road_range_removal <- MPD_Road_range_removal[-c(33,34),]
-MPD_Road_range_removal$Range_size_rank <- c(1:32)
+MPD_Road_range_removal <- MPD_Road_range_removal[-c(40,41),]
+MPD_Road_range_removal$Range_size_rank <- c(1:39)
 
 MPD_Road_range_removal_fig <- ggplot(data= MPD_Road_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.89, yend=mpd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=-0.76, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=mpd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES MPD") +
   ylim(-1.5,0.5) +
   theme_classic(14) +
-  geom_hline(yintercept = -0.89, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = -0.76, col = "lightgrey") +
+  xlim(0,39) 
 plot(MPD_Road_range_removal_fig)
 
 ###MNTD#####
 MNTD_Road_range_removal <- ses.mntd(Road_range_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),)
-                                    #all Road MNTD is SES is 0.15
-MNTD_Road_range_removal <- MNTD_Road_range_removal[-c(33,34),]
-MNTD_Road_range_removal$Range_size_rank <- c(1:32)
+ #all Road MNTD is SES is 0.42
+
+MNTD_Road_range_removal <- MNTD_Road_range_removal[-c(40,41),]
+MNTD_Road_range_removal$Range_size_rank <- c(1:39)
 
 MNTD_Road_range_removal_fig <- ggplot(data= MNTD_Road_range_removal) + 
-  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.15, yend=mntd.obs.z), color="grey")+
+  geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, y=0.42, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=mntd.obs.z), size = 2) +
   xlab("Range size rank of removed species (largest to smallest)") +
   ylab("SES MNTD") +
   ylim(-1,1) +
   theme_classic(14) +
-  geom_hline(yintercept = 0.15, col = "lightgrey") +
-  xlim(0,32) 
+  geom_hline(yintercept = 0.42, col = "lightgrey") +
+  xlim(0,39) 
 plot(MNTD_Road_range_removal_fig)
 
 
@@ -356,7 +352,10 @@ road_range <- rbind(PD_Road_range_removal, MPD_Road_range_removal, MNTD_Road_ran
 all_sites_range_df <- rbind(pbm_range, pfeiler_range, road_range)
 
 ##make one figure with facet wrapping####
-dummy_range <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.91, -0.6, 0, 1.25, -0.1, -0.89, 0.3, -1.06, 0.015,0.91, -0.6, 0, 1.25, -0.1, -0.89, 0.3, -1.06, 0.015, 0.91, -0.6, 0, 1.25, -0.1, -0.89, 0.3, -1.06, 0.015))
+dummy_range <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.61, -1.3, 0,
+        0.93, -0.6, -0.76, -0.03, -1.41, 0.42,0.61, -1.3, 0,
+        0.93, -0.6, -0.76, -0.03, -1.41, 0.42,0.61, -1.3, 0,
+        0.93, -0.6, -0.76, -0.03, -1.41, 0.42))
 
 dummy_range <- dummy_range[-c(10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), ] 
 
@@ -372,8 +371,9 @@ ggplot(data= test_range) +
   geom_point(mapping = aes(x=Range_size_rank, y=SES), size = 2) +
   xlab("Range size rank of removed species (biggest to smallest)") +
   ylab("Standard effect size") +
-  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.6))+
+  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-2, 1.4))+
   theme_bw(14) +
-  xlim(0,32) +
+  xlim(0,39) +
   geom_abline(data = test_range, aes(intercept = Z, slope = 0)) +
   facet_grid(Type~Site_f)
+
