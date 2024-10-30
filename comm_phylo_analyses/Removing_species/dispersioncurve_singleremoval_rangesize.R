@@ -21,7 +21,7 @@ is.rooted(SBtree)
 
 #PBM----------
 ##make community data matrix#### 
-PBM_range_matrix <- read.table("Removing_species/comm_matrices/PBMrangesize_comm_matrix_removal.txt", 
+PBM_range_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_matrices/PBMrangesize_comm_matrix_removal.txt", 
                                sep = "\t", header = T, row.names = 1)
 
 ##prune tree#####
@@ -224,7 +224,7 @@ plot(MNTD_Road_range_removal_fig)
 
 
 #Durbin-Watson test for autocorrelation----------
-model <- lm(mntd.obs.z ~ Range_size_rank, data = MNTD_PBM_range_removal)
+model <- lm(pd.obs.z ~ Range_size_rank, data = PD_Road_range_removal)
 durbinWatsonTest(model, max.lag = 3)
 
 #make combined figure using patchwork
