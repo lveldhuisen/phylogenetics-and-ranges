@@ -1,4 +1,4 @@
-install.packages("car")
+#code for removing single species ranked by abundance, Fig 4
 
 library(tidyverse)
 library(dplyr)
@@ -12,8 +12,6 @@ library(janitor)
 library(patchwork)
 library(car)
 
-#code to generate curves of phylogenetic dispersion while removing 1 species at a time, ranked by decreasing abundance 
-
 #import S&B phylogeny--------------------
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
 SBtree <- read.tree(file = "ALLMB.tre")
@@ -26,20 +24,21 @@ PBM_abundance_matrix <- read.table("comm_phylo_analyses/Removing_species/comm_ma
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, unlist(PBM_abundance_matrix[37,PBM_abundance_matrix[37,]>0]), warnings = F)$phy
+
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
-
 specieslist <- pruned.tree$tip.label
 specieslist <- as.data.frame(specieslist)
-
 
 ###PD#####
 PD_PBM_abundance_removal <- ses.pd(PBM_abundance_matrix, pruned.tree, null.model = c("sample.pool"),runs = 5000, include.root=TRUE) #all PBM PD is SES is 0.612
 
-PD_PBM_abundance_removal <- PD_PBM_abundance_removal[-c(37,38),]
-PD_PBM_abundance_removal$Abundance_rank <- c(1:36)
+PD_PBM_abundance_removal <- PD_PBM_abundance_removal[-c(37,38),] #remove 'all' rows
+PD_PBM_abundance_removal$Abundance_rank <- c(1:36) #rank species by abundance in new column
 
+#figure
 PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.61, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
@@ -49,14 +48,16 @@ PD_PBM_abundance_removal_fig <- ggplot(data= PD_PBM_abundance_removal) +
   theme_classic(14) +
   geom_hline(yintercept = 0.61, col = "lightgrey") +
   xlim(0,36) 
+
 plot(PD_PBM_abundance_removal_fig)
 
 ###MPD########
 MPD_PBM_abundance_removal <- ses.mpd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all PBM MPD is SES is 0.84
 
-MPD_PBM_abundance_removal <- MPD_PBM_abundance_removal[-c(37,38),]
-MPD_PBM_abundance_removal$Abundance_rank <- c(1:36)
+MPD_PBM_abundance_removal <- MPD_PBM_abundance_removal[-c(37,38),] #remove 'all' rows
+MPD_PBM_abundance_removal$Abundance_rank <- c(1:36) #rank species by abundance in new column
 
+#figure
 MPD_PBM_abundance_removal_fig <- ggplot(data= MPD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.84, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
@@ -71,9 +72,10 @@ plot(MPD_PBM_abundance_removal_fig)
 ###MNTD######
 MNTD_PBM_abundance_removal <- ses.mntd(PBM_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all PBM MNTD is SES is 0.04
 
-MNTD_PBM_abundance_removal <- MNTD_PBM_abundance_removal[-c(37,38),]
-MNTD_PBM_abundance_removal$Abundance_rank <- c(1:36)
+MNTD_PBM_abundance_removal <- MNTD_PBM_abundance_removal[-c(37,38),] #remove 'all' rows
+MNTD_PBM_abundance_removal$Abundance_rank <- c(1:36) #rank species by abundance in new column
 
+#figure
 MNTD_PBM_abundance_removal_fig <- ggplot(data= MNTD_PBM_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.04, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
@@ -98,10 +100,10 @@ is.rooted(pruned.tree)
 ###PD#####
 PD_Pfeiler_abundance_removal <- ses.pd(Pfeiler_abundance_matrix, pruned.tree, null.model = c("sample.pool"),runs = 5000, include.root=TRUE) #all Pfeiler PD is SES is -1.3
 
-PD_Pfeiler_abundance_removal <- PD_Pfeiler_abundance_removal[-c(30,31),]
-PD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29)
+PD_Pfeiler_abundance_removal <- PD_Pfeiler_abundance_removal[-c(30,31),] #remove 'all' rows
+PD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29) #rank species by abundance in new column
 
-
+#figure
 PD_Pfeiler_abundance_removal_fig <- ggplot(data= PD_Pfeiler_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1.3, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
@@ -116,9 +118,10 @@ plot(PD_Pfeiler_abundance_removal_fig)
 ###MPD########
 MPD_Pfeiler_abundance_removal <- ses.mpd(Pfeiler_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Pfeiler MPD is SES is -0.5
 
-MPD_Pfeiler_abundance_removal <- MPD_Pfeiler_abundance_removal[-c(30,31),]
-MPD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29)
+MPD_Pfeiler_abundance_removal <- MPD_Pfeiler_abundance_removal[-c(30,31),] #remove 'all' rows
+MPD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29) #rank species by abundance in new column
 
+#figure
 MPD_Pfeiler_abundance_removal_fig <- ggplot(data= MPD_Pfeiler_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.5, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
@@ -132,9 +135,10 @@ plot(MPD_Pfeiler_abundance_removal_fig)
 ###MNTD######
 MNTD_Pfeiler_abundance_removal <- ses.mntd(Pfeiler_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all Pfeiler MNTD is SES is -1.3
 
-MNTD_Pfeiler_abundance_removal <- MNTD_Pfeiler_abundance_removal[-c(30,31),]
-MNTD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29)
+MNTD_Pfeiler_abundance_removal <- MNTD_Pfeiler_abundance_removal[-c(30,31),] #remove 'all' rows
+MNTD_Pfeiler_abundance_removal$Abundance_rank <- c(1:29) #rank species by abundance in new column
 
+#figure
 MNTD_Pfeiler_abundance_removal_fig <- ggplot(data= MNTD_Pfeiler_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-1.3, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
@@ -158,10 +162,10 @@ is.rooted(pruned.tree)
 ###PD#####
 PD_Road_abundance_removal <- ses.pd(Road_abundance_matrix, pruned.tree, null.model = c("sample.pool"),runs = 5000, include.root=TRUE) #all Road PD is SES is -0.05
 
-PD_Road_abundance_removal <- PD_Road_abundance_removal[-c(40,41),]
-PD_Road_abundance_removal$Abundance_rank <- c(1:39)
+PD_Road_abundance_removal <- PD_Road_abundance_removal[-c(40,41),] #remove 'all' rows
+PD_Road_abundance_removal$Abundance_rank <- c(1:39) #rank species by abundance in new column
 
-
+#figure
 PD_Road_abundance_removal_fig <- ggplot(data= PD_Road_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.05, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
@@ -176,9 +180,10 @@ plot(PD_Road_abundance_removal_fig)
 ###MPD########
 MPD_Road_abundance_removal <- ses.mpd(Road_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Road MPD is SES is -0.86
 
-MPD_Road_abundance_removal <- MPD_Road_abundance_removal[-c(40,41),]
-MPD_Road_abundance_removal$Abundance_rank <- c(1:39)
+MPD_Road_abundance_removal <- MPD_Road_abundance_removal[-c(40,41),] #remove 'all' rows
+MPD_Road_abundance_removal$Abundance_rank <- c(1:39) #rank species by abundance in new column
 
+#figure
 MPD_Road_abundance_removal_fig <- ggplot(data= MPD_Road_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.86, yend=mpd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mpd.obs.z), size = 2) +
@@ -193,9 +198,10 @@ plot(MPD_Road_abundance_removal_fig)
 ###MNTD######
 MNTD_Road_abundance_removal <- ses.mntd(Road_abundance_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted=FALSE, runs = 5000, iterations = 5000) #all Road MNTD is SES is 0.33
 
-MNTD_Road_abundance_removal <- MNTD_Road_abundance_removal[-c(40,41),]
-MNTD_Road_abundance_removal$Abundance_rank <- c(1:39)
+MNTD_Road_abundance_removal <- MNTD_Road_abundance_removal[-c(40,41),] #remove 'all' rows
+MNTD_Road_abundance_removal$Abundance_rank <- c(1:39) #rank species by abundance in new column
 
+#figure
 MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.33, yend=mntd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=mntd.obs.z), size = 2) +
@@ -205,16 +211,18 @@ MNTD_Road_abundance_removal_fig <- ggplot(data= MNTD_Road_abundance_removal) +
   theme_classic(14) +
   geom_hline(yintercept = 0.33, col = "lightgrey") +
   xlim(0,39) 
+
 plot(MNTD_Road_abundance_removal_fig)
 
 #Durbin-Watson test for autocorrelation----------
 model <- lm(pd.obs.z ~ Abundance_rank, data = PD_Pfeiler_abundance_removal)
 durbinWatsonTest(model, max.lag = 3)
 
-#combine figures using patchwork
+#combine figures using patchwork, not used in final figures
 fig3_pbm <- (PD_PBM_abundance_removal_fig | PD_PBM_abundance_removal_fig | MNTD_PBM_abundance_removal_fig) +
   plot_layout(axis_titles = "collect")+
   plot_annotation(title = "High elevation (3380 m)")
+
 fig3_pbm
 
 fig3_pfeiler <- (PD_Pfeiler_abundance_removal_fig | MPD_Pfeiler_abundance_removal_fig | MNTD_Pfeiler_abundance_removal_fig)+
@@ -325,26 +333,36 @@ MNTD_Road_abundance_removal$Type <- c("MNTD") #add column for metric type
 MNTD_Road_abundance_removal$Site <- c("Low elevation (2815 m)") #add column for site name 
 
 ##combine into one big dataset####
-pbm <- rbind(PD_PBM_abundance_removal, MPD_PBM_abundance_removal, MNTD_PBM_abundance_removal)
+pbm <- rbind(PD_PBM_abundance_removal, MPD_PBM_abundance_removal, 
+             MNTD_PBM_abundance_removal)
 
 pfeiler <- rbind(PD_Pfeiler_abundance_removal, MPD_Pfeiler_abundance_removal, MNTD_Pfeiler_abundance_removal)
 
-road <- rbind(PD_Road_abundance_removal, MPD_Road_abundance_removal, MNTD_Road_abundance_removal)
+road <- rbind(PD_Road_abundance_removal, MPD_Road_abundance_removal, 
+              MNTD_Road_abundance_removal)
 
 all_sites_abundance_df <- rbind(pbm, pfeiler, road)
 
 ##make one figure with facet wrapping####
+
+#make dataframe with sites, phylogenetic metrics and the whole community value
+#of that metric to use as baseline in figure
+
 dummy <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.61, -1.3, -0.05, 0.84, -0.5, -0.86, 0.04, -1.3, 0.33, 0.61, -1.3, -0.05, 0.84, -0.5, -0.86, 0.04, -1.3, 0.33, 0.61, -1.3, -0.05, 0.84, -0.5, -0.86, 0.04, -1.3, 0.33))
 
+#remove extra rows
 dummy <- dummy[-c(10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), ] 
 
+#join baseline 'dummy' data with species removal data
 test <- left_join(all_sites_abundance_df, dummy, by = c("Site","Type"))
 test$Site = factor(test$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
 ))
 
+#reorder sites by elevation
 test$Site_f = factor(test$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
 ))
 
+#figure
 ggplot(data= test) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, yend=SES, y=Z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=SES), size = 2) +

@@ -1,4 +1,5 @@
-#removing groups of 10 species by abundance 
+#removing groups of 10 species by abundance to test MPD and MNTD
+#Figure S5 in Appendix 5
 
 library(tidyverse)
 library(dplyr)
@@ -25,8 +26,9 @@ PBM_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matric
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, 
-                        unlist(PBM_groups_matrix[29,PBM_groups_matrix[29,]>0]), 
+                        unlist(PBM_groups_matrix[29,PBM_groups_matrix[29,]>0]),
                         warnings = F)$phy
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -36,7 +38,7 @@ MPD_PBM_group_removal <- ses.mpd(PBM_groups_matrix, cophenetic(pruned.tree),
                                null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all PBM MPD SES is 0.84
 
 
-MPD_PBM_group_removal <- MPD_PBM_group_removal[-c(28,29),]#remove all and all pbm rows
+MPD_PBM_group_removal <- MPD_PBM_group_removal[-c(28,29),] #remove 'all' rows
 MPD_PBM_group_removal$Group_removed <- c(1:27) #add column for groups
 MPD_PBM_group_removal$Site <- c("High elevation (3380 m)") #add column for site 
 MPD_PBM_group_removal$Baseline_MPD <- c(0.84) #add column for baseline PD for grey line in fig
@@ -57,6 +59,7 @@ MPD_PBM_group_removal_fig <- ggplot(data= MPD_PBM_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = 0.84, col = "lightgrey") +
   xlim(0,27) 
+
 plot(MPD_PBM_group_removal_fig)
 
 
@@ -69,19 +72,20 @@ Pfeiler_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_ma
 pruned.tree <- treedata(SBtree, 
                         unlist(Pfeiler_groups_matrix[22,Pfeiler_groups_matrix[22,]>0]), 
                         warnings = F)$phy
-
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
 
+#make phylogenetic matrix for MPD analysis
 mpd_pfeiler_tree <- cophenetic(pruned.tree)
 
 ###MPD#####
 MPD_Pfeiler_group_removal <- ses.mpd(Pfeiler_groups_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000)
 #all Pfeiler MPD SES is -0.51
 
-MPD_Pfeiler_group_removal <- MPD_Pfeiler_group_removal[-c(21,22),]
-MPD_Pfeiler_group_removal$Group_removed <- c(1:20)
+MPD_Pfeiler_group_removal <- MPD_Pfeiler_group_removal[-c(21,22),] #remove 'all' rows
+MPD_Pfeiler_group_removal$Group_removed <- c(1:20) #number groups
 MPD_Pfeiler_group_removal$Site <- c("Middle elevation (3165 m)") #add column for site 
 MPD_Pfeiler_group_removal$Baseline_MPD <- c(-0.51) #add column for baseline PD for grey line in fig
 MPD_Pfeiler_group_removal = subset(MPD_Pfeiler_group_removal, 
@@ -101,6 +105,7 @@ MPD_Pfeiler_group_removal_fig <- ggplot(data= MPD_Pfeiler_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = -0.51, col = "lightgrey") +
   xlim(0,20) 
+
 plot(MPD_Pfeiler_group_removal_fig)
 
 #Road-------------
@@ -111,6 +116,7 @@ Road_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matri
 pruned.tree <- treedata(SBtree, 
                         unlist(Road_groups_matrix[32,Road_groups_matrix[32,]>0]), 
                         warnings = F)$phy
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -121,8 +127,8 @@ MPD_Road_group_removal <- ses.mpd(Road_groups_matrix, cophenetic(pruned.tree),
                                 abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Road PD SES is -0.85
 
 
-MPD_Road_group_removal <- MPD_Road_group_removal[-c(31,32),]
-MPD_Road_group_removal$Group_removed <- c(1:30)
+MPD_Road_group_removal <- MPD_Road_group_removal[-c(31,32),] #remove 'all' rows
+MPD_Road_group_removal$Group_removed <- c(1:30) #number groups in new column
 MPD_Road_group_removal$Baseline_MPD <- c(-0.85) #add column for baseline PD for grey line in fig
 MPD_Road_group_removal$Site <- c("Low elevation (2815 m)") #add column for site 
 MPD_Road_group_removal = subset(MPD_Road_group_removal, 
@@ -141,10 +147,14 @@ MPD_Road_group_removal_fig <- ggplot(data= MPD_Road_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = -0.85, col = "lightgrey") +
   xlim(0,30) 
+
 plot(MPD_Road_group_removal_fig)
 
 #combine into one dataset---------
+#combine all sites 
 MPD_groups_allsites <- rbind(MPD_PBM_group_removal,MPD_Pfeiler_group_removal,MPD_Road_group_removal)
+
+#reorder sites by elevatiom
 MPD_groups_allsites$Site = factor(MPD_groups_allsites$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
 ))
 
@@ -159,6 +169,7 @@ allsites_MPD_groups <- ggplot(data= MPD_groups_allsites) +
   xlim(0,30) +
   geom_abline(data = MPD_groups_allsites, aes(intercept = Baseline_MPD, slope = 0)) +
   facet_grid(.~Site)
+
 plot(allsites_MPD_groups)
 
 
@@ -171,6 +182,7 @@ PBM_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matric
 pruned.tree <- treedata(SBtree, 
                         unlist(PBM_groups_matrix[24,PBM_groups_matrix[24,]>0]), 
                         warnings = F)$phy
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -179,7 +191,7 @@ is.rooted(pruned.tree)
 MNTD_PBM_group_removal <- ses.mntd(PBM_groups_matrix, cophenetic(pruned.tree), 
                                  null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all PBM mntd SES is 0
 
-MNTD_PBM_group_removal <- MNTD_PBM_group_removal[-c(28,29),]#remove all and all pbm rows
+MNTD_PBM_group_removal <- MNTD_PBM_group_removal[-c(28,29),]#remove 'all' rows
 MNTD_PBM_group_removal$Group_removed <- c(1:27) #add column for groups
 MNTD_PBM_group_removal$Site <- c("High elevation (3380 m)") #add column for site 
 MNTD_PBM_group_removal$Baseline_MNTD <- c(0) #add column for baseline PD for grey line in fig
@@ -201,6 +213,7 @@ MNTD_PBM_group_removal_fig <- ggplot(data= MNTD_PBM_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = 0, col = "lightgrey") +
   xlim(0,27) 
+
 plot(MNTD_PBM_group_removal_fig)
 
 
@@ -213,6 +226,7 @@ Pfeiler_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_ma
 pruned.tree <- treedata(SBtree, 
                         unlist(Pfeiler_groups_matrix[19,Pfeiler_groups_matrix[19,]>0]), 
                         warnings = F)$phy
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -221,8 +235,8 @@ is.rooted(pruned.tree)
 MNTD_Pfeiler_group_removal <- ses.mntd(Pfeiler_groups_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = FALSE, runs = 5000, iterations = 5000)
 #all Pfeiler MPD SES is -1.35
 
-MNTD_Pfeiler_group_removal <- MNTD_Pfeiler_group_removal[-c(21, 22),]
-MNTD_Pfeiler_group_removal$Group_removed <- c(1:20)
+MNTD_Pfeiler_group_removal <- MNTD_Pfeiler_group_removal[-c(21, 22),] #remove 'all' rows
+MNTD_Pfeiler_group_removal$Group_removed <- c(1:20) #new column to number groups
 MNTD_Pfeiler_group_removal$Site <- c("Middle elevation (3165 m)") #add column for site 
 MNTD_Pfeiler_group_removal$Baseline_MNTD <- c(-1.35) #add column for baseline PD for grey line in fig
 MNTD_Pfeiler_group_removal = subset(MNTD_Pfeiler_group_removal, 
@@ -242,6 +256,7 @@ MNTD_Pfeiler_group_removal_fig <- ggplot(data= MNTD_Pfeiler_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = -1.35, col = "lightgrey") +
   xlim(0,20) 
+
 plot(MNTD_Pfeiler_group_removal_fig)
 
 #Road-------------
@@ -252,6 +267,7 @@ Road_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matri
 pruned.tree <- treedata(SBtree, 
                         unlist(Road_groups_matrix[25,Road_groups_matrix[25,]>0]), 
                         warnings = F)$phy
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -262,8 +278,8 @@ MNTD_Road_group_removal <- ses.mntd(Road_groups_matrix, cophenetic(pruned.tree),
                                   abundance.weighted = FALSE, runs = 5000, iterations = 5000) #all Road MNTD SES is 0.32
 
 
-MNTD_Road_group_removal <- MNTD_Road_group_removal[-c(31,32),]
-MNTD_Road_group_removal$Group_removed <- c(1:30)
+MNTD_Road_group_removal <- MNTD_Road_group_removal[-c(31,32),] #remove 'all' rows
+MNTD_Road_group_removal$Group_removed <- c(1:30) #add column to number groups
 MNTD_Road_group_removal$Baseline_MNTD <- c(0.32) #add column for baseline PD for grey line in fig
 MNTD_Road_group_removal$Site <- c("Low elevation (2815 m)") #add column for site 
 MNTD_Road_group_removal = subset(MNTD_Road_group_removal, 
@@ -283,12 +299,15 @@ MNTD_Road_group_removal_fig <- ggplot(data= MNTD_Road_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = 0.32, col = "lightgrey") +
   xlim(0,30) 
+
 plot(MNTD_Road_group_removal_fig)
 
 #combine into one dataset---------
+#combine all sites
 MNTD_groups_allsites <- rbind(MNTD_PBM_group_removal,MNTD_Pfeiler_group_removal,MNTD_Road_group_removal)
-MNTD_groups_allsites$Site = factor(MNTD_groups_allsites$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
-))
+
+#reorder sites by elevation
+MNTD_groups_allsites$Site = factor(MNTD_groups_allsites$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
 
 #make faceted figure
 allsites_MNTD_groups <- ggplot(data= MNTD_groups_allsites) + 
@@ -301,10 +320,12 @@ allsites_MNTD_groups <- ggplot(data= MNTD_groups_allsites) +
   xlim(0,30) +
   geom_abline(data = MNTD_groups_allsites, aes(intercept = Baseline_MNTD, slope = 0)) +
   facet_grid(.~Site)
+
 plot(allsites_MNTD_groups)
 
 #combine MPD and MNTD figures with patchwork------------
 MPD_MNTD_fig <- allsites_MPD_groups / allsites_MNTD_groups + 
   plot_annotation(tag_levels = c('A'), tag_suffix = ')')+
   plot_layout(guides = 'collect')
+
 plot(MPD_MNTD_fig)

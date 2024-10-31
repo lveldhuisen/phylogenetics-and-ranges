@@ -1,4 +1,4 @@
-#removing groups of 10 species by abundance 
+#removing groups of 10 species by abundance to test Faith's PD
 
 library(tidyverse)
 library(dplyr)
@@ -59,13 +59,13 @@ plot(PD_PBM_group_removal_fig)
 
 
 #Pfeiler-----------
-###PD#####
 ##make community data matrix#### 
 Pfeiler_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matrices/Pfeiler_group10_matrix_abundance.txt", sep = "\t", header = TRUE, row.names = 1)
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree,unlist(Pfeiler_groups_matrix[22,Pfeiler_groups_matrix[22,]>0]), 
                         warnings = F)$phy
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -76,8 +76,8 @@ PD_Pfeiler_group_removal <- ses.pd(Pfeiler_groups_matrix, pruned.tree,
                                runs = 5000, include.root=TRUE) #all Pfeiler PD SES is -1.3
 
 
-PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal[-c(21,22),]
-PD_Pfeiler_group_removal$Group_removed <- c(1:20)
+PD_Pfeiler_group_removal <- PD_Pfeiler_group_removal[-c(21,22),] #remove 'all' lines
+PD_Pfeiler_group_removal$Group_removed <- c(1:20) #number in order of abundance
 PD_Pfeiler_group_removal$Site <- c("Middle elevation (3165 m)") #add column for site 
 PD_Pfeiler_group_removal$Baseline_PD <- c(-1.3) #add column for baseline PD for grey line in fig
 PD_Pfeiler_group_removal = subset(PD_Pfeiler_group_removal, 
@@ -96,6 +96,7 @@ PD_Pfeiler_group_removal_fig <- ggplot(data= PD_Pfeiler_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = -1.3, col = "lightgrey") +
   xlim(0,20) 
+
 plot(PD_Pfeiler_group_removal_fig)
 
 #Road-------------
@@ -106,6 +107,7 @@ Road_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matri
 pruned.tree <- treedata(SBtree, 
                         unlist(Road_groups_matrix[32,Road_groups_matrix[32,]>0]), 
                         warnings = F)$phy
+#check tree
 write.tree(pruned.tree)
 plot(pruned.tree)
 is.rooted(pruned.tree)
@@ -116,8 +118,8 @@ PD_Road_group_removal <- ses.pd(Road_groups_matrix, pruned.tree,
                                    runs = 5000, include.root=TRUE) #all Road PD SES is -0.03
 
 
-PD_Road_group_removal <- PD_Road_group_removal[-c(31,32),]
-PD_Road_group_removal$Group_removed <- c(1:30)
+PD_Road_group_removal <- PD_Road_group_removal[-c(31,32),] #remove 'all' lines
+PD_Road_group_removal$Group_removed <- c(1:30) #number in order of abundance
 PD_Road_group_removal$Baseline_PD <- c(-0.03) #add column for baseline PD for grey line in fig
 PD_Road_group_removal$Site <- c("Low elevation (2815 m)") #add column for site 
 PD_Road_group_removal = subset(PD_Road_group_removal, 
@@ -136,10 +138,15 @@ PD_Road_group_removal_fig <- ggplot(data= PD_Road_group_removal) +
   theme_classic(14) +
   geom_hline(yintercept = -0.03, col = "lightgrey") +
   xlim(0,30) 
+
 plot(PD_Road_group_removal_fig)
 
 #combine into one dataset---------
+
+#combine
 PD_groups_allsites <- rbind(PD_PBM_group_removal,PD_Pfeiler_group_removal,PD_Road_group_removal)
+
+#order sites by elevation
 PD_groups_allsites$Site = factor(PD_groups_allsites$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
 ))
 
@@ -154,4 +161,5 @@ allsites_PD_groups <- ggplot(data= PD_groups_allsites) +
   xlim(0,30) +
   geom_abline(data = PD_groups_allsites, aes(intercept = Baseline_PD, slope = 0)) +
   facet_grid(.~Site)
+
 plot(allsites_PD_groups)

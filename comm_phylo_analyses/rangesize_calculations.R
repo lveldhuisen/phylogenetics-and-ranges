@@ -1,4 +1,5 @@
-#calculate range size for all species in the community using previously built distribution models 
+#calculate range size for all species in the community 
+
 library(rgbif)
 library(dplyr)
 library(red)
@@ -9,7 +10,6 @@ library(red)
 name_backbone("Rumex_densiflorus")
 
 #download occurrence data from GBIF directly
-
 occ_download(
   pred("hasGeospatialIssue", FALSE),
   pred("hasCoordinate", TRUE),
@@ -41,15 +41,8 @@ species_occ <- df1
 points_species <- data.frame(species_occ[,c("decimalLongitude", "decimalLatitude")])
 
 #calculate AOO and EOO with red package----------------------------
-library(red)
-
+#AOO
 aoo(points_species)
+
+#EOO
 eoo(points_species)
-
-
-#categorize range sizes---------------
-df <- read.csv("range_size_results.csv")
-df2 <- df[,-c(4)]
-clean_data <- subset(df2, !is.na(AOO))
-
-

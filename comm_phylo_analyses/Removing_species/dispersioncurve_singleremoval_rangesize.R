@@ -352,20 +352,27 @@ road_range <- rbind(PD_Road_range_removal, MPD_Road_range_removal, MNTD_Road_ran
 all_sites_range_df <- rbind(pbm_range, pfeiler_range, road_range)
 
 ##make one figure with facet wrapping####
+
+#make dataframe with sites, phylogenetic metrics and the whole community value
+#of that metric to use as baseline in figure
 dummy_range <- data.frame(Site = c("High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)", "High elevation (3380 m)", "Middle elevation (3165 m)","Low elevation (2815 m)"),Type = c("PD","PD","PD","MPD","MPD","MPD","MNTD","MNTD","MNTD"), Z = c(0.61, -1.3, 0,
         0.93, -0.6, -0.76, -0.03, -1.41, 0.42,0.61, -1.3, 0,
         0.93, -0.6, -0.76, -0.03, -1.41, 0.42,0.61, -1.3, 0,
         0.93, -0.6, -0.76, -0.03, -1.41, 0.42))
 
+#remove extra rows
 dummy_range <- dummy_range[-c(10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27), ] 
 
+#join baseline 'dummy' data with species removal data
 test_range <- left_join(all_sites_range_df, dummy_range, by = c("Site","Type"))
 test_range$Site = factor(test_range$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
 ))
 
+#reorder sites by elevation
 test_range$Site_f = factor(test_range$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"
 ))
 
+#figure
 ggplot(data= test_range) + 
   geom_segment( aes(x=Range_size_rank, xend=Range_size_rank, yend=SES, y=Z), color="grey")+
   geom_point(mapping = aes(x=Range_size_rank, y=SES), size = 2) +
@@ -376,4 +383,3 @@ ggplot(data= test_range) +
   xlim(0,39) +
   geom_abline(data = test_range, aes(intercept = Z, slope = 0)) +
   facet_grid(Type~Site_f)
-
