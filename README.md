@@ -7,40 +7,45 @@ ACCESS INFORMATION
 
 DATA & CODE FILE OVERVIEW
 
-Code for all analyses is in the folder titled "comm_phylo_analyses."
-
-This data repository consists of 5 folders containing 7 code scripts (not including the 6 unused analysis scripts) within the folder titled "comm_phylo_analyses," and this README document.
+The "comm_phylo_analyses" folder has 4 subfolders with 8 toal code scripts that have code for all analyses and figures for the manuscript "Rare species do not disproportionately contribute to phylogenetic diversity in a subalpine plant community." Outside of the "comm_phylo_analsyes" folder, this repository contains this README document, a folder for old, unsed analyses and empty folders for figures and results spreadsheets.
 
 
 Data files and variables (listed in the order they appear in the repository, not in the order they appear in the manuscript)
 
-    1. "Removing_species" folder contains the files "dispersioncurve_singleremoval_abundance.R" and "dispersioncurve_singleremoval_rangesize.R" The abundace file has the code for Fig. 4, and the range size file has code for the same analysis with range size, which is in the supporting information. 
+    1. "Abundance_weighting" folder contains the file "abundance_weighting.R," which has the code for testing abundance and range size weighted phylogenetic diversity metrics. This file also has the code for Fig. 3. 
     
-    2. "abundance_rangesize_rank_curves.R" has the code for Figure 1. 
+    2. "Phylogenetic_signal" folder contains the file "phylosignal.R," which has the code for testing for phylogenetic signal in abundance and range size. Also has code for Fig. 2. 
 
-    3. "Removing_groups" folder contains the file "remove_groups10.R," which has the code for removing sets of 10 species and Fig. 5
+    3. "Removing_groups" folder contains the files "remove_groups10.R" and "removing_groups10_MPD_MNTD.R." "remove_groups10.R" has the code for removing sets of 10 species and testing Faith's PD and Fig. 5, while "removing_groups10_MPD_MNTD.R" has the same analyses for MPD and MNTD (Appendix 5, Fig. S5). 
 
-    4. "Abundance_weighting" folder contains the file "abundance_weighting.R," which has the code for testing abundance and range size weighted phylogenetic diversity metrics. This file also has the code for Fig. 3. 
+    4.  "Removing_species" folder contains the files "dispersioncurve_singleremoval_abundance.R" and "dispersioncurve_singleremoval_rangesize.R" The abundace file has the code for Fig. 4, and the range size file has code for the same analysis with range size, which is in Appendix S3. 
 
-    5. "Phylogenetic_signal" folder contains the file "phylosignal.R," which has the code for testing for phylogenetic signal in abundance and range size. Also has code for Fig. 2. 
+    5. "abundance_rangesize_rank_curves.R" has the code for Figure 1. 
 
     6. "rangesize_calculations.R" has the code to calculate range size for a species. I did not functionalize this, so you have to input each individual species name to get the GBIF data and corresponding range size. 
 
 
 
-Code scripts and workflow - code should be run in order listed here. 
+Code scripts and workflow for manuscript analyses - code should be run in order listed here. 
 
     1. First, calculate the range size of each species in file #6, "rangesize_calculations.R." 
 
-    2. Then, visualize the distributions of abundance and range size (Fig. 1) in file #2, "abundance_rangesize_rank_curves.R." 
+    2. Then, visualize the distributions of abundance and range size (Fig. 1) in file #5, "abundance_rangesize_rank_curves.R." 
 
-    3. Calculate phylogenetic signal for abundance and range size using file #5, "phylosignal.R." 
+    3. Calculate phylogenetic signal for abundance and range size using the script in folder #5, "phylosignal.R." Generate the phylogenies in Fig. 2 with this same script. 
 
-    4. Calculate weighted (by abundance and range) and unweighted phylogenetic diversity metrics using file #4, "abundance_weighting.R." 
+    4. Calculate weighted (by abundance and range) and unweighted phylogenetic diversity metrics using the script in folder #1, "abundance_weighting.R." Generate Fig. 3 in this script also. 
 
-    5. Test the impact of removing individual species by abundance with file #1, "dispersioncurve_singleremoval_abundance.R." 
+    5. Test the impact of removing individual species by abundance with the script in folder #4, "dispersioncurve_singleremoval_abundance.R." Generate Fig. 4 and test for autocorrelation between points (Appendix 4, Fig. S4) in this same script. 
 
-    6. Test the impact of removing sets of 10 species grouped by abundance with file #3, "remove_groups10.R." 
+    6. Test the impact of removing sets of 10 species grouped by abundance with the script "remove_groups10.R" in folder #3. Generate Fig. 5 with the same script. This script only assesses Faith's PD, not MPD or MNTD (see below). 
+
+
+Code scripts and workflow for supplemental analyses and figures - code should be run in order listed here. 
+
+    1. Test the impact of removing individual species by range size with the script in folder #4, "dispersioncurve_singleremoval_rangesize.R." Generate Fig. S3 in Appendix 3 in this same script. 
+
+    2. Test the impact of removing sets of 10 species grouped by abundance with the script "remove_groups10_MPD_MNTD.R" in folder #3. Generate Fig. S5 in Appendix 5 with the same script.
 
 
 SOFTWARE VERSIONS
