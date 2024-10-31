@@ -13,7 +13,8 @@
 *.ai
 *.png
 *.pptx
-*.tiff
+*.tif
+*.jpg
 
 
 WorldClim_data
