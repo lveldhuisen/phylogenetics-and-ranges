@@ -7,7 +7,7 @@ ACCESS INFORMATION
 
 DATA & CODE FILE OVERVIEW
 
-The "comm_phylo_analyses" folder has 4 subfolders with 8 toal code scripts that have code for all analyses and figures for the manuscript "Rare species do not disproportionately contribute to phylogenetic diversity in a subalpine plant community." Outside of the "comm_phylo_analsyes" folder, this repository contains this README document, a folder for old, unsed analyses and empty folders for figures and results spreadsheets.
+The "comm_phylo_analyses" folder has 4 subfolders with 8 toal code scripts for all analyses and figures for the manuscript "Rare species do not disproportionately contribute to phylogenetic diversity in a subalpine plant community." Outside of the "comm_phylo_analsyes" folder, this repository contains this README document, a folder for old, unsed analyses and empty folders for figures and results spreadsheets.
 
 
 Data files and variables (listed in the order they appear in the repository, not in the order they appear in the manuscript)
