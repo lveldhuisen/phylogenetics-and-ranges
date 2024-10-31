@@ -6,6 +6,8 @@ library(patchwork)
 
 #bring in data
 all_df <- read.csv("comm_phylo_analyses/results_all.csv")
+
+#rename sites with elevations
 all_df$Site[all_df$Site=="Road"]<-"Low elevation (2815 m)"
 all_df$Site[all_df$Site=="Pfeiler"]<-"Middle elevation (3165 m)"
 all_df$Site[all_df$Site=="PBM"]<-"High elevation (3380 m)"
@@ -13,7 +15,7 @@ all_df$Site <- factor(all_df$Site,levels=c("Low elevation (2815 m)",
                                 "Middle elevation (3165 m)",
                                 "High elevation (3380 m)")) 
 
-#abundance---------
+#abundance figure---------
 fig_ab <- ggplot(all_df, aes(x=Mean_abundance)) + 
   geom_density()+
   facet_grid(~Site)+
@@ -22,9 +24,10 @@ fig_ab <- ggplot(all_df, aes(x=Mean_abundance)) +
         axis.title = element_text(size = 20),
         strip.text = element_text(size = 20))+
   xlab("Mean abundance 2021-2022")
+
 plot(fig_ab)
 
-#range size--------
+#range size figure--------
 fig_rs <- ggplot(all_df, aes(x=AOO..km2.))+
   geom_density()+
   facet_grid(~Site)+
@@ -39,7 +42,7 @@ fig_rs <- ggplot(all_df, aes(x=AOO..km2.))+
   
 plot(fig_rs)
 
-#combine
+#combine into one figure with both range size and abundance
 curve <- fig_ab / fig_rs +  
   plot_annotation(tag_levels = c('A'), tag_suffix = ')')
 plot(curve)

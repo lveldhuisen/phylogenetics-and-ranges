@@ -1,14 +1,17 @@
-#update community data matrices with abundance data
+#test how weighting by abundance and range size changes community phylogenetic
+#diversity metrics, code for Figure 3
+
 library(picante)
 library(ape)
 library(geiger)
 library(tidyverse)
 
 #calculate MPD and MNTD weighted and unweighted--------
+
 #import S&B phylogeny
 setwd("~/Library/CloudStorage/OneDrive-UniversityofArizona/Arizona PhD/Research/RMBL phylogeny/Smith&Brown18")
 
-##import S&B18 tree and check data## 
+##import S&B18 tree and prune## 
 SBtree <- read.tree(file = "ALLMB.tre")
 write.tree(SBtree)
 is.rooted(SBtree)
@@ -17,11 +20,13 @@ is.rooted(SBtree)
 pruned.tree <- treedata(SBtree, unlist(community_matrix[4,community_matrix[4,]>0]), warnings = F)$phy
 plot(pruned.tree)
 
+#check species in tree
 specieslist <- SBtree$tip.label
 specieslist <- as.data.frame(specieslist)
 
-##make community data matrices 
-#unweighted comparison
+##bring in community data matrices####
+
+#unweighted
 community_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_unweighted.txt", sep = "\t", header = T, row.names = 1)
 
 #weighted by abundance
@@ -31,9 +36,10 @@ abundance_matrix_weighted <- read.table("comm_phylo_analyses/Abundance_weighting
 rangesize_matrix <- read.table("comm_phylo_analyses/Abundance_weighting/community_matrix_weighted_rangesize.txt", sep = "\t", header = T, row.names = 1)
 
 ##unweighted####
+
 ###mpd####
-mpd_unweighted <- ses.mpd(community_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
-               abundance.weighted = FALSE, runs = 5000, iterations = 5000)
+mpd_unweighted <- ses.mpd(community_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"), abundance.weighted = FALSE, runs = 5000, iterations = 5000)
+
 ###format dataframe#####
 mpd_unweighted = subset(mpd_unweighted, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
 mpd_unweighted <- mpd_unweighted[-c(4),]
@@ -53,7 +59,8 @@ mntd_unweighted <- ses.mntd(community_matrix, cophenetic(pruned.tree),
 
 ###format dataframe#####
 mntd_unweighted = subset(mntd_unweighted, 
-                        select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+                        select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,
+                                    mntd.obs.rank,runs) ) #remove unnecessary columns
 mntd_unweighted <- mntd_unweighted[-c(4),]
 mntd_unweighted <- mntd_unweighted %>% 
   rename(SES = mntd.obs.z,
@@ -69,8 +76,8 @@ all_unweighted <- rbind(mpd_unweighted,mntd_unweighted)
 
 ##abundance####
 ###mpd####
-mpd_weighted_a <- ses.mpd(abundance_matrix_weighted, cophenetic(pruned.tree), null.model = c("sample.pool"),
-                          abundance.weighted = TRUE, runs = 5000, iterations = 5000)
+mpd_weighted_a <- ses.mpd(abundance_matrix_weighted, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = TRUE, runs = 5000, iterations = 5000)
+
 ###format dataframe#####
 mpd_weighted_a = subset(mpd_weighted_a, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
 mpd_weighted_a <- mpd_weighted_a[-c(4),]
@@ -86,6 +93,7 @@ mpd_weighted_a$Weighting <- c("Weighted") #add column for weighting
 mntd_unweighted <- ses.mntd(community_matrix, cophenetic(pruned.tree), 
                             null.model = c("sample.pool"),
                             abundance.weighted=FALSE, runs = 5000, iterations = 5000)
+
 ###mntd####
 mntd_weighted_a <- ses.mntd(abundance_matrix_weighted, cophenetic(pruned.tree), 
                             null.model = c("sample.pool"),
@@ -93,7 +101,9 @@ mntd_weighted_a <- ses.mntd(abundance_matrix_weighted, cophenetic(pruned.tree),
 
 ###format dataframe#####
 mntd_weighted_a = subset(mntd_weighted_a, 
-                         select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+                         select = -c(ntaxa,mntd.obs,mntd.rand.mean,
+                                     mntd.rand.sd,mntd.obs.rank,
+                                     runs) ) #remove unnecessary columns
 mntd_weighted_a <- mntd_weighted_a[-c(4),]
 mntd_weighted_a <- mntd_weighted_a %>% 
   rename(SES = mntd.obs.z,
@@ -111,8 +121,8 @@ all_df <- rbind(all_unweighted,all_weighted_a)
 ##range size####
 
 ###mpd####
-mpd_weighted_rs <- ses.mpd(rangesize_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),
-                          abundance.weighted = TRUE, runs = 5000, iterations = 5000)
+mpd_weighted_rs <- ses.mpd(rangesize_matrix, cophenetic(pruned.tree), null.model = c("sample.pool"),abundance.weighted = TRUE, runs = 5000, iterations = 5000)
+
 ###format dataframe#####
 mpd_weighted_rs = subset(mpd_weighted_rs, select = -c(ntaxa,mpd.obs,mpd.rand.mean,mpd.rand.sd,mpd.obs.rank,runs) ) #remove unnecessary columns
 mpd_weighted_rs <- mpd_weighted_rs[-c(4),]
@@ -132,7 +142,9 @@ mntd_weighted_rs <- ses.mntd(rangesize_matrix, cophenetic(pruned.tree),
 
 ###format dataframe#####
 mntd_weighted_rs = subset(mntd_weighted_rs, 
-                         select = -c(ntaxa,mntd.obs,mntd.rand.mean,mntd.rand.sd,mntd.obs.rank,runs) ) #remove unnecessary columns
+                         select = -c(ntaxa,mntd.obs,mntd.rand.mean,
+                                     mntd.rand.sd,mntd.obs.rank,
+                                     runs) ) #remove unnecessary columns
 mntd_weighted_rs <- mntd_weighted_rs[-c(4),]
 mntd_weighted_rs <- mntd_weighted_rs %>% 
   rename(SES = mntd.obs.z,
@@ -149,7 +161,7 @@ combo_rs <- rbind(all_unweighted,all_weighted_rs)
 
 #make figure to compare diversity with weighting----------
 ###abundance fig#####
-all_df$Site <- factor(all_df$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
+all_df$Site <- factor(all_df$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))  #order sites low to high elevation
 
 fig_weighting_a <- ggplot(all_df, aes(fill = Weighting, y=SES, x=Type)) + 
   geom_bar(position = "dodge",stat = "identity") +
@@ -165,7 +177,7 @@ plot(fig_weighting_a)
 
 ###range size fig####
 
-combo_rs$Site <- factor(combo_rs$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)"))
+combo_rs$Site <- factor(combo_rs$Site, levels = c("Low elevation (2815 m)","Middle elevation (3165 m)","High elevation (3380 m)")) #order sites low to high elevation
 
 fig_weighting_rs <- ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) + 
   geom_bar(position = "dodge",stat = "identity") +
@@ -177,7 +189,7 @@ fig_weighting_rs <- ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) +
   facet_wrap(Site ~ .)+
   theme(strip.text = element_text(color = "black"))
 
-#combine 
+#combine to make one figure with range size and abundance 
 weighting_fig <- fig_weighting_a / fig_weighting_rs + 
   plot_annotation(tag_levels = c('A'), tag_suffix = ')')+
   plot_layout(guides = 'collect')
