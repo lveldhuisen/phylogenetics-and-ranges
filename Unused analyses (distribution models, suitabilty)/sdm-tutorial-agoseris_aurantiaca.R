@@ -1,19 +1,8 @@
 #tutorial from Guisan textboook - Example 1 starting on page 357
-
-if(!require(rgbif)){}
 library(rgbif)
-
-install.packages("biomod2")
 library(biomod2)
 library(ggplot2)
 library(gridExtra)
-
-install.packages("raster")
-install.packages("rgdal")
-install.packages("sf")
-install.packages("terra")
-install.packages("sp")
-install.packages("rgeos")
 library(raster)
 library(rgdal)
 library(sf)
@@ -22,8 +11,6 @@ library(sp)
 library(rgeos)
 library(dplyr)
 
-
-install.packages("usethis")
 usethis::edit_r_environ()
 
 #other method from RGBIF vignette (https://github.com/ropensci/rgbif/blob/dfd376e55c5a4f25f7ed5b74427b1b559ce8bc7f/vignettes/getting_occurrence_data.Rmd)
@@ -106,7 +93,7 @@ setwd("/Users/leahvedlhuisen/Downloads")
 shapeNA <- unzip(zipfile = "politcalboundaries_shapefile.zip", exdir = "/Users/leahvedlhuisen/Downloads", overwrite = T)
 list.files("bound_p", recursive = T)
 
-mask_of_NA <- shapefile("bound_p/boundaries_p_2021_v3.shp")
+mask_of_NA <- shapefile("bound_p/boundaries_p_2021_v3.shp") #SLOW, SAVE OBJECT#
 bioclim_NA <- mask(bioclim_world, mask_of_NA[ mask_of_NA,]) 
 bioclim_NA <- mask(bioclim_world, mask_of_NA) #alternate option if top line doesnt work 
 bioclim_NA <- crop(bioclim_NA, mask_of_NA)
@@ -125,7 +112,6 @@ points_agoseris <- data.frame(AgoAur_occ[1:290,c("decimalLongitude", "decimalLat
 AgoAur_cell_id <- cellFromXY(subset(bioclim_NA,1), points_agoseris)
 
 #pca to test correlation between env data vars--------------------- 
-install.packages("ade4")
 library(ade4)
 
 ##bioclim vars#############
@@ -192,7 +178,6 @@ s.corcircle(pca_NA_soil$co, clabel = .5)
 mtext("(b)",side = 3, line = 3, adj = 0)
 
 #try other ways to assess collinearity in soil and bioclim vars----------------
-install.packages("usdm")
 library(usdm)
 vif(soil_NA_df)
 
@@ -209,9 +194,7 @@ env_vars_NA_sub <- stack(subset(combo_env_vars, c("bio_4","bio_10","bio_12","Uni
 
 #run models---------------------
 library(biomod2)
-install.packages("devtools")
 library(devtools)
-
 
 #switch format of env vars to see if it runs 
 env_vars_NA_sub_test <- as(env_vars_NA_sub, "SpatRaster")
