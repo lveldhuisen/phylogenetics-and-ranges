@@ -132,7 +132,7 @@ plot(pruned.tree.forfig)
 is.rooted(pruned.tree)
 
 #check for correct species in phylogeny
-specieslist <- pruned.tree$tip.label
+specieslist <- pruned.tree.forfig$tip.label
 specieslist <- as.data.frame(specieslist)
 
 #bring in trait data
@@ -165,7 +165,7 @@ allsitesmatrix_rs <- read.table("comm_phylo_analyses/Phylogenetic_signal/rangesi
 #prune tree
 pruned.tree.forfig.rs <- treedata(SBtree, unlist(allsitesmatrix_rs[1,allsitesmatrix_rs[1,]>0]),warnings = F)$phy
 plot(pruned.tree.forfig.rs)
-is.rooted(pruned.tree.rs)
+is.rooted(pruned.tree.forfig.rs)
 
 #trait data
 rangesize_df <- read.csv("comm_phylo_analyses/Phylogenetic_signal/range_size_results.csv")
@@ -180,7 +180,7 @@ rangesize_df <- df2vec(rangesize_df, colID=1)
 #test log value of abundance - use this for final phylogeny image
 rangesize_log <- log(rangesize_df, base = 10)
 
-contMap_log_rs <- contMap(pruned.tree.forfig.rs, rangesize_log, res=100, plot=FALSE)
+contMap_log_rs <- contMap(pruned.tree.forfig, rangesize_log, res=100, plot=FALSE)
 contMap_log_rs <- setMap(contMap_log_rs, viridisLite::viridis(n=8))
 plot(contMap_log_rs)
 

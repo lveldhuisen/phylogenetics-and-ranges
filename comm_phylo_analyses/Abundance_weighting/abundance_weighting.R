@@ -189,6 +189,8 @@ fig_weighting_rs <- ggplot(combo_rs, aes(fill = Weighting, y=SES, x=Type)) +
   facet_wrap(Site ~ .)+
   theme(strip.text = element_text(color = "black"))
 
+plot(fig_weighting_rs)
+
 #combine to make one figure with range size and abundance 
 weighting_fig <- fig_weighting_a / fig_weighting_rs + 
   plot_annotation(tag_levels = c('A'), tag_suffix = ')')+
