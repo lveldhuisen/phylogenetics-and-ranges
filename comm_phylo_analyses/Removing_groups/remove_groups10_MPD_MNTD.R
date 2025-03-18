@@ -180,7 +180,7 @@ PBM_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matric
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, 
-                        unlist(PBM_groups_matrix[24,PBM_groups_matrix[24,]>0]), 
+                        unlist(PBM_groups_matrix[29,PBM_groups_matrix[29,]>0]), 
                         warnings = F)$phy
 #check tree
 write.tree(pruned.tree)
@@ -224,7 +224,7 @@ Pfeiler_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_ma
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, 
-                        unlist(Pfeiler_groups_matrix[19,Pfeiler_groups_matrix[19,]>0]), 
+                        unlist(Pfeiler_groups_matrix[22,Pfeiler_groups_matrix[22,]>0]), 
                         warnings = F)$phy
 #check tree
 write.tree(pruned.tree)
@@ -265,7 +265,7 @@ Road_groups_matrix <- read.table("comm_phylo_analyses/Removing_groups/comm_matri
 
 ##prune tree#####
 pruned.tree <- treedata(SBtree, 
-                        unlist(Road_groups_matrix[25,Road_groups_matrix[25,]>0]), 
+                        unlist(Road_groups_matrix[32,Road_groups_matrix[32,]>0]), 
                         warnings = F)$phy
 #check tree
 write.tree(pruned.tree)
