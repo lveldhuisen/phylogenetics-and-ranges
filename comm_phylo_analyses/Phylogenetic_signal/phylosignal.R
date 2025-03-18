@@ -73,14 +73,14 @@ phylosig(pruned.tree, abundance_df, method="K", test=TRUE, nsim=5000,
 allsitesmatrix_range <- read.table("comm_phylo_analyses/Phylogenetic_signal/rangesize_matrix.txt", sep = "\t", header = T, row.names = 1)
 
 #prune tree
-pruned.tree <- treedata(SBtree, unlist(allsitesmatrix_range[1,allsitesmatrix_range[1,]>0]),
+pruned.tree.range <- treedata(SBtree, unlist(allsitesmatrix_range[1,allsitesmatrix_range[1,]>0]),
                         warnings = F)$phy
-write.tree(pruned.tree)
-plot(pruned.tree)
-is.rooted(pruned.tree)
+write.tree(pruned.tree.range)
+plot(pruned.tree.range)
+is.rooted(pruned.tree.range)
 
 #check species in tree
-specieslist <- pruned.tree$tip.label
+specieslist <- pruned.tree.range$tip.label
 specieslist <- as.data.frame(specieslist)
 
 #bring in range size data
@@ -98,7 +98,7 @@ rangesize_df <- rangesize_df %>% remove_rownames %>% column_to_rownames(var="Spe
 rangesize_df <- df2vec(rangesize_df, colID=1)
 
 #calculate signal
-phylosignal(rangesize_df, pruned.tree, reps = 5000, checkdata = TRUE)
+phylosignal(rangesize_df, pruned.tree.range, reps = 5000, checkdata = TRUE)
 
 #Pagels lambda----------
 
