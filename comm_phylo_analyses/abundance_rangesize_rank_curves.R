@@ -49,14 +49,22 @@ plot(curve)
 
 #Plot range size and abundance------
 
-rs_ab_fig <- ggplot(all_df, aes(x=log(AOO..km2.), y = Mean_abundance))+
+rs_ab_fig <- ggplot(all_df, aes(x=log(AOO..km2.), y = log(Mean_abundance)))+
   geom_point()+
   facet_grid(~Site)+
   theme_bw()+
   theme(axis.text = element_text(size = 14),
         axis.title = element_text(size = 20),
-        strip.text = element_text(size = 20))
+        strip.text = element_text(size = 20))+
+  xlab("Log area of occupancy (km2) ")+
+  ylab("Log mean local abundance")
 
 plot(rs_ab_fig)
+
+#add to overall fig
+threepanel_fig <- fig_ab / fig_rs / rs_ab_fig +  
+  plot_annotation(tag_levels = c('A'), tag_suffix = ')')
+
+plot(threepanel_fig)
 
 
