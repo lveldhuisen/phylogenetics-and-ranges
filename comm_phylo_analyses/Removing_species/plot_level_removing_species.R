@@ -47,7 +47,10 @@ to_delete <- c("Achinaterum_spp.","Agoseris_spp. ", "Arnica_spp.",
                "Galium_spp.","Unknown","Poa_spp.","Poa_pratensis","Potentilla_spp.",
                 "Senecio_bigelovii","Senecio_crassulus","Solidago_spp.",
                "Veratrum_spp.", "Bromus_inermis",
-               "Capsella_bursa-pastoris", "Rumex_cripus","")
+               "Capsella_bursa-pastoris", "Rumex_cripus","Phleum_pratense",
+               "Elymus_glaucus","Leymus_triticoides","Festuca_saximontana",
+               "Heracleum_sphondylium","Juncus_drummondii","Melica_spectabilis",
+               "Unknown","Taraxacum_officinale","Thlaspi_arvense","Tragopogon_dubius")
 
 plots_clean <- plots %>% filter(!Species %in% to_delete)
 
