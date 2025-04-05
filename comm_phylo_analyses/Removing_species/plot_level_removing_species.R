@@ -55,4 +55,36 @@ to_delete <- c("Achinaterum_spp.","Agoseris_spp. ", "Arnica_spp.",
 plots_clean <- plots %>% filter(!Species %in% to_delete)
 
 #check to see all species are in phylogeny
-missing_species <- plots_clean %>% filter(!Species %in% SB_list$x)
+missing_species2 <- plots_clean %>% filter(!Species %in% SB_list$x)
+
+#sum abundance across years
+plots_clean_summed <- plots_clean %>% 
+  group_by(Site, Species) %>% 
+  summarise_if(
+    is.numeric,
+    sum,
+    na.rm = TRUE
+  )
+
+#remove summed year column 
+plots_clean_summed <- subset(plots_clean_summed, select = -Total)
+
+#fill plots column 
+test <- plots_clean_summed %>%
+  pivot_longer(cols = c("Plot.1","Plot.2","Plot.3","Plot.4","Plot.5"), 
+               names_to = "Plot", values_to = "Total")
+
+#change plot number to not include "plot"
+test <- test %>% mutate(across(Plot, gsub, pattern="Plot.", replacement=""))
+
+#remove species not in plots
+#filter data for things you never want
+test <- test %>% filter(!Total %in% 0)
+
+#rename
+plots_list <- test
+
+#create new column to merge site and plot
+plots_list$PlotID <- paste(plots_list$Site,"_",plots_list$Plot)
+
+#get rid of spaces 
