@@ -42,7 +42,7 @@ plots$Species[plots$Species == 'Elymus_triticoides'] <- 'Leymus_triticoides'
 plots$Species[plots$Species == 'Fleum_pretense'] <- 'Phleum_pratense'
 plots$Species[plots$Species == 'Erigeron_eatoni'] <- 'Erigeron_eatonii'
   
-#remove unidentified species 
+#remove unidentified and non-native species 
 to_delete <- c("Achinaterum_spp.","Agoseris_spp. ", "Arnica_spp.", 
                "Asteraceae_spp.","Bromopsis_spp.","Bromus_spp.","Cirsium_spp.",
                "Epilobium_spp.","Erigeron_glacialis","Fragaria_spp.",
@@ -52,7 +52,8 @@ to_delete <- c("Achinaterum_spp.","Agoseris_spp. ", "Arnica_spp.",
                "Capsella_bursa-pastoris", "Rumex_cripus","Phleum_pratense",
                "Elymus_glaucus","Leymus_triticoides","Festuca_saximontana",
                "Heracleum_sphondylium","Juncus_drummondii","Melica_spectabilis",
-               "Unknown","Taraxacum_officinale","Thlaspi_arvense","Tragopogon_dubius")
+               "Unknown","Taraxacum_officinale","Thlaspi_arvense","Tragopogon_dubius",
+               "Bromus_carinatus", "Bromus_ciliatus","Achnatherum_lettermanii")
 
 plots_clean <- plots %>% filter(!Species %in% to_delete)
 
@@ -123,5 +124,22 @@ is.rooted(pruned.tree)
 is.binary(pruned.tree)
 Ntip(pruned.tree)
 
+#make species lists for each plot -----
+Road1 <- plots_list %>% filter(PlotID %in% "Road_1")
+Road2 <- plots_list %>% filter(PlotID %in% "Road_2")
+Road3 <- plots_list %>% filter(PlotID %in% "Road_3")
+Road4 <- plots_list %>% filter(PlotID %in% "Road_4")
+Road5 <- plots_list %>% filter(PlotID %in% "Road_5")
+Pfeiler1 <- plots_list %>% filter(PlotID %in% "Pfeiler_1")
+Pfeiler2 <- plots_list %>% filter(PlotID %in% "Pfeiler_2")
+Pfeiler3 <- plots_list %>% filter(PlotID %in% "Pfeiler_3")
+Pfeiler4 <- plots_list %>% filter(PlotID %in% "Pfeiler_4")
+Pfeiler5 <- plots_list %>% filter(PlotID %in% "Pfeiler_5")
+PBM1 <- plots_list %>% filter(PlotID %in% "PBM_1")
+PBM2 <- plots_list %>% filter(PlotID %in% "PBM_2")
+PBM3 <- plots_list %>% filter(PlotID %in% "PBM_3")
+PBM4 <- plots_list %>% filter(PlotID %in% "PBM_4")
+PBM5 <- plots_list %>% filter(PlotID %in% "PBM_5")
 
-#calculate baseline PD for each plot-----
+#we made individual community matrics for remove in excel becuase it is
+#easier to order according to abundance and range size 
