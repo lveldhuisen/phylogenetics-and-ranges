@@ -10,6 +10,7 @@ library(janitor)
 library(patchwork)
 library(car)
 library(forstringr)
+library(reshape2)
 
 #data prep-----
 plots <- read.csv("comm_phylo_analyses/RMBL_abundance_2021-2022.csv")
@@ -78,10 +79,6 @@ test <- plots_clean_summed %>%
 #change plot number to not include "plot"
 test <- test %>% mutate(across(Plot, gsub, pattern="Plot.", replacement=""))
 
-#remove species not in plots
-#filter data for things you never want
-test <- test %>% filter(!Total %in% 0)
-
 #rename
 plots_list <- test
 
@@ -92,3 +89,39 @@ plots_list$PlotID <- paste(plots_list$Site,"_",plots_list$Plot)
 plots_list <- str_rm_whitespace_df(plots_list)
 plots_list$PlotID <- gsub('\\s+', '', plots_list$PlotID)
 
+#make matrix to prune phylogeny----
+matrix_for_pruning <- subset(plots_list, select = -c(Total, Site, Year, Plot, PlotID))
+
+#have only one replicate of each species value
+matrix_for_pruning <- matrix_for_pruning[!duplicated(matrix_for_pruning), ]
+sp_vec <- as.vector(matrix_for_pruning)
+matrix_for_pruning$Total <- 1
+
+#check with whole site species list------
+edi_df <- read.csv("results/Raw_results_EDI.csv")
+edi_df$Species <- gsub('\\s+', '_', edi_df$Species)
+
+check <- edi_df %>% filter(!Species %in% matrix_for_pruning$Species)
+
+#transpose to be matrix and format 
+matrix <- dcast(matrix_for_pruning, Total ~ Species)
+matrix <- matrix %>% remove_rownames %>% column_to_rownames(var='Total')
+row.names(matrix)[row.names(matrix) == "1"] <- "Total"
+names(matrix)[names(matrix) == 'Arctostaphylos_uva-ursi'] <- 'Arctostaphylos_uvaursi'
+
+#prune phylogeny-----
+#bring in S&B tree
+SBtree <- read.tree("ALLMB.tre")
+
+#prune tree
+pruned.tree <- treedata(SBtree, unlist(matrix[1, matrix[1,]>0]), 
+                        warnings = F)$phy
+
+#check tree
+plot(pruned.tree)
+is.rooted(pruned.tree)
+is.binary(pruned.tree)
+Ntip(pruned.tree)
+
+
+#calculate baseline PD for each plot-----
