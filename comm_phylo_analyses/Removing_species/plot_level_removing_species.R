@@ -9,6 +9,7 @@ library(broom)
 library(janitor)
 library(patchwork)
 library(car)
+library(forstringr)
 
 #data prep-----
 plots <- read.csv("comm_phylo_analyses/RMBL_abundance_2021-2022.csv")
@@ -88,3 +89,6 @@ plots_list <- test
 plots_list$PlotID <- paste(plots_list$Site,"_",plots_list$Plot)
 
 #get rid of spaces 
+plots_list <- str_rm_whitespace_df(plots_list)
+plots_list$PlotID <- gsub('\\s+', '', plots_list$PlotID)
+
