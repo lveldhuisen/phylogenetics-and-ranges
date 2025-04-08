@@ -43,7 +43,6 @@ pbm1_fig <- ggplot(data= pbm1_pd) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.06, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   theme_classic(14) +
-  theme(plot.background = element_rect(colour = "darkblue"))+
   xlab("") +
   ylab("") +
   scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
@@ -409,6 +408,6 @@ pfeiler_fig <- pfeiler_fig+ plot_annotation(title = "Middle elevation site")
 road_fig <- road1_fig | road2_fig | road3_fig | road4_fig | road5_fig
 road_fig <- road_fig + plot_annotation(title = "Low elevation site")
 
-all_fig <- pbm_fig / pfeiler_fig / road_fig
+all_fig <- pbm_fig / pfeiler_fig / road_fig + plot_annotation(tag_levels = 'A')
 
 plot(all_fig)
