@@ -42,10 +42,11 @@ pbm1_pd$Abundance_rank <- c(1:17) #rank species by abundance in new column
 pbm1_fig <- ggplot(data= pbm1_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.06, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
+  theme(plot.background = element_rect(colour = "darkblue"))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   geom_hline(yintercept = 0.06, col = "lightgrey") +
   xlim(0,17) 
 
@@ -66,9 +67,9 @@ pbm2_pd$Abundance_rank <- c(1:7) #rank species by abundance in new column
 pbm2_fig <- ggplot(data= pbm2_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.54, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-2, 1.7))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-2, 1.7))+
   theme_classic(14) +
   geom_hline(yintercept = -0.54, col = "lightgrey") +
   xlim(0,7) 
@@ -90,9 +91,9 @@ pbm3_pd$Abundance_rank <- c(1:16) #rank species by abundance in new column
 pbm3_fig <- ggplot(data= pbm3_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=1.58, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1, 2))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1, 2))+
   theme_classic(14) +
   geom_hline(yintercept = 1.58, col = "lightgrey") +
   xlim(0,16) 
@@ -114,9 +115,9 @@ pbm4_pd$Abundance_rank <- c(1:15) #rank species by abundance in new column
 pbm4_fig <- ggplot(data= pbm4_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.23, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.5))+
   theme_classic(14) +
   geom_hline(yintercept = -0.23, col = "lightgrey") +
   xlim(0,15) 
@@ -139,9 +140,9 @@ pbm5_pd$Abundance_rank <- c(1:10) #rank species by abundance in new column
 pbm5_fig <- ggplot(data= pbm5_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.46, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = 0.46, col = "lightgrey") +
   xlim(0,11) 
@@ -154,7 +155,7 @@ plot(PBM_PD)
 
 #Pfeiler--------
 
-##plot 1###
+##plot 1######
 pfeiler1 <- read.csv("comm_phylo_analyses/Removing_species/plot_level_matrices/pfeiler1_a.csv")
 #switch first column to row names
 pfeiler1 <- pfeiler1 %>% remove_rownames %>% column_to_rownames(var='X')
@@ -169,9 +170,9 @@ pfeiler1_pd$Abundance_rank <- c(1:13) #rank species by abundance in new column
 pfeiler1_fig <- ggplot(data= pfeiler1_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.26, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
+  xlab("") +
   ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = -0.26, col = "lightgrey") +
   xlim(0,13) 
@@ -193,9 +194,9 @@ pfeiler2_pd$Abundance_rank <- c(1:19) #rank species by abundance in new column
 pfeiler2_fig <- ggplot(data= pfeiler2_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.2, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-2, 1.3))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-2, 1.3))+
   theme_classic(14) +
   geom_hline(yintercept = -0.2, col = "lightgrey") +
   xlim(0,19) 
@@ -217,9 +218,9 @@ pfeiler3_pd$Abundance_rank <- c(1:19) #rank species by abundance in new column
 pfeiler3_fig <- ggplot(data= pfeiler3_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.57, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = -0.57, col = "lightgrey") +
   xlim(0,19) 
@@ -241,9 +242,9 @@ pfeiler4_pd$Abundance_rank <- c(1:19) #rank species by abundance in new column
 pfeiler4_fig <- ggplot(data= pfeiler4_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=-0.11, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = -0.11, col = "lightgrey") +
   xlim(0,19) 
@@ -265,9 +266,9 @@ pfeiler5_pd$Abundance_rank <- c(1:21) #rank species by abundance in new column
 pfeiler5_fig <- ggplot(data= pfeiler5_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.28, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = 0.28, col = "lightgrey") +
   xlim(0,21) 
@@ -291,9 +292,9 @@ road1_pd$Abundance_rank <- c(1:20) #rank species by abundance in new column
 road1_fig <- ggplot(data= road1_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=1.49, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 1.8))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = 1.49, col = "lightgrey") +
   xlim(0,20) 
@@ -315,9 +316,9 @@ road2_pd$Abundance_rank <- c(1:19) #rank species by abundance in new column
 road2_fig <- ggplot(data= road2_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.73, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.3))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.7, 1.3))+
   theme_classic(14) +
   geom_hline(yintercept = 0.73, col = "lightgrey") +
   xlim(0,19) 
@@ -341,8 +342,8 @@ road3_fig <- ggplot(data= road3_pd) +
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.84, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 1.8))+
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = 0.84, col = "lightgrey") +
   xlim(0,17) 
@@ -364,9 +365,9 @@ road4_pd$Abundance_rank <- c(1:16) #rank species by abundance in new column
 road4_fig <- ggplot(data= road4_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=0.05, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 1.8))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 1.8))+
   theme_classic(14) +
   geom_hline(yintercept = 0.05, col = "lightgrey") +
   xlim(0,16) 
@@ -389,11 +390,25 @@ road5_pd$Abundance_rank <- c(1:12) #rank species by abundance in new column
 road5_fig <- ggplot(data= road5_pd) + 
   geom_segment( aes(x=Abundance_rank, xend=Abundance_rank, y=1.44, yend=pd.obs.z), color="grey")+
   geom_point(mapping = aes(x=Abundance_rank, y=pd.obs.z), size = 2) +
-  xlab("Abundance rank of removed species (most to least)") +
-  ylab("SES PD") +
-  scale_y_continuous(name="SES PD", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 2.1))+
+  xlab("") +
+  ylab("") +
+  scale_y_continuous(breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.5, 2.1))+
   theme_classic(14) +
   geom_hline(yintercept = 1.44, col = "lightgrey") +
   xlim(0,12) 
 
 plot(road5_fig)
+
+#combine all in patchwork------
+pbm_fig <- pbm1_fig | pbm2_fig | pbm3_fig | pbm4_fig | pbm5_fig 
+pbm_fig <- pbm_fig + plot_annotation(title = "High elevation site")
+
+pfeiler_fig <- pfeiler1_fig | pfeiler2_fig | pfeiler3_fig | pfeiler4_fig | pfeiler5_fig
+pfeiler_fig <- pfeiler_fig+ plot_annotation(title = "Middle elevation site")
+
+road_fig <- road1_fig | road2_fig | road3_fig | road4_fig | road5_fig
+road_fig <- road_fig + plot_annotation(title = "Low elevation site")
+
+all_fig <- pbm_fig / pfeiler_fig / road_fig
+
+plot(all_fig)
