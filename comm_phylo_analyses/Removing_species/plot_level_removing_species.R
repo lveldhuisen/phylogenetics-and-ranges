@@ -143,3 +143,6 @@ PBM5 <- plots_list %>% filter(PlotID %in% "PBM_5")
 
 #we made individual community matrics for remove in excel becuase it is
 #easier to order according to abundance and range size 
+
+#use the following species lists for plots:
+species_lists <- plots_list %>% filter(!Total %in% 0)
