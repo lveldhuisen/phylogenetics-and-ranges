@@ -411,3 +411,5 @@ road_fig <- road_fig + plot_annotation(title = "Low elevation site")
 all_fig <- pbm_fig / pfeiler_fig / road_fig + plot_annotation(tag_levels = 'A')
 
 plot(all_fig)
+
+ggsave("figures/forAJB/test.png", dpi = 600, height = 8, width = 14)

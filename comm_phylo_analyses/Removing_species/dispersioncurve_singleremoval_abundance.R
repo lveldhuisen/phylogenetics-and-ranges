@@ -368,8 +368,11 @@ ggplot(data= test) +
   geom_point(mapping = aes(x=Abundance_rank, y=SES), size = 2) +
   xlab("Abundance rank of removed species (most to least)") +
   ylab("Standard effect size") +
-  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),limits=c(-1.9, 1.5))+
-  theme_bw(14) +
+  scale_y_continuous(name="Standard effect size", breaks = c(-1.5, -1, -0.5, 0, 1, 0.5, 1, 1.5),
+                     limits=c(-1.9, 1.5))+
+  theme_bw(base_size = 22) +
   xlim(0,39) +
   geom_abline(data = test, aes(intercept = Z, slope = 0)) +
   facet_grid(Type~Site_f)
+
+ggsave("figures/AJB_final/Fig4.png", dpi = 600, height = 14.5, width = 14.5)

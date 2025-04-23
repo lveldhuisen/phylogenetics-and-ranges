@@ -116,7 +116,9 @@ all <-patchwork::wrap_elements(low_fig) +
   theme(plot.tag = element_text(face = 'bold'))+
   theme(plot.tag = element_text(size = 18))
 
-plot(all) 
+plot(all)
+
+ggsave("figures/AJB_final/Fig1.png", width = 14.5, height = 7, dpi = 600)
 
 #all points on one fig-----
 fig_all <- ggplot(all_df, aes(x=log(AOO..km2.), y = log(Mean_abundance),
@@ -129,6 +131,7 @@ fig_all <- ggplot(all_df, aes(x=log(AOO..km2.), y = log(Mean_abundance),
   ylab("Log mean local abundance")+
   xlab("Log area of occupancy (km2)")
 
+plot(fig_all)
 ggMarginal(fig_all, type = "density", 
                       groupFill = TRUE, alpha = 0.2, groupColor = TRUE)
 
