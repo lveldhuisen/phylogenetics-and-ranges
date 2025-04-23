@@ -163,4 +163,4 @@ allsites_PD_groups <- ggplot(data= PD_groups_allsites) +
   facet_grid(.~Site)
 
 plot(allsites_PD_groups)
-ggsave("figures/AJB_final/Fig5.png", dpi = 600, width = 14.5, height = 6)
+ggsave("figures/AJB_final/Fig5.pdf", width = 14.5, height = 6)

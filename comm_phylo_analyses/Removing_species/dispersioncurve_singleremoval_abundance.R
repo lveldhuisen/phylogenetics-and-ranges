@@ -375,4 +375,4 @@ ggplot(data= test) +
   geom_abline(data = test, aes(intercept = Z, slope = 0)) +
   facet_grid(Type~Site_f)
 
-ggsave("figures/AJB_final/Fig4.png", dpi = 600, height = 14.5, width = 14.5)
+ggsave("figures/AJB_final/Fig4.pdf", height = 14.5, width = 14.5)

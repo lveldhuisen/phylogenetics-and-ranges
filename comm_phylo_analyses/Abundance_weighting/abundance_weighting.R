@@ -197,4 +197,4 @@ weighting_fig <- fig_weighting_a / fig_weighting_rs +
   plot_layout(guides = 'collect')
 plot(weighting_fig)
 
-ggsave("figures/AJB_final/Fig3.png", dpi = 600, width = 14.5, height = 10)
+ggsave("figures/AJB_final/Fig3.pdf", width = 14.5, height = 10)

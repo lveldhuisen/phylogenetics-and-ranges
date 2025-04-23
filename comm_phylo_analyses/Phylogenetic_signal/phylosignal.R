@@ -153,7 +153,7 @@ plot(contMap)
 #test log value of abundance - use this for final phylogeny
 abundance_log <- log(abundance, base = 10)
 
-contMap_log <- contMap(pruned.tree.forfig, abundance_log, res=100, plot=FALSE)
+contMap_log <- contMap(pruned.tree.forfig, abundance_log, res=600, plot=FALSE)
 contMap_log <- setMap(contMap_log, viridisLite::viridis(n=8))
 plot(contMap_log)
 
@@ -180,7 +180,7 @@ rangesize_df <- df2vec(rangesize_df, colID=1)
 #test log value of abundance - use this for final phylogeny image
 rangesize_log <- log(rangesize_df, base = 10)
 
-contMap_log_rs <- contMap(pruned.tree.forfig, rangesize_log, res=100, plot = FALSE)
+contMap_log_rs <- contMap(pruned.tree.forfig.rs, rangesize_log, res=600, plot = FALSE)
 contMap_log_rs <- setMap(contMap_log_rs, viridisLite::viridis(n=8))
 plot(contMap_log_rs)
 
