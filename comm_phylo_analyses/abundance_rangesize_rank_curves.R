@@ -68,7 +68,7 @@ rs_ab_fig_low <- ggplot(df_low, aes(x=AOO..km2., y = Mean_abundance))+
         axis.title = element_text(size = 20),
         strip.text = element_text(size = 20))+
   ylab("Mean abundance 2021-2022")+
-  xlab(" ")
+  xlab(expression("Area of occupancy (km"^2*")"))
 
 low_fig <- ggMarginal(rs_ab_fig_low, type = "density", 
                       fill = "#AADC32FF", alpha = 0.5, color = "#AADC32FF")
@@ -85,7 +85,7 @@ rs_ab_fig_mid <- ggplot(df_mid, aes(x=AOO..km2., y = Mean_abundance))+
         axis.title = element_text(size = 20),
         strip.text = element_text(size = 20))+
   ylab(" ")+
-  xlab("Area of occupancy (km2)")
+  xlab(expression("Area of occupancy (km"^2*")"))
 
 mid_fig <- ggMarginal(rs_ab_fig_mid, type = "density", fill = "#21908CFF", 
                       alpha = 0.5, color = "#21908CFF")
@@ -102,7 +102,7 @@ rs_ab_fig_high <- ggplot(df_high, aes(x=AOO..km2., y = Mean_abundance))+
         axis.title = element_text(size = 20),
         strip.text = element_text(size = 20))+
   ylab(" ")+
-  xlab(" ")
+  xlab(expression("Area of occupancy (km"^2*")"))
 
 high_fig <- ggMarginal(rs_ab_fig_high, type = "density", fill = "#440154", 
                        alpha = 0.5, color = "#440154")
@@ -118,7 +118,7 @@ all <-patchwork::wrap_elements(low_fig) +
 
 plot(all)
 
-ggsave("figures/AJB_final/Fig1.pdf", width = 14.5, height = 10)
+ggsave("figures/AJB_final/Fig1_forcopyedits.pdf", width = 14.5, height = 10)
 
 #all points on one fig-----
 fig_all <- ggplot(all_df, aes(x=log(AOO..km2.), y = log(Mean_abundance),
