@@ -1,5 +1,5 @@
 # testing how rare species contribute to phylogenetic diversity in a subalpine plant community 
-# code for all analyses in Veldhuisen, L. N., V. Zepeda, B. J. Enquist, and K. M. Dlugosch. 2025. Rare species do not disproportionately contribute to phylogenetic diversity in a subalpine plant community. American Journal of Botany e70061. https://doi.org/10.1002/ajb2.70061
+
 
 ACCESS INFORMATION
 1. MIT License
@@ -75,6 +75,10 @@ viridis: 0.6.5
 REFERENCES
 
 Smith, S. A., and J. W. Brown. 2018. Constructing a broadly inclusive seed plant phylogeny. American journal of Botany 105:302–314.
+
+ASSOCIATED PUBLICATION
+
+Veldhuisen, L. N., V. Zepeda, B. J. Enquist, and K. M. Dlugosch. 2025. Rare species do not disproportionately contribute to phylogenetic diversity in a subalpine plant community. American Journal of Botany e70061. https://doi.org/10.1002/ajb2.70061
 
 
  
